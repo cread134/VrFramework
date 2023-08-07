@@ -322,9 +322,7 @@ public class XrHand : MonoBehaviour
         {
             Gizmos.color = Color.Lerp(Color.green, Color.red, m_gripValue);
             Gizmos.DrawWireSphere(grabCentre.position, grabRadius);
-        }
-
-       
+        }     
 
         if(trackingTarget != null)
         {
@@ -351,7 +349,7 @@ public class XrHand : MonoBehaviour
 
     private void OnMouseDown()
     {
-        DebugController.Instance.SelectController(this);
+        GameManager.Instance.debugController.SelectController(this);
     }
 
 }

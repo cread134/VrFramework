@@ -8,25 +8,6 @@ using UnityEditor;
 
 public class DebugController : MonoBehaviour
 {
-    #region singleton
-    private static DebugController _instance;
-
-    public static DebugController Instance { get { return _instance; } }
-
-
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-        }
-    }
-
-    #endregion
     [SerializeField] private ControlInput m_ControlInput;
 
     [SerializeField]private bool m_DebugEnabled = true;
