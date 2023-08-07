@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: abae6cc9957668f4592cd83aedcc2eb5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - leftHandMesh: {fileID: 22788929071467060, guid: e48d18018a0ba46c283d9fd9c227e578,
+      type: 3}
+  - rightHandMesh: {fileID: 22788929071467060, guid: 2d10b9b89f2474de9800b152c3d00004,
+      type: 3}
+  - constraintStart: {instanceID: 0}
+  - constraintEnd: {instanceID: 0}
+  - subscribedTransform: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
