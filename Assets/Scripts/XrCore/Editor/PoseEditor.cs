@@ -8,9 +8,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class PoseEditor : EditorWindow
 {
-    private string POSEFILEPATH = "Assets/XrCore/ScriptableObjects/HandPoses";
+    private string POSEFILEPATH = "Assets/ScriptableObjects/HandPoses";
 
-     TextField m_createPoseName;
+    TextField m_createPoseName;
     
     [MenuItem("Tools/PoseEditor")]
     public static void DisplayEditor()

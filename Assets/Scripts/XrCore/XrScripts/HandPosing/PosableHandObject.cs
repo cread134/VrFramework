@@ -66,7 +66,7 @@ public class PosableHandObject : MonoBehaviour
         }
         catch (System.Exception)
         {
-            Debug.LogError("pose bone mismatch when attempting lerp");
+            Debug.Log("pose bone mismatch when attempting lerp");
             throw;
         }
     }

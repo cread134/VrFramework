@@ -17,20 +17,7 @@ public class GrabbableObject : MonoBehaviour, IGrabbable
     private Dictionary<XrHand.HandSide, StoredHandInformation> storedHandInformation;
 
     [Header("Physics settings")]
-    [SerializeField] private float positionDifferenceMatchForce = 8f;
-    [SerializeField] private float positionErrorMatchForce = 8f;
-    [SerializeField] private float positionSmoothing = 7f;
-    [SerializeField] private float positionVelocityMultipler = 2f;
-    [SerializeField] private float positionIntegrationCompenstation = 1f;
-    [Space]
-    [Space]
-    [SerializeField] private float rotationProportionalGain = 8f; // Proportional gain for rotation control
-    [SerializeField] private float torqueDamping = 1f;
-    [SerializeField] private float rotationMultiplier = 8f;
-    [SerializeField] private float angleAllowance = 5f;
-    [SerializeField] private float rotationalSmoothing = 12f;
-    [SerializeField] private float rotationImpulseCompensation = 1f;
-    [SerializeField][Range(0f, 1f)] private float anglularSlowdown = 0.7f;
+    [SerializeField] private XrObjectPhysicsConfig physicsSettings;
 
     private XrHand.HandSide primaryGrabSide = XrHand.HandSide.Undetermined;
 
@@ -176,13 +163,13 @@ public class GrabbableObject : MonoBehaviour, IGrabbable
     {
         //handle position
         Vector3 positionError = targetPosition - _rigidbody.position;
-        Vector3 proportion = positionError * positionDifferenceMatchForce;
+        Vector3 proportion = positionError * physicsSettings.positionDifferenceMatchForce;
 
         Vector3 derivativeChange = (positionError - lastPositionDifference) / Time.fixedDeltaTime;
         lastPositionDifference = positionError;
-        Vector3 velocityAdjustment =((lastTargetPosition - positionError) * Time.fixedDeltaTime) * positionVelocityMultipler;
-        _rigidbody.velocity *= (1f /positionSmoothing);
-        positionStoredIntegration += (positionError * Time.fixedDeltaTime) * positionIntegrationCompenstation;
+        Vector3 velocityAdjustment =((lastTargetPosition - positionError) * Time.fixedDeltaTime) * physicsSettings.positionVelocityMultipler;
+        _rigidbody.velocity *= (1f / physicsSettings.positionSmoothing);
+        positionStoredIntegration += (positionError * Time.fixedDeltaTime) * physicsSettings.positionIntegrationCompenstation;
         Vector3 force = proportion + derivativeChange + positionStoredIntegration + velocityAdjustment;
         _rigidbody.AddForce(force, ForceMode.VelocityChange);
     }
@@ -202,9 +189,9 @@ public class GrabbableObject : MonoBehaviour, IGrabbable
             angleError -= 360f;
         }
 
-        if (Quaternion.Angle(targetRotation, _rigidbody.rotation) < angleAllowance)
+        if (Quaternion.Angle(targetRotation, _rigidbody.rotation) < physicsSettings.angleAllowance)
         {
-            _rigidbody.MoveRotation(Quaternion.Slerp(_rigidbody.rotation, targetRotation, Time.deltaTime * rotationalSmoothing));
+            _rigidbody.MoveRotation(Quaternion.Slerp(_rigidbody.rotation, targetRotation, Time.deltaTime * physicsSettings.rotationalSmoothing));
             _rigidbody.angularVelocity = Vector3.zero;
         }
         else
@@ -212,12 +199,12 @@ public class GrabbableObject : MonoBehaviour, IGrabbable
             Quaternion rotationImpulse = lastRotation * Quaternion.Inverse(targetRotation);
             rotationImpulse.ToAngleAxis(out float angleImpluse, out Vector3 impulseAxis);
 
-            _rigidbody.angularVelocity *= anglularSlowdown;
+            _rigidbody.angularVelocity *= physicsSettings.anglularSlowdown;
 
-            Vector3 angularVelocity = (errorAxis * angleError) * Time.deltaTime * rotationMultiplier;
-            Vector3 angularImpulse = (impulseAxis * angleImpluse) * Time.fixedDeltaTime * rotationImpulseCompensation;
+            Vector3 angularVelocity = (errorAxis * angleError) * Time.deltaTime * physicsSettings.rotationMultiplier;
+            Vector3 angularImpulse = (impulseAxis * angleImpluse) * Time.fixedDeltaTime * physicsSettings.rotationImpulseCompensation;
 
-            angularVelocity += (_rigidbody.angularVelocity - angularVelocity) * rotationProportionalGain * Time.deltaTime;
+            angularVelocity += (_rigidbody.angularVelocity - angularVelocity) * physicsSettings.rotationProportionalGain * Time.deltaTime;
             angularVelocity += angularImpulse;
             _rigidbody.AddTorque(angularVelocity, ForceMode.VelocityChange);
         }

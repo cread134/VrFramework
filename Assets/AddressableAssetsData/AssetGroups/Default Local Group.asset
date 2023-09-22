@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: d29290a4d2b90c44b99c413d063ccebd
+  m_SerializeEntries:
+  - m_GUID: 96bdfce992f62ec4e93c9014c4e77430
+    m_Address: Assets/ScriptableObjects/Sounds/Sound_Test.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sound
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44f5de150b4e1ae44979f89d9712469b
+    m_Address: Assets/ScriptableObjects/Vfx/Effect_Test.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Vfx
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 823434afc4b5418489abfe41d9c40dd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 57df421448744654aa0d7b45e329ba64, type: 2}
+    - {fileID: 11400000, guid: 962906f0f3943264a8443dd77482cb6c, type: 2}

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using UnityEditor;
+using UnityEngine.XR;
 
 public class DebugController : MonoBehaviour
 {
@@ -24,6 +25,14 @@ public class DebugController : MonoBehaviour
     private XrHand moveTarget;
 
     private bool targeting = false;
+
+    private void OnEnable()
+    {
+        if(!Application.isEditor)
+        {
+            m_DebugEnabled = false;
+        }
+    }
 
     private void Update()
     {

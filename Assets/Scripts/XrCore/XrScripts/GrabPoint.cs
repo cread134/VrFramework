@@ -17,13 +17,6 @@ public class GrabPoint : MonoBehaviour
     [SerializeField] private Transform[] leftHandReferenceTransforms;
     [SerializeField] private Transform[] rightHandReferenceTransforms;
 
-    [Header("ConstraintSettings")]
-    [SerializeField] private bool useConstraints;
-    [SerializeField] private Transform constraintStart;
-    [SerializeField] private Transform constraintEnd;
-    [Space]
-    [SerializeField] private Transform subscribedTransform;
-
     private bool isGrabbed;
     public bool Grabbed() { return isGrabbed; }
 
@@ -60,22 +53,8 @@ public class GrabPoint : MonoBehaviour
         return useHands[matchingValues.index];
     }
 
-    public void UpdateConstrainedPosition(Vector3 newPosition, Quaternion newRotation)
-    {
-
-        //update subscribed transform
-    }
-
     private void OnDrawGizmos()
     {
-        if (useConstraints)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(constraintStart.position, constraintEnd.position);
-            Gizmos.DrawLine(constraintEnd.position, constraintEnd.position + (constraintStart.forward * 0.05f));
-            Gizmos.DrawLine(constraintEnd.position, constraintEnd.position + (constraintStart.forward * 0.05f));
-        }
-
         foreach (var item in leftHandReferenceTransforms)
         {
             Gizmos.color = leftHandColor;

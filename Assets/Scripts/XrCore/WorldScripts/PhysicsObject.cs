@@ -6,5 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(WorldSurface))]
 public class PhysicsObject : MonoBehaviour
 {
-
+    public void OnCollisionEnter(Collision collision)
+    {
+        
+    }
 }
