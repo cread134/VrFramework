@@ -10,7 +10,15 @@ public class LevelLoadManager : MonoBehaviour
     private Coroutine _loadCoroutine;
     public event EventHandler<SceneChangeEvent> OnSceneChange;
 
-    private void LoadScene(GameScene scene)
+    public GameScene loadOnStartScene;
+
+    private void Start()
+    {
+        loadOnStartScene?.LoadScene();
+    }
+
+    //summary
+    public void LoadScene(GameScene scene)
     {
         Debug.Log("start scene change");
         if (_loadCoroutine != null)
@@ -36,7 +44,7 @@ public class LevelLoadManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("start loading new scene");
+        Debug.Log($"start loading new scene {scene.ToString()}");
         yield return StartCoroutine(LoadAysncScene(scene.BuildIndex));
         Debug.Log("finished scene loading");
 
