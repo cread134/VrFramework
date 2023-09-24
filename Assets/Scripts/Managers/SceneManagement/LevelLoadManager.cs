@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoadManager : MonoBehaviour
 {
-
+    public bool loadOnStart = false;
     private Coroutine _loadCoroutine;
     public event EventHandler<SceneChangeEvent> OnSceneChange;
 
@@ -14,7 +14,10 @@ public class LevelLoadManager : MonoBehaviour
 
     private void Start()
     {
-        loadOnStartScene?.LoadScene();
+        if (loadOnStart)
+        {
+            loadOnStartScene?.LoadScene();
+        }
     }
 
     //summary

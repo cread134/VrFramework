@@ -6,6 +6,7 @@ public class PlayerObject : MonoBehaviour
 {
     private bool _spawned = false;
     private PlayerMode _activeMode;
+    [SerializeField] private Camera PlayerCamera;
 
     public void SetPlayerMode(PlayerMode playerMode)
     {
@@ -24,4 +25,6 @@ public class PlayerObject : MonoBehaviour
 
         }
     }
+
+    public Camera GetPlayerCamera() => PlayerCamera;
 }

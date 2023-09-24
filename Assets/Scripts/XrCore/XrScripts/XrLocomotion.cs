@@ -146,8 +146,6 @@ public class XrLocomotion : MonoBehaviour, IXrControls
 
         if (headBodyDistance > maxHeadBodyOffset)
         {
-            //keep the head position to the radial component
-            Debug.Log("beyond max");
             Vector3 dif = (targetHead.position - yAdjusted).normalized * maxHeadBodyOffset;
             targetHeadPos = yAdjusted + dif;
         }

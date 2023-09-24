@@ -1,11 +1,7 @@
-using JetBrains.Annotations;
-using OpenCover.Framework.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour, IGrabbable

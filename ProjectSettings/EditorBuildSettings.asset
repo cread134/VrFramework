@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Samples/XR Interaction Toolkit/2.3.2/Starter Assets/DemoScene.unity
+    guid: 319dafa5c80f29f428dc1e0d03f04177
+  - enabled: 1
     path: Assets/Scenes/ManagerScene.unity
     guid: 16627c39d2e5fcc4d9b66b1fe66317a2
   - enabled: 1

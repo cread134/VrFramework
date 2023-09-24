@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public class ManagerAssurance
 {
-    [RuntimeInitializeOnLoadMethod]
+    [MenuItem("Tools/CreateGameManager")]
     public static void AssureGameManager()
     {
         var objs = GameObject.FindObjectOfType<GameManager>();
@@ -12,6 +14,7 @@ public class ManagerAssurance
         {
             var managerPre = Resources.Load("GameManager") as GameObject;
             GameObject.Instantiate(managerPre);
+            EditorSceneManager.SaveOpenScenes();
         }
     }
 }

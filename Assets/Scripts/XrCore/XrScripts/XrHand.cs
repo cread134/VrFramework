@@ -18,24 +18,15 @@ public class XrHand : MonoBehaviour
 
     public Transform TrackingTarget() { return trackingTarget; }
 
+    [SerializeField] private XrObjectPhysicsConfig physicsConfig;
     [Space]
+    [SerializeField] private float maxAllowedHandDistance = 5f;
     [SerializeField] private Transform grabCentre;
     [SerializeField] private LayerMask grabMask;
     [SerializeField] private float grabRadius = 0.05f;
     [Space]
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float collisionRadius = 0.1f;
-    [Space]
-    [SerializeField] private float positionProportionalGain = 8f; // Proportional gain for position control
-    [SerializeField] private float positionIntegralGain = 8f;
-    [SerializeField] private float positionDerivativeGain = 8f;
-    [Space]
-    [SerializeField] private float rotationProportionalGain = 8f; // Proportional gain for rotation control
-    [SerializeField] private float torqueDamping = 1f;
-    [SerializeField] private float rotationMultiplier = 8f;
-    [SerializeField] private float angleAllowance = 5f;
-    [SerializeField] private float rotationalSmoothing = 12f;
-    [SerializeField][Range(0f, 1f)] private float anglularSlowdown = 0.7f;
     [Space]
     [SerializeField] private Collider handCollider;
 
@@ -138,7 +129,7 @@ public class XrHand : MonoBehaviour
         }
     }
 
-# region grabbing
+    #region grabbing
 
     private bool overTarget = false;
     private IGrabbable grabHover;
@@ -196,6 +187,7 @@ public class XrHand : MonoBehaviour
 
     private void StartGrab()
     {
+        Debug.Log("started grab");
         grabHover.StartGrab(handType);
         currentGrab = grabHover;
         isGrabbing = true;
@@ -243,14 +235,14 @@ public class XrHand : MonoBehaviour
     {
         if (rb.isKinematic) rb.isKinematic = false;
         inPhysicsRange = Physics.CheckSphere(transform.position, collisionRadius, collisionMask, QueryTriggerInteraction.Ignore);
-        if (inPhysicsRange)
-        {         //handle rotation
-            PhysicsMatchHandPosition();
-            PhysicsMatchHandRotation();
+        if (!inPhysicsRange || Vector3.Distance(transform.position, trackingTarget.position) > maxAllowedHandDistance)
+        {
+            MoveHandKinematic();
         }
         else
         {
-            MoveHandKinematic();
+            PhysicsMatchHandPosition();
+            PhysicsMatchHandRotation();
         }
     }
 
@@ -259,10 +251,10 @@ public class XrHand : MonoBehaviour
         //handle position
         positionError = trackingTarget.position - rb.position;
 
-        Vector3 positionProportion = positionError * positionProportionalGain;
+        Vector3 positionProportion = positionError * physicsConfig.positionIntegrationCompenstation;
 
         Vector3 derivativeGain = (positionError - lastPositionError) / Time.fixedDeltaTime;
-        Vector3 positionDerivative = derivativeGain * positionDerivativeGain;
+        Vector3 positionDerivative = derivativeGain * physicsConfig.positionSmoothing;
 
         lastPositionError = positionError;
 
@@ -285,21 +277,21 @@ public class XrHand : MonoBehaviour
             angleError -= 360f;
         }
 
-        if (Quaternion.Angle(trackingTarget.rotation, rb.rotation) < angleAllowance)
+        if (Quaternion.Angle(trackingTarget.rotation, rb.rotation) < physicsConfig.angleAllowance)
         {
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, trackingTarget.rotation, Time.deltaTime * rotationalSmoothing));
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, trackingTarget.rotation, Time.deltaTime * physicsConfig.rotationalSmoothing));
             rb.angularVelocity = Vector3.zero;
         }
         else
         {
-            rb.angularVelocity *= anglularSlowdown * (1f - (angleError / 360f));
+            rb.angularVelocity *= physicsConfig.anglularSlowdown * (1f - (angleError / 360f));
 
             Vector3 angularVelocity = (errorAxis * angleError) / Time.deltaTime;
 
-            angularVelocity -= rb.angularVelocity * torqueDamping;
-            angularVelocity += (angularVelocity - rb.angularVelocity) * rotationProportionalGain;
+            angularVelocity -= rb.angularVelocity * physicsConfig.torqueDamping;
+            angularVelocity += (angularVelocity - rb.angularVelocity) * physicsConfig.rotationProportionalGain;
             float ratio = 1f + (angleError / 360f);
-            rb.AddTorque((angularVelocity - rb.angularVelocity) * Time.deltaTime * rotationMultiplier * (ratio * ratio), ForceMode.VelocityChange);
+            rb.AddTorque((angularVelocity - rb.angularVelocity) * Time.deltaTime * physicsConfig.rotationMultiplier * (ratio * ratio), ForceMode.VelocityChange);
         }
        // rb.angularVelocity = angularVelocity;
     }

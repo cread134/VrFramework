@@ -21,7 +21,6 @@ public class PosableHandObject : MonoBehaviour
         {
             InitializeHand();
         }
-        Invoke("SetTestHandPose", 3f);
     }
 
     [ContextMenu("Initialise Hand")]
@@ -83,7 +82,7 @@ public class PosableHandObject : MonoBehaviour
 
     public HandPose BakeHandPose()
     {
-            InitializeHand();
+        InitializeHand();
         List<string> boneNames = new List<string>();
         List<Quaternion> boneRotations = new List<Quaternion>();
 

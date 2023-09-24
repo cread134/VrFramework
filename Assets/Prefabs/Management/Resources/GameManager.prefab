@@ -276,11 +276,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae94a76634141846bc7934d78f93290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ControlInput: {fileID: 0}
   m_DebugEnabled: 1
   moveSpeed: 1
   rotationSpeed: 150
   gripChangeDelta: 0.001
+  moveAction: {fileID: 756126775739548463, guid: 1eeb5a525fdd1a94db78a233be7c5fe1,
+    type: 3}
+  mouseDeltaAction: {fileID: -4470076907115122566, guid: 1eeb5a525fdd1a94db78a233be7c5fe1,
+    type: 3}
 --- !u!1 &9026711881520148734
 GameObject:
   m_ObjectHideFlags: 0

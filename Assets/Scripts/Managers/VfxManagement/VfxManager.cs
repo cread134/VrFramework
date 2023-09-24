@@ -60,6 +60,6 @@ public class VfxManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        Addressables.Release(loadHandle);
+       // Addressables.Release(loadHandle);
     }
 }

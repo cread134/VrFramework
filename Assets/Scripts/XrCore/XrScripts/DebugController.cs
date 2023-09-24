@@ -9,7 +9,7 @@ using UnityEngine.XR;
 
 public class DebugController : MonoBehaviour
 {
-    [SerializeField] private ControlInput m_ControlInput;
+    private ControlInput m_ControlInput;
 
     [SerializeField]private bool m_DebugEnabled = true;
     [Space]
@@ -22,6 +22,9 @@ public class DebugController : MonoBehaviour
 
     private float verticalDelta;
 
+    public InputActionReference moveAction;
+    public InputActionReference mouseDeltaAction;
+
     private XrHand moveTarget;
 
     private bool targeting = false;
@@ -32,6 +35,15 @@ public class DebugController : MonoBehaviour
         {
             m_DebugEnabled = false;
         }
+
+        moveAction.action.performed += MoveDelta;
+        mouseDeltaAction.action.performed += MouseDelta;
+    }
+
+    private void Start()
+    {
+        debugCamera = GameObject.FindAnyObjectByType<DebugCamera>();
+        m_ControlInput = FindAnyObjectByType<ControlInput>();
     }
 
     private void Update()
@@ -94,7 +106,10 @@ public class DebugController : MonoBehaviour
     public void MouseDelta(InputAction.CallbackContext context)
     {
         mouseDelta = context.ReadValue<Vector2>();
+        debugCamera?.MouseDelta(mouseDelta);   
     }
+    private DebugCamera debugCamera;
+
 
 
     public void VerticalDelta(InputAction.CallbackContext context)

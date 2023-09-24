@@ -7,7 +7,6 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
     private PlayerObject playerObject;
-
     
     public void CreatePlayerInstance()
     {
@@ -21,13 +20,28 @@ public class PlayerManager : MonoBehaviour
     {
         instance.SpawnPlayer();
         instance.SetPlayerMode(PlayerMode.gameplay);
+
+        SetupGameCanvases();
     }
 
     private void Awake()
     {
-        if(GameObject.FindGameObjectsWithTag("Player").Length == 0)
+        var p = GameObject.FindObjectOfType<PlayerObject>();
+        if (p == null)
         {
             CreatePlayerInstance();
+        } else
+        {
+            playerObject = p;
+        }
+    }
+
+    private void SetupGameCanvases()
+    {
+        var canvases = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+        foreach (var item in canvases)
+        {
+            item.worldCamera = playerObject.GetPlayerCamera();
         }
     }
 
@@ -50,6 +64,7 @@ public class PlayerManager : MonoBehaviour
                 playerObject?.SetPlayerMode(PlayerMode.active);
                 break;
         }
+        SetupGameCanvases();
     }
 }
 
