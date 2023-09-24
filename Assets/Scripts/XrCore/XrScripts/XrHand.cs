@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class XrHand : MonoBehaviour
+public class XrHand : MonoBehaviour, IXrHandControls
 {
     private Rigidbody rb;
 
@@ -344,4 +344,31 @@ public class XrHand : MonoBehaviour
         GameManager.Instance.debugController.SelectController(this);
     }
 
+
+    public void UpdateGrip(float newValue) => UpdateGripValue(newValue);
+
+    public void UpdateTrigger(float newValue)
+    {
+        
+    }
+
+    public void OnMainButtonDown()
+    {
+        
+    }
+
+    public void OnMainButtonUp()
+    {
+       
+    }
+
+    public void OnSecondaryButtonDown()
+    {
+
+    }
+
+    public void OnSecondaryButtonUp()
+    {
+        throw new System.NotImplementedException();
+    }
 }

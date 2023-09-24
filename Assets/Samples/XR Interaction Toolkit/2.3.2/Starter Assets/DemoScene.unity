@@ -8912,6 +8912,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5859974768847480185, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripValue
+      value: 0.641
+      objectReference: {fileID: 0}
     - target: {fileID: 6195932520069213157, guid: 7cc09e81af3215242952820db74c3365,
         type: 3}
       propertyPath: m_RootOrder
