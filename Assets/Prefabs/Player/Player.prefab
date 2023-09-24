@@ -2231,12 +2231,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1334793281483347575, guid: 49ce56e3565964d4e95d5db5b38e1cbc,
         type: 3}
-      propertyPath: physicsConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: be595bd60ab214b4c8d71f4a57c39581,
-        type: 2}
-    - target: {fileID: 1334793281483347575, guid: 49ce56e3565964d4e95d5db5b38e1cbc,
-        type: 3}
       propertyPath: trackingTarget
       value: 
       objectReference: {fileID: 9133457670726889209}

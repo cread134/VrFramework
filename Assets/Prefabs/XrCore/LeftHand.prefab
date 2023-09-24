@@ -83,8 +83,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.090308726, y: 0.031523466, z: 0.15225518}
-  m_Center: {x: -0.03662327, y: 0.055616617, z: -0.015538156}
+  m_Size: {x: 0.048462793, y: 0.09107113, z: 0.17521596}
+  m_Center: {x: -0.043749727, y: -0.019712806, z: -0.004057765}
 --- !u!1 &6053166117021991632
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,6 +173,8 @@ MonoBehaviour:
   poseHand: {fileID: 3483790628943927337}
   idlePose: {fileID: 11400000, guid: cb387d9537ee50645a9322e4dcb142d2, type: 2}
   gripPose: {fileID: 11400000, guid: 968d87a18e65cbc4196e184247e70c9f, type: 2}
+  physicsConfig: {fileID: 11400000, guid: be595bd60ab214b4c8d71f4a57c39581, type: 2}
+  maxAllowedHandDistance: 5
   grabCentre: {fileID: 4290659443889609583}
   grabMask:
     serializedVersion: 2
@@ -182,15 +184,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 129
   collisionRadius: 0.1
-  positionProportionalGain: 20
-  positionIntegralGain: 20
-  positionDerivativeGain: 20
-  rotationProportionalGain: 25
-  torqueDamping: 0.75
-  rotationMultiplier: 10
-  angleAllowance: 5
-  rotationalSmoothing: 12
-  anglularSlowdown: 0.7
   handCollider: {fileID: 1609840447410756840}
   grabThreshold: 0.9
   grabIndicator: {fileID: 6053166117021991632}
