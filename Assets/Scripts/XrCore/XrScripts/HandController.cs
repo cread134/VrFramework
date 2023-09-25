@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(XrHand))]
 public class HandController : MonoBehaviour
 {
     public ActionBasedController Controller;
@@ -24,56 +23,26 @@ public class HandController : MonoBehaviour
         SecondaryButtonAction.action.canceled += OnSecondaryButtonUp;
     }
 
-    private IXrHandControls controls;
-    private void ValidateControls()
-    {
-        if (controls == null)
-        {
-            controls = GetComponent<IXrHandControls>();
-        }
-    }
+    public XrHand xrHand;
+    private IXrHandControls controls => xrHand;
 
     public float gripValue = 0f;
     public float triggerValue = 0f;
 
     public void UpdateGrip(InputAction.CallbackContext callbackContext) => UpdateGrip(callbackContext.ReadValue<float>());
-    public void UpdateGrip(float newValue)
-    {
-        ValidateControls();
-        controls.UpdateGrip(newValue);
-    }
+    public void UpdateGrip(float newValue) => controls.UpdateGrip(newValue);
 
     public void UpdateTrigger(InputAction.CallbackContext callbackContext) => UpdateTrigger(callbackContext.ReadValue<float>());
-    public void UpdateTrigger(float newValue)
-    {
-        ValidateControls();
-        controls.UpdateTrigger(newValue);
-    }
+    public void UpdateTrigger(float newValue) => controls.UpdateTrigger(newValue);
 
     public void OnMainButtonDown(InputAction.CallbackContext callbackContext) => OnMainButtonDown();
-    public void OnMainButtonDown()
-    {
-        ValidateControls();
-        controls.OnMainButtonDown();
-    }
+    public void OnMainButtonDown() => controls.OnMainButtonDown();
     public void OnMainButtonUp(InputAction.CallbackContext callbackContext) => OnMainButtonUp();
-    public void OnMainButtonUp()
-    {
-        ValidateControls();
-        controls.OnMainButtonUp();
-    }
+    public void OnMainButtonUp() => controls.OnMainButtonUp();
     public void OnSecondaryButtonDown(InputAction.CallbackContext callbackContext) => OnSecondaryButtonDown();
-    public void OnSecondaryButtonDown()
-    {
-        ValidateControls();
-        controls.OnSecondaryButtonDown();
-    }
+    public void OnSecondaryButtonDown() => controls.OnSecondaryButtonDown();
     public void OnSecondaryButtonUp(InputAction.CallbackContext callbackContext) => OnSecondaryButtonUp();
-    public void OnSecondaryButtonUp()
-    {
-        ValidateControls();
-        controls.OnSecondaryButtonUp();
-    }
+    public void OnSecondaryButtonUp() => controls.OnSecondaryButtonUp();
 }
 
 public interface IXrHandControls

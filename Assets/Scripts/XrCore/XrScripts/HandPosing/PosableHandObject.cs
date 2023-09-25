@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -36,17 +37,15 @@ public class PosableHandObject : MonoBehaviour
     public void InitializeHand()
     {
         handBones = new XrHandBones(boneTransforms);
-    }
 
-    private void OnDrawGizmos()
-    {
-        if(handBones != null)
+#if UNITY_EDITOR
+        if(Application.isEditor)
         {
-            foreach(Transform boneT in boneTransforms)
-            { 
-                if(boneT.GetChild(0) != null)Debug.DrawLine(boneT.position, boneT.GetChild(0).position);
-            }
+            EditorUtility.SetDirty(this);
+            handBones = new XrHandBones(boneTransforms);
+            AssetDatabase.SaveAssets();
         }
+#endif
     }
 
     public void LerpPose(HandPose poseA, HandPose poseB, float tValue)
@@ -93,6 +92,34 @@ public class PosableHandObject : MonoBehaviour
 
         return new HandPose(boneRotations, boneNames);
     }
+
+    #region Gizmos
+
+    private void OnDrawGizmosSelected()
+    { 
+        if(handBones != null && Application.isEditor)
+        {
+            foreach (var bone in  handBones.bones)
+            {
+                Handles.color = Color.magenta;
+                Handles.Label(bone.Value.position, bone.Key);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (handBones != null)
+        {
+            foreach (Transform boneT in boneTransforms)
+            {
+                Gizmos.color = Color.red;
+                if (boneT.GetChild(0) != null) Debug.DrawLine(boneT.position, boneT.GetChild(0).position);
+            }
+        }
+    }
+
+    #endregion
 }
 
 public class XrHandBones

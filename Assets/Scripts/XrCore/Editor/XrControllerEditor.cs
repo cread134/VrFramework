@@ -14,6 +14,7 @@ public class XrControllerEditor : Editor
     {
         VisualElement root = new VisualElement();
 
+        root.Add(new PropertyField { label = "XrHand", bindingPath = "xrHand" });
         root.Add(new PropertyField { label = "Controller", bindingPath = "Controller" });
 
         var gripSlider = new Slider { 

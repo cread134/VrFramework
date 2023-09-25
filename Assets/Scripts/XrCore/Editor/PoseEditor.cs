@@ -9,8 +9,9 @@ using UnityEngine.UIElements;
 public class PoseEditor : EditorWindow
 {
     private string POSEFILEPATH = "Assets/ScriptableObjects/HandPoses";
-
     TextField m_createPoseName;
+
+    PoseObject _pose;
     
     [MenuItem("Tools/PoseEditor")]
     public static void DisplayEditor()
@@ -22,13 +23,32 @@ public class PoseEditor : EditorWindow
     public void CreateGUI()
     {
         rootVisualElement.Clear();
-        rootVisualElement.Add(new Label("Pose Editor"));
+        rootVisualElement.Add(new Label { 
+            text = "Pose Editor"    
+        });
 
         GameObject targetObject = Selection.activeGameObject;
         if (!ValidateSelection(targetObject))
         {        
             return;
         }
+
+        var toLoad = new ObjectField
+        {
+            label = "Load Pose",
+            objectType = typeof(PoseObject),
+        };
+        toLoad.RegisterValueChangedCallback(e =>
+        {
+            _pose = (PoseObject)e.newValue;
+        });
+
+        Button loadPoseButton = new Button { text = "Load" };
+        loadPoseButton.clicked += LoadPose;
+
+        rootVisualElement.Add(loadPoseButton);
+        rootVisualElement.Add(toLoad);
+
         m_createPoseName = new TextField
         {
             label = "Pose Name",
@@ -43,6 +63,14 @@ public class PoseEditor : EditorWindow
         bakeButton.text = "Bake Pose";
         bakeButton.clicked += OnBakeClick;
         rootVisualElement.Add(bakeButton); 
+    }
+    
+    public void LoadPose()
+    {
+        if(_pose != null && Selection.activeGameObject.TryGetComponent<PosableHandObject>(out PosableHandObject handObject))
+        {
+            handObject.UpdateHandPose(_pose.GetPose());
+        }
     }
 
     public void OnBakeClick()
