@@ -8,5 +8,10 @@ using UnityEngine;
 [Icon("Assets/unity.png")]
 public class XrToolbarOverlay : ToolbarOverlay
 {
-    XrToolbarOverlay() : base(XrHandToolbar.id) { }
+    XrToolbarOverlay() : base(
+        XrHandToolbar.id
+        ) 
+    {
+
+    }
 }

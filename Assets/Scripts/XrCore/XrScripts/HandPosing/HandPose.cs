@@ -9,8 +9,6 @@ public class HandPose
 {
     public Dictionary<string, quaternion> poseValues;
 
-    public HandPose() => new HandPose(new List<Quaternion>(), new List<string>());
-
     public HandPose(List<Quaternion> rotationInput, List<string> boneNames)
     {
         poseValues = new Dictionary<string, quaternion>();

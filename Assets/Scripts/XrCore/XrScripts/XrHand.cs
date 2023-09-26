@@ -107,8 +107,14 @@ public class XrHand : MonoBehaviour, IXrHandControls
 
     private void OnGripUpdate()
     {
-        if(!isGrabbing)
+        if (!isGrabbing)
         {
+            var poseIdle = idlePose.GetPose();
+            var poseGrip = gripPose.GetPose();
+            if (poseIdle is null || poseGrip is null)
+            {
+                return;
+            }
             poseHand.LerpPose(idlePose.GetPose(), gripPose.GetPose(), m_gripValue);
         }
     }

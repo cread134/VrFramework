@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.OpenXR.Input;
 
 public class PosableHandObject : MonoBehaviour
 {
@@ -50,9 +51,12 @@ public class PosableHandObject : MonoBehaviour
 
     public void LerpPose(HandPose poseA, HandPose poseB, float tValue)
     {
-        try
+        if (!ValidatePose(poseA) || !ValidatePose(poseB))
+            return;
+        
+        foreach (string key in poseA.poseValues.Keys)
         {
-            foreach (string key in poseA.poseValues.Keys)
+            if (handBones.bones.ContainsKey(key))
             {
                 Transform transformToChange = handBones.bones[key];
                 Quaternion rotationA = poseA.poseValues[key];
@@ -60,22 +64,37 @@ public class PosableHandObject : MonoBehaviour
 
                 Quaternion lerped = Quaternion.Lerp(rotationA, rotationB, tValue);
                 transformToChange.localRotation = lerped;
+            } else
+            {
+                Debug.LogError($"Could not match (key: {key})");
             }
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("pose bone mismatch when attempting lerp");
         }
     }
 
+
     public void UpdateHandPose(HandPose newPose)
     {
+        if (!ValidatePose(newPose))
+            return;
         foreach (string key in newPose.poseValues.Keys)
         {
             Transform transformToChange = handBones.bones[key];
             Quaternion newLocalRotation = newPose.poseValues[key];
             transformToChange.localRotation = newLocalRotation;
         }
+    }
+    bool ValidatePose(HandPose pose)
+    {
+        if(pose == null)
+        {
+            throw new ArgumentNullException(nameof(pose));
+        }
+        if(pose.poseValues == null )
+        {
+            Debug.Log($"{pose} does not have any values");
+            return false;
+        }
+        return true;
     }
 
     public HandPose BakeHandPose()

@@ -26,7 +26,20 @@ public class XrControllerEditor : Editor
         gripSlider.label = $"GripValue {gripSlider.value}"; 
         gripSlider.RegisterCallback<ChangeEvent<float>>(OnGripSliderChange);
         root.Add(gripSlider);
+
+        var rootButton = new Button
+        {
+            text = "Go to root",
+        };
+        rootButton.clicked += GoToRoot;
+        root.Add(rootButton);
         return root;
+    }
+
+    void GoToRoot()
+    {
+        Selection.activeGameObject = ((HandController)target).ControllerRoot;
+        SceneView.lastActiveSceneView.FrameSelected();
     }
 
     void OnGripSliderChange(ChangeEvent<float> changeEvent)

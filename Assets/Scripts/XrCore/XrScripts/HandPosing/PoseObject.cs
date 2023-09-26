@@ -24,16 +24,15 @@ public class PoseObject : ScriptableObject
     public HandPose GetPose()
     {
         if( _instancedPose == null)
-        {
-            CachePose();
-        }
+            return CachePose();
+
         return _instancedPose; 
     }
 
     public HandPose CachePose()
     {
-        _instancedPose = new HandPose(boneValues.ToList<Quaternion>(), boneNames.ToList<string>());
-        //Debug.Log(_instancedPose.poseValues.ToString());
-        return _instancedPose;
+        var pose = new HandPose(boneValues.ToList<Quaternion>(), boneNames.ToList<string>());
+        _instancedPose = pose;
+        return pose;
     }
 }

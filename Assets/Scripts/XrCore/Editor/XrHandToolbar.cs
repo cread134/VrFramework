@@ -7,7 +7,7 @@ using UnityEngine;
 [EditorToolbarElement(id, typeof(SceneView))]
 public class XrHandToolbar : EditorToolbarButton
 {
-    public const string id = "XrUtilities/HandButton";
+    public const string id = "XrUtilities/HandButton/Right";
 
     public XrHandToolbar ()
     {
@@ -17,6 +17,11 @@ public class XrHandToolbar : EditorToolbarButton
 
     void OnClick()
     {
-        Debug.Log("thing");
+        GameObject targetHand = GameObject.Find("RightHandTracked");
+        if(targetHand != null)
+        {
+            Selection.activeGameObject = targetHand;
+            SceneView.lastActiveSceneView.FrameSelected();
+        }
     }
 }

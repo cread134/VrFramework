@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -7,6 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class HandController : MonoBehaviour
 {
     public ActionBasedController Controller;
+
 
     public InputActionReference MainButtonAction;
     public InputActionReference SecondaryButtonAction;
@@ -24,6 +26,7 @@ public class HandController : MonoBehaviour
     }
 
     public XrHand xrHand;
+    public GameObject ControllerRoot => xrHand.gameObject ?? gameObject;
     private IXrHandControls controls => xrHand;
 
     public float gripValue = 0f;
