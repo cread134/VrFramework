@@ -3,36 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[System.Serializable]
-public class PoseObject : ScriptableObject
+namespace XrCore.Physics.Hands.Posing
 {
-    public string _poseName;
-    public string[] boneNames;
-    public Quaternion[] boneValues;
-
-    public string GetValues()
+    [System.Serializable]
+    public class PoseObject : ScriptableObject
     {
-        string toReturn = "";
-        for (int i = 0; i < boneNames.Length; i++)
+        public string _poseName;
+        public string[] boneNames;
+        public Quaternion[] boneValues;
+
+        public string GetValues()
         {
-            toReturn += boneNames[i] + ": " + boneValues[i].ToString();
+            string toReturn = "";
+            for (int i = 0; i < boneNames.Length; i++)
+            {
+                toReturn += boneNames[i] + ": " + boneValues[i].ToString();
+            }
+            return toReturn;
         }
-        return toReturn;
-    }
 
-    private HandPose _instancedPose;
-    public HandPose GetPose()
-    {
-        if( _instancedPose == null)
-            return CachePose();
-
-        return _instancedPose; 
-    }
-
-    public HandPose CachePose()
-    {
-        var pose = new HandPose(boneValues.ToList<Quaternion>(), boneNames.ToList<string>());
-        _instancedPose = pose;
-        return pose;
+        private HandPose _instancedPose;
+        public HandPose HandPose
+        {
+            get
+            {
+                if (_instancedPose == null || _instancedPose.poseValues == null)
+                {
+                    var value = HandPose.BuildHandPose(boneNames, boneValues);
+                    _instancedPose = value;
+                    return value;
+                }
+                return _instancedPose;
+            }
+        }
     }
 }

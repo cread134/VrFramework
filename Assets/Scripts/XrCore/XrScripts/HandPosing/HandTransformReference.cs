@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandTransformReference : MonoBehaviour
+namespace XrCore.Physics.Hands.Posing
 {
-    [SerializeField] private PoseObject targetPose;
-    private void Awake()
+    public class HandTransformReference : MonoBehaviour
     {
-        targetPose.CachePose();
-    }
+        [SerializeField] private PoseObject targetPose;
 
-    public HandPose GetTargetPose()
-    {
-        return targetPose.GetPose();
+        public HandPose GetTargetPose()
+        {
+            return targetPose.HandPose;
+        }
     }
 }

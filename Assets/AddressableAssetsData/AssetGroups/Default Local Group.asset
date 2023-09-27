@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Vfx
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fb58949418892d43af8695589d6d135
+    m_Address: Assets/ScriptableObjects/HandPoses
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HandPoses
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 823434afc4b5418489abfe41d9c40dd8, type: 2}
   m_SchemaSet:

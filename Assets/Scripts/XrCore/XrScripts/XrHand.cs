@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using XrCore.Physics.Hands.Posing;
 
 public class XrHand : MonoBehaviour, IXrHandControls
 {
@@ -56,8 +57,6 @@ public class XrHand : MonoBehaviour, IXrHandControls
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        gripPose.CachePose();
-        idlePose.CachePose();
     }
 
     public float ReadGripValue() { return m_gripValue; }
@@ -109,13 +108,13 @@ public class XrHand : MonoBehaviour, IXrHandControls
     {
         if (!isGrabbing)
         {
-            var poseIdle = idlePose.GetPose();
-            var poseGrip = gripPose.GetPose();
+            var poseIdle = idlePose.HandPose;
+            var poseGrip = gripPose.HandPose;
             if (poseIdle is null || poseGrip is null)
             {
                 return;
             }
-            poseHand.LerpPose(idlePose.GetPose(), gripPose.GetPose(), m_gripValue);
+            poseHand.LerpPose(idlePose.HandPose, gripPose.HandPose, m_gripValue);
         }
     }
     private void Update()

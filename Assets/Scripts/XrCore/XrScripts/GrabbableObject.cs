@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XrCore.Physics.Hands.Posing;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GrabbableObject : MonoBehaviour, IGrabbable

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XrCore.Physics.Hands.Posing;
 
 public class GrabbableObjectController : MonoBehaviour, IGrabbable
 {

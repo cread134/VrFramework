@@ -1,21 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
-[System.Serializable]
-public class HandPose 
+namespace XrCore.Physics.Hands.Posing
 {
-    public Dictionary<string, quaternion> poseValues;
-
-    public HandPose(List<Quaternion> rotationInput, List<string> boneNames)
+    [System.Serializable]
+    public class HandPose
     {
-        poseValues = new Dictionary<string, quaternion>();
-        for (int i = 0; i < rotationInput.Count; i++)
+        public Dictionary<string, quaternion> poseValues;
+
+        public HandPose(List<Quaternion> rotationInput, List<string> boneNames)
         {
-            poseValues.Add(boneNames[i], rotationInput[i]);
+            poseValues = new Dictionary<string, quaternion>();
+            for (int i = 0; i < rotationInput.Count; i++)
+            {
+                poseValues.Add(boneNames[i], rotationInput[i]);
+            }
         }
+
+        public static HandPose BuildHandPose(string[] boneNames, Quaternion[] boneValues) => new HandPose(boneValues.ToList<Quaternion>(), boneNames.ToList<string>());
     }
 }
 

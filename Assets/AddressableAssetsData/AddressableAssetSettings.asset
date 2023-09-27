@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: d29290a4d2b90c44b99c413d063ccebd
   m_currentHash:
     serializedVersion: 2
-    Hash: 907be62eab357ca0d3b034971a8b403f
+    Hash: d4e2ed1ad901c41500b0285ae98e9d21
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -89,6 +89,7 @@ MonoBehaviour:
     - default
     - Sound
     - Vfx
+    - HandPoses
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: f87a1f92248d75d42831076dabc0cfa2, type: 2}

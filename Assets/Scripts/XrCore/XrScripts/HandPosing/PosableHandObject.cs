@@ -9,148 +9,165 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.OpenXR.Input;
 
-public class PosableHandObject : MonoBehaviour
+namespace XrCore.Physics.Hands.Posing
 {
-    private XrHandBones handBones;
-
-    [SerializeField] private XrHand.HandSide handType;
-    [SerializeField] private List<Transform> boneTransforms;
-
-
-    private void Start()
+    public class PosableHandObject : MonoBehaviour
     {
-        if (handBones == null)
+        private XrHandBones handBones;
+        private XrHandBones HandBones
+        {
+            get
+            {
+                if (handBones == null)
+                {
+                    var bones = new XrHandBones(boneTransforms);
+                    handBones = bones;
+                    return bones;
+                }
+                return handBones;
+            }
+        }
+
+        [SerializeField] private XrHand.HandSide handType;
+        [SerializeField] private List<Transform> boneTransforms;
+
+
+        private void Start()
+        {
+            if (handBones == null)
+            {
+                InitializeHand();
+            }
+        }
+
+        [ContextMenu("Initialise Hand")]
+        public void PerformInitialization()
         {
             InitializeHand();
+            foreach (var t in handBones.bones)
+            {
+                Debug.Log(t.Key + " " + t.Value);
+            }
         }
-    }
 
-    [ContextMenu("Initialise Hand")]
-    public void PerformInitialization()
-    {
-        InitializeHand();
-        foreach (var t in handBones.bones)
+        public void InitializeHand()
         {
-            Debug.Log(t.Key + " " + t.Value);
-        }
-    }
-
-    public void InitializeHand()
-    {
-        handBones = new XrHandBones(boneTransforms);
+            handBones = new XrHandBones(boneTransforms);
 
 #if UNITY_EDITOR
-        if(Application.isEditor)
-        {
-            EditorUtility.SetDirty(this);
-            handBones = new XrHandBones(boneTransforms);
-            AssetDatabase.SaveAssets();
-        }
+            if (Application.isEditor)
+            {
+                EditorUtility.SetDirty(this);
+                handBones = new XrHandBones(boneTransforms);
+                AssetDatabase.SaveAssets();
+            }
 #endif
-    }
+        }
 
-    public void LerpPose(HandPose poseA, HandPose poseB, float tValue)
-    {
-        if (!ValidatePose(poseA) || !ValidatePose(poseB))
-            return;
-        
-        foreach (string key in poseA.poseValues.Keys)
+        public void LerpPose(HandPose poseA, HandPose poseB, float tValue)
         {
-            if (handBones.bones.ContainsKey(key))
-            {
-                Transform transformToChange = handBones.bones[key];
-                Quaternion rotationA = poseA.poseValues[key];
-                Quaternion rotationB = poseB.poseValues[key];
+            if (!ValidatePose(poseA) || !ValidatePose(poseB))
+                return;
 
-                Quaternion lerped = Quaternion.Lerp(rotationA, rotationB, tValue);
-                transformToChange.localRotation = lerped;
-            } else
+            foreach (string key in poseA.poseValues.Keys)
             {
-                Debug.LogError($"Could not match (key: {key})");
+                if (HandBones.bones.ContainsKey(key))
+                {
+                    Transform transformToChange = handBones.bones[key];
+                    Quaternion rotationA = poseA.poseValues[key];
+                    Quaternion rotationB = poseB.poseValues[key];
+
+                    Quaternion lerped = Quaternion.Lerp(rotationA, rotationB, tValue);
+                    transformToChange.localRotation = lerped;
+                }
+                else
+                {
+                    Debug.LogError($"Could not match (key: {key})");
+                }
             }
         }
-    }
 
 
-    public void UpdateHandPose(HandPose newPose)
-    {
-        if (!ValidatePose(newPose))
-            return;
-        foreach (string key in newPose.poseValues.Keys)
+        public void UpdateHandPose(HandPose newPose)
         {
-            Transform transformToChange = handBones.bones[key];
-            Quaternion newLocalRotation = newPose.poseValues[key];
-            transformToChange.localRotation = newLocalRotation;
-        }
-    }
-    bool ValidatePose(HandPose pose)
-    {
-        if(pose == null)
-        {
-            throw new ArgumentNullException(nameof(pose));
-        }
-        if(pose.poseValues == null )
-        {
-            Debug.Log($"{pose} does not have any values");
-            return false;
-        }
-        return true;
-    }
-
-    public HandPose BakeHandPose()
-    {
-        InitializeHand();
-        List<string> boneNames = new List<string>();
-        List<Quaternion> boneRotations = new List<Quaternion>();
-
-        foreach (var item in handBones.bones)
-        {
-            boneNames.Add(item.Key);
-            boneRotations.Add(item.Value.localRotation);
-        }
-
-        return new HandPose(boneRotations, boneNames);
-    }
-
-    #region Gizmos
-
-    private void OnDrawGizmosSelected()
-    { 
-        if(handBones != null && Application.isEditor)
-        {
-            foreach (var bone in  handBones.bones)
+            if (!ValidatePose(newPose))
+                return;
+            foreach (string key in newPose.poseValues.Keys)
             {
-                Handles.color = Color.magenta;
-                Handles.Label(bone.Value.position, bone.Key);
+                Transform transformToChange = HandBones.bones[key];
+                Quaternion newLocalRotation = newPose.poseValues[key];
+                transformToChange.localRotation = newLocalRotation;
             }
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (handBones != null)
+        bool ValidatePose(HandPose pose)
         {
-            foreach (Transform boneT in boneTransforms)
+            if (pose == null)
             {
-                Gizmos.color = Color.red;
-                if (boneT.GetChild(0) != null) Debug.DrawLine(boneT.position, boneT.GetChild(0).position);
+                throw new ArgumentNullException(nameof(pose));
+            }
+            if (pose.poseValues == null)
+            {
+                Debug.Log($"{pose} does not have any values");
+                return false;
+            }
+            return true;
+        }
+
+        public HandPose BakeHandPose()
+        {
+            InitializeHand();
+            List<string> boneNames = new List<string>();
+            List<Quaternion> boneRotations = new List<Quaternion>();
+
+            foreach (var item in handBones.bones)
+            {
+                boneNames.Add(item.Key);
+                boneRotations.Add(item.Value.localRotation);
+            }
+
+            return new HandPose(boneRotations, boneNames);
+        }
+
+        #region Gizmos
+
+        private void OnDrawGizmosSelected()
+        {
+            if (handBones != null && Application.isEditor)
+            {
+                foreach (var bone in handBones.bones)
+                {
+                    Handles.color = Color.magenta;
+                    Handles.Label(bone.Value.position, bone.Key);
+                }
             }
         }
+
+        private void OnDrawGizmos()
+        {
+            if (handBones != null)
+            {
+                foreach (Transform boneT in boneTransforms)
+                {
+                    Gizmos.color = Color.red;
+                    if (boneT.GetChild(0) != null) Debug.DrawLine(boneT.position, boneT.GetChild(0).position);
+                }
+            }
+        }
+
+        #endregion
     }
 
-    #endregion
-}
-
-public class XrHandBones
-{
-    public Dictionary<string, Transform> bones;
-
-    public XrHandBones(List<Transform> boneTransforms)
+    public class XrHandBones
     {
-        bones = new Dictionary<string, Transform>();
-        foreach(var bone in boneTransforms)
+        public Dictionary<string, Transform> bones;
+
+        public XrHandBones(List<Transform> boneTransforms)
         {
-            bones.Add(bone.name, bone.transform);
+            bones = new Dictionary<string, Transform>();
+            foreach (var bone in boneTransforms)
+            {
+                bones.Add(bone.name, bone.transform);
+            }
         }
     }
 }

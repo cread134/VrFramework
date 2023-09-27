@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IXrCallibration 
+namespace XrCore.Configuration
 {
-    public void CallibratePlayer(float targetHeight, float armLength)
+    public interface IXrCallibration
     {
+        public void CallibratePlayer(float targetHeight, float armLength)
+        {
 
+        }
     }
 }
