@@ -16,7 +16,7 @@ namespace XrCore.XrPhysics.Hands.Posing.Editor
 
         PoseObject _pose;
 
-        [MenuItem("Tools/PoseEditor")]
+        [MenuItem("XrCore/PoseEditor")]
         public static void DisplayEditor()
         {
             // This method is called when the user selects the menu item in the Editor

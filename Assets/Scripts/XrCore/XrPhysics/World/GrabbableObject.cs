@@ -14,23 +14,25 @@ namespace XrCore.XrPhysics.World
     {
         private Rigidbody _rigidbody;
 
-        [SerializeField] private GrabPoint[] grabPoints;
+        public GrabPoint[] grabPoints;
+        public XrObjectPhysicsConfig physicsSettings;
 
         private Dictionary<HandSide, StoredHandInformation> storedHandInformation;
-
-        [Header("Physics settings")]
-        [SerializeField] private XrObjectPhysicsConfig physicsSettings;
-
         private HandSide primaryGrabSide = HandSide.Undetermined;
 
 
         private void Start()
         {
             storedHandInformation = new Dictionary<HandSide, StoredHandInformation>
+            {
+                { HandSide.Left, new StoredHandInformation(HandSide.Left, transform) },
+                { HandSide.Right, new StoredHandInformation(HandSide.Right, transform) },
+            };
+            SetupRigidbody();
+        }
+
+        void SetupRigidbody()
         {
-            { HandSide.Left, new StoredHandInformation(HandSide.Left, transform) },
-            { HandSide.Right, new StoredHandInformation(HandSide.Right, transform) }
-        };
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
             _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
