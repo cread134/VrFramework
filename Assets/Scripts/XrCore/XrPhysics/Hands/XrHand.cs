@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using XrCore.XrPhysics.Hands.Posing;
 using XrCore.Interaction.Control;
+using TMPro;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -50,6 +51,7 @@ namespace XrCore.XrPhysics.Hands
         private Vector3 positionError;
         private Vector3 lastPositionError;
         private Vector3 positionStoredIntegration;
+        private Vector3 lastTargetPosition;
 
         private Quaternion rotationError;
         private float angleError;
@@ -258,7 +260,6 @@ namespace XrCore.XrPhysics.Hands
 
         private void PhysicsMatchHandPosition()
         {
-            //handle position
             positionError = trackingTarget.position - rb.position;
 
             Vector3 positionProportion = positionError * physicsConfig.positionIntegrationCompenstation;

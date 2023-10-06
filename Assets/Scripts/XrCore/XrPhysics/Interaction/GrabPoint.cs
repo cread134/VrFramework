@@ -58,28 +58,31 @@ namespace XrCore.XrPhysics.Interaction
 
         private void OnDrawGizmos()
         {
-            foreach (var item in leftHandReferenceTransforms)
+            if (leftHandReferenceTransforms != null && rightHandReferenceTransforms != null)
             {
-                Gizmos.color = leftHandColor;
-                Gizmos.DrawSphere(item.transform.position, 0.01f);
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(item.position, item.position + (item.forward * 0.03f));
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(item.position, item.position + (item.up * 0.03f));
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(item.position, item.position + (item.right * 0.03f));
-            }
+                foreach (var item in leftHandReferenceTransforms)
+                {
+                    Gizmos.color = leftHandColor;
+                    Gizmos.DrawSphere(item.transform.position, 0.01f);
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawLine(item.position, item.position + (item.forward * 0.03f));
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(item.position, item.position + (item.up * 0.03f));
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawLine(item.position, item.position + (item.right * 0.03f));
+                }
 
-            foreach (var item in rightHandReferenceTransforms)
-            {
-                Gizmos.color = rightHandColor;
-                Gizmos.DrawSphere(item.transform.position, 0.01f);
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(item.position, item.position + (item.forward * 0.03f));
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(item.position, item.position + (item.up * 0.03f));
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(item.position, item.position + (item.right * 0.03f));
+                foreach (var item in rightHandReferenceTransforms)
+                {
+                    Gizmos.color = rightHandColor;
+                    Gizmos.DrawSphere(item.transform.position, 0.01f);
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawLine(item.position, item.position + (item.forward * 0.03f));
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(item.position, item.position + (item.up * 0.03f));
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawLine(item.position, item.position + (item.right * 0.03f));
+                }
             }
         }
     }

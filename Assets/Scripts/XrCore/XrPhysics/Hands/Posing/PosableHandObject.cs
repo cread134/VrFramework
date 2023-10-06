@@ -34,10 +34,7 @@ namespace XrCore.XrPhysics.Hands.Posing
 
         private void Start()
         {
-            if (handBones == null)
-            {
-                InitializeHand();
-            }
+           InitializeHand();
         }
 
         [ContextMenu("Initialise Hand")]
@@ -53,15 +50,6 @@ namespace XrCore.XrPhysics.Hands.Posing
         public void InitializeHand()
         {
             handBones = new XrHandBones(boneTransforms);
-
-#if UNITY_EDITOR
-            if (Application.isEditor)
-            {
-                EditorUtility.SetDirty(this);
-                handBones = new XrHandBones(boneTransforms);
-                AssetDatabase.SaveAssets();
-            }
-#endif
         }
 
         public void LerpPose(HandPose poseA, HandPose poseB, float tValue)

@@ -222,7 +222,7 @@ Transform:
   - {fileID: 510507384971150607}
   - {fileID: 1523395580488329938}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &29884750928143110
 MonoBehaviour:
@@ -253,6 +253,7 @@ MonoBehaviour:
   - {fileID: 4619139192545779813}
   - {fileID: 8099018131148557308}
   - {fileID: 5791096432910150547}
+  - {fileID: 999680598485316605}
 --- !u!1 &1785812922344747244
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ namespace XrCore.XrPhysics.World
         private Dictionary<HandSide, StoredHandInformation> storedHandInformation;
         private HandSide primaryGrabSide = HandSide.Undetermined;
 
+        bool IsTwoHanded => storedHandInformation[HandSide.Right].IsGrabbingObject() && storedHandInformation[HandSide.Left].IsGrabbingObject();
 
         private void Start()
         {
@@ -87,7 +88,6 @@ namespace XrCore.XrPhysics.World
             }
         }
 
-
         public void StartGrab(HandSide handType)
         {
             Debug.Log("startedGrab");
@@ -132,18 +132,13 @@ namespace XrCore.XrPhysics.World
 
             Transform grabPointTransform = storedHandInformation[primaryGrabSide].GetStoredTransfromValues();
             Vector3 calculatedTargetPosition = CalculatePositionalTarget(storedHandInformation[primaryGrabSide].targetPosition, grabPointTransform.position);
-            Quaternion calculatedRotationTarget = Quaternion.identity;
-            if (storedHandInformation[HandSide.Right].IsGrabbingObject() && storedHandInformation[HandSide.Left].IsGrabbingObject())
-            {
-                calculatedRotationTarget = CalculateTwoHandedRotation();
-            }
-            else
-            {
-                calculatedRotationTarget = CalculateRotationalTarget(storedHandInformation[primaryGrabSide].targetRotation, grabPointTransform.rotation);
-            }
+            Quaternion calculatedRotationTarget = IsTwoHanded ? CalculateTwoHandedRotation() : CalculateRotationalTarget(storedHandInformation[primaryGrabSide].targetRotation, grabPointTransform.rotation);
+
             Debug.DrawLine(calculatedTargetPosition, _rigidbody.position, Color.green);
             Debug.DrawLine(storedHandInformation[primaryGrabSide].targetPosition, _rigidbody.position, Color.red);
             MatchHandWithPhysics(calculatedTargetPosition, calculatedRotationTarget);
+
+            lastTargetPosition = calculatedTargetPosition;
         }
 
         private void MatchHandTransformWithoutPhysics(Vector3 newPosition, Quaternion newRotation)

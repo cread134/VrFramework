@@ -30,7 +30,19 @@ namespace XrCore.Interaction.Editor
             };
             gripSlider.label = $"GripValue {gripSlider.value}";
             gripSlider.RegisterCallback<ChangeEvent<float>>(OnGripSliderChange);
+
+            var triggerSlider = new Slider
+            {
+                bindingPath = "triggerValue",
+                highValue = 1f,
+                lowValue = 0f,
+                showMixedValue = true,
+            };
+            triggerSlider.label = $"TriggerValue {triggerSlider.value}";
+            triggerSlider.RegisterCallback<ChangeEvent<float>>(OnTriggerSliderChange);
+
             root.Add(gripSlider);
+            root.Add(triggerSlider);
 
             var rootButton = new Button
             {
@@ -54,6 +66,15 @@ namespace XrCore.Interaction.Editor
 
             HandController handController = (HandController)target;
             handController.UpdateGrip(changeEvent.newValue);
+        }
+
+        void OnTriggerSliderChange(ChangeEvent<float> changeEvent)
+        {
+            var element = (Slider)changeEvent.target;
+            element.label = $"GripValue {changeEvent.newValue}";
+
+            HandController handController = (HandController)target;
+            handController.UpdateTrigger(changeEvent.newValue);
         }
 
         private void HandleButton1Click()

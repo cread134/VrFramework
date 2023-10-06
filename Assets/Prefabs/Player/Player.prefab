@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ManipulationInteractionGroup: {fileID: 6498469200974084142}
+  m_ManipulationInteractionGroup: {fileID: 7751642496651388364}
   m_DirectInteractor: {fileID: 0}
   m_RayInteractor: {fileID: 5081339123600836964}
   m_TeleportInteractor: {fileID: 0}
@@ -645,7 +645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ManipulationInteractionGroup: {fileID: 6498469200974084142}
+  m_ManipulationInteractionGroup: {fileID: 7751642496651388364}
   m_DirectInteractor: {fileID: 0}
   m_RayInteractor: {fileID: 790843997136000547}
   m_TeleportInteractor: {fileID: 0}
@@ -860,7 +860,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2841736207759523360}
   - component: {fileID: 9169825223036690229}
-  - component: {fileID: 6498469200974084142}
+  - component: {fileID: 7751642496651388364}
   m_Layer: 0
   m_Name: InteractionManager
   m_TagString: Untagged
@@ -897,7 +897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
---- !u!114 &6498469200974084142
+--- !u!114 &7751642496651388364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -910,7 +910,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 9169825223036690229}
-  m_StartingGroupMembers: []
+  m_StartingGroupMembers:
+  - {fileID: 7751642496651388364}
+  - {fileID: 5081339123600836964}
+  - {fileID: 790843997136000547}
 --- !u!1 &3323827191578792827
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,7 +948,7 @@ Transform:
   - {fileID: 6311590554053596827}
   - {fileID: 3607771701857736826}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6694004153677805583
 MonoBehaviour:
