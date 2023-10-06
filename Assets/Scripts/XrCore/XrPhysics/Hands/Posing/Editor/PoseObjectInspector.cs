@@ -16,9 +16,6 @@ namespace XrCore.XrPhysics.Hands.Posing.Editor
             VisualElement inspectorWindow = new VisualElement();
 
             PoseObject targetObj = (PoseObject)target;
-
-            // Add a simple label
-
             if (targetObj.boneNames != null)
             {
                 inspectorWindow.Add(new Label("Values are of " + targetObj.boneNames.Length));
@@ -37,24 +34,25 @@ namespace XrCore.XrPhysics.Hands.Posing.Editor
             return inspectorWindow;
         }
 
+        private void OnEnable()
+        {
+            gameObject = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/XrCore/LeftHandPossable.prefab", typeof(GameObject)) as GameObject;
+        }
+
         GameObject gameObject;
         UnityEditor.Editor gameObjectEditor;
         public override void OnInspectorGUI()
         {
-            EditorGUI.BeginChangeCheck();
-
-            gameObject = (GameObject)EditorGUILayout.ObjectField(gameObject, typeof(GameObject), true);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                if (gameObjectEditor != null) DestroyImmediate(gameObjectEditor);
-            }
+            PoseObject targetObj = (PoseObject)target;
 
             GUIStyle bgColor = new GUIStyle();
             bgColor.normal.background = EditorGUIUtility.whiteTexture;
 
             if (gameObject != null)
             {
+                var possable = gameObject.GetComponent<PosableHandObject>();
+                possable.UpdateHandPose(targetObj.HandPose);
+
                 if (gameObjectEditor == null)
                     gameObjectEditor = UnityEditor.Editor.CreateEditor(gameObject);
                 gameObjectEditor.OnPreviewGUI(GUILayoutUtility.GetRect(256, 256), bgColor);

@@ -51,7 +51,6 @@ namespace XrCore.XrPhysics.Hands
         private Vector3 positionError;
         private Vector3 lastPositionError;
         private Vector3 positionStoredIntegration;
-        private Vector3 lastTargetPosition;
 
         private Quaternion rotationError;
         private float angleError;

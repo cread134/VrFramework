@@ -19,7 +19,10 @@ namespace XrCore.Interaction.Editor
             VisualElement root = new VisualElement();
 
             root.Add(new PropertyField { label = "XrHand", bindingPath = "xrHand" });
-            root.Add(new PropertyField { label = "Controller", bindingPath = "Controller" });
+            root.Add(new PropertyField(serializedObject.FindProperty("Controller")));
+
+            root.Add(new PropertyField(serializedObject.FindProperty("MainButtonAction")));
+            root.Add(new PropertyField(serializedObject.FindProperty("SecondaryButtonAction")));
 
             var gripSlider = new Slider
             {

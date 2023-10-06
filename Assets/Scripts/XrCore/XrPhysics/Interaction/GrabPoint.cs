@@ -12,13 +12,13 @@ namespace XrCore.XrPhysics.Interaction
             return Vector3.Distance(positionA, positionB) < maximumGrabRadius ? true : false;
         }
 
-        [Header("Grab settings")]
         [SerializeField] private float maximumGrabRadius = 0.5f;
         [SerializeField] private Color leftHandColor;
         [SerializeField] private Color rightHandColor;
 
-        [SerializeField] private Transform[] leftHandReferenceTransforms;
-        [SerializeField] private Transform[] rightHandReferenceTransforms;
+        [SerializeField] private HandReferenceTransform[] referenceTransforms;
+        public Transform[] leftHandReferenceTransforms;
+        public Transform[] rightHandReferenceTransforms;
 
         private bool isGrabbed;
         public bool Grabbed() { return isGrabbed; }

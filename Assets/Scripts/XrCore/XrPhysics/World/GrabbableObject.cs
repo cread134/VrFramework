@@ -22,6 +22,7 @@ namespace XrCore.XrPhysics.World
 
         bool IsTwoHanded => storedHandInformation[HandSide.Right].IsGrabbingObject() && storedHandInformation[HandSide.Left].IsGrabbingObject();
 
+        #region Setup
         private void Start()
         {
             storedHandInformation = new Dictionary<HandSide, StoredHandInformation>
@@ -38,6 +39,8 @@ namespace XrCore.XrPhysics.World
             _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
             _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
+
+        #endregion
 
         public bool CanBeGrabbed(Vector3 grabPosition, Quaternion grabRotation, HandSide handType)
         {
@@ -87,7 +90,7 @@ namespace XrCore.XrPhysics.World
 
             }
         }
-
+        #region grabEvents 
         public void StartGrab(HandSide handType)
         {
             Debug.Log("startedGrab");
@@ -112,6 +115,7 @@ namespace XrCore.XrPhysics.World
             CheckToResetGrabValues();
         }
 
+        #endregion
         private void CheckToResetGrabValues()
         {
             foreach (HandSide item in Enum.GetValues(typeof(HandSide)))

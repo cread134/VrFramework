@@ -26,11 +26,7 @@ namespace XrCore.XrPhysics.World.Editor
 
             if(grabbableObject.grabPoints != null)
             {
-                root.Add(new IntegerField { label = "Count: ", value = grabbableObject.grabPoints.Length });
-                for (int i = 0; i < grabbableObject.grabPoints.Length; i++)
-                {
-                    root.Add(new Label($"GrabPoint({grabbableObject.grabPoints[i]})"));
-                }
+                root.Add(new PropertyField(serializedObject.FindProperty("grabPoints")));
             }
             return root;
         }
