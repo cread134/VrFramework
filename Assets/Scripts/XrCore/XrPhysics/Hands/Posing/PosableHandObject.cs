@@ -28,7 +28,7 @@ namespace XrCore.XrPhysics.Hands.Posing
             }
         }
 
-        [SerializeField] private HandSide handType;
+        public HandSide handType;
         [SerializeField] private List<Transform> boneTransforms;
 
 
