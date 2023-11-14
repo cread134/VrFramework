@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
+using Core.Management.Audio;
+using Core.Management.Level;
 
-public class GameManager : MonoBehaviour
+namespace Core.Management
 {
-    public static GameManager Instance { get; private set; }
-    public DebugController debugController { get; private set; }
-    public LevelLoadManager levelManager { get; private set; }
-    public VfxManager vfxManager { get; private set; }
-    public AudioManager audioManager { get; private set; }
-    public PlayerManager playerManager { get; private set; }
-
-    private void Awake()
+    public class GameManager : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        public static GameManager Instance { get; private set; }
+        public LevelLoadManager levelManager { get; private set; }
+        public VfxManager vfxManager { get; private set; }
+        public AudioManager audioManager { get; private set; }
 
-        debugController = GetComponentInChildren<DebugController>();
-        levelManager = GetComponentInChildren<LevelLoadManager>();
-        vfxManager = GetComponentInChildren<VfxManager>();
-        audioManager = GetComponentInChildren<AudioManager>();
-        playerManager = GetComponentInChildren<PlayerManager>();
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+
+            levelManager = GetComponentInChildren<LevelLoadManager>();
+            vfxManager = GetComponentInChildren<VfxManager>();
+            audioManager = GetComponentInChildren<AudioManager>();
+        }
     }
 }

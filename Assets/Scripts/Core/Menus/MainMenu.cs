@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Core.Management;
 
-public class MainMenu : MonoBehaviour
+namespace Core.Menu
 {
-
-    public GameScene gameScene;
-    void Start()
+    public class MainMenu : MonoBehaviour
     {
-        LoadGame();
-    }
 
-    public void LoadGame()
-    {
-        GameManager.Instance.levelManager.LoadScene(gameScene);
+        public GameScene gameScene;
+        void Start()
+        {
+            LoadGame();
+        }
+
+        public void LoadGame()
+        {
+            GameManager.Instance.levelManager.LoadScene(gameScene);
+        }
     }
 }

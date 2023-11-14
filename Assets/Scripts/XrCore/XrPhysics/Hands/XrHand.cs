@@ -351,7 +351,7 @@ namespace XrCore.XrPhysics.Hands
 
         private void OnMouseDown()
         {
-            GameManager.Instance.debugController.SelectController(this);
+            //GameManager.Instance.debugController.SelectController(this);
         }
 
 

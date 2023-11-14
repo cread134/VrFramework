@@ -4,78 +4,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelLoadManager : MonoBehaviour
+namespace Core.Management.Level
 {
-    public bool loadOnStart = false;
-    private Coroutine _loadCoroutine;
-    public event EventHandler<SceneChangeEvent> OnSceneChange;
-
-    public GameScene loadOnStartScene;
-
-    private void Start()
+    public class LevelLoadManager : MonoBehaviour
     {
-        if (loadOnStart)
-        {
-            loadOnStartScene?.LoadScene();
-        }
-    }
+        public bool loadOnStart = false;
+        private Coroutine _loadCoroutine;
+        public event EventHandler<SceneChangeEvent> OnSceneChange;
 
-    //summary
-    public void LoadScene(GameScene scene)
-    {
-        Debug.Log("start scene change");
-        if (_loadCoroutine != null)
+        //summary
+        public void LoadScene(GameScene scene)
         {
-            StopCoroutine(_loadCoroutine);
-        }
-        _loadCoroutine = StartCoroutine(PerformSceneSwitch(scene));
-    }
-
-    private IEnumerator PerformSceneSwitch(GameScene scene)
-    {
-        //unload prior scenes
-        int sceneCount = SceneManager.sceneCount;
-        if (sceneCount > 1)
-        {
-            Debug.Log("start unloading scenes");
-            for (int i = 0; i < sceneCount; i++)
+            Debug.Log("start scene change");
+            if (_loadCoroutine != null)
             {
-                int targetSceneIndex = SceneManager.GetSceneAt(i).buildIndex;
-                if (targetSceneIndex != 0)
+                StopCoroutine(_loadCoroutine);
+            }
+            _loadCoroutine = StartCoroutine(PerformSceneSwitch(scene));
+        }
+
+        private IEnumerator PerformSceneSwitch(GameScene scene)
+        {
+            //unload prior scenes
+            int sceneCount = SceneManager.sceneCount;
+            if (sceneCount > 1)
+            {
+                Debug.Log("start unloading scenes");
+                for (int i = 0; i < sceneCount; i++)
                 {
-                    yield return StartCoroutine(UnloadScene(targetSceneIndex));
+                    int targetSceneIndex = SceneManager.GetSceneAt(i).buildIndex;
+                    if (targetSceneIndex != 0)
+                    {
+                        yield return StartCoroutine(UnloadScene(targetSceneIndex));
+                    }
                 }
             }
+            Debug.Log($"start loading new scene {scene.ToString()}");
+            yield return StartCoroutine(LoadAysncScene(scene.BuildIndex));
+            Debug.Log("finished scene loading");
+
+            OnSceneChange?.Invoke(this, new SceneChangeEvent(scene));
         }
-        Debug.Log($"start loading new scene {scene.ToString()}");
-        yield return StartCoroutine(LoadAysncScene(scene.BuildIndex));
-        Debug.Log("finished scene loading");
 
-        OnSceneChange?.Invoke(this, new SceneChangeEvent(scene));
-    }
-
-    private IEnumerator UnloadScene(int buildIndex)
-    {
-        Debug.Log($"start unloading scene of build index {buildIndex}");
-        AsyncOperation op = SceneManager.UnloadSceneAsync(buildIndex);
-        while (op != null && !op.isDone)
+        private IEnumerator UnloadScene(int buildIndex)
         {
-            float progress = Mathf.Clamp01(op.progress / .9f);
+            Debug.Log($"start unloading scene of build index {buildIndex}");
+            AsyncOperation op = SceneManager.UnloadSceneAsync(buildIndex);
+            while (op != null && !op.isDone)
+            {
+                float progress = Mathf.Clamp01(op.progress / .9f);
 
-            yield return null;
+                yield return null;
+            }
         }
-    }
 
-    private IEnumerator LoadAysncScene(int buildIndex)
-    {
-        AsyncOperation op = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Additive);
-        while (op != null && !op.isDone)
+        private IEnumerator LoadAysncScene(int buildIndex)
         {
-            Debug.Log("not done");
-            float progress = Mathf.Clamp01(op.progress / .9f);
+            AsyncOperation op = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Additive);
+            while (op != null && !op.isDone)
+            {
+                Debug.Log("not done");
+                float progress = Mathf.Clamp01(op.progress / .9f);
 
-            yield return null;
+                yield return null;
+            }
+            Debug.Log($"loaded scene of build index {buildIndex}");
         }
-        Debug.Log($"loaded scene of build index {buildIndex}");
     }
 }

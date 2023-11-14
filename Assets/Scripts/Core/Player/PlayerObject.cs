@@ -2,29 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerObject : MonoBehaviour
+namespace Core.Player
 {
-    private bool _spawned = false;
-    private PlayerMode _activeMode;
-    [SerializeField] private Camera PlayerCamera;
 
-    public void SetPlayerMode(PlayerMode playerMode)
+    public class PlayerObject : MonoBehaviour
     {
-        _activeMode = playerMode;
-    }
-    
-    public void SpawnPlayer()
-    {
-        _spawned = true;
-    }
+        private bool _spawned = false;
+        private PlayerMode _activeMode;
+        [SerializeField] private Camera PlayerCamera;
 
-    private void Update()
-    {
-        if (_spawned)
+        public void SetPlayerMode(PlayerMode playerMode)
         {
-
+            _activeMode = playerMode;
         }
+
+        public void SpawnPlayer()
+        {
+            _spawned = true;
+        }
+
+        private void Update()
+        {
+            if (_spawned)
+            {
+
+            }
+        }
+
+        public Camera GetPlayerCamera() => PlayerCamera;
     }
 
-    public Camera GetPlayerCamera() => PlayerCamera;
+    public enum PlayerMode
+    {
+
+    }
 }

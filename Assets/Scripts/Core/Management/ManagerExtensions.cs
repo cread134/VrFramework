@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ManagerExtensions
+namespace Core.Management
 {
-    public static void LoadScene(this GameScene gameScene)
+    public static class ManagerExtensions
     {
-        GameManager.Instance.levelManager.LoadScene(gameScene);
+        public static void LoadScene(this GameScene gameScene)
+        {
+            GameManager.Instance.levelManager.LoadScene(gameScene);
+        }
     }
 }
