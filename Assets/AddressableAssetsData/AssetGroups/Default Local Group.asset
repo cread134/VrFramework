@@ -17,12 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: d29290a4d2b90c44b99c413d063ccebd
   m_SerializeEntries:
-  - m_GUID: 96bdfce992f62ec4e93c9014c4e77430
-    m_Address: Assets/ScriptableObjects/Sounds/Sound_Test.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Sound
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 44f5de150b4e1ae44979f89d9712469b
     m_Address: Assets/ScriptableObjects/Vfx/Effect_Test.asset
     m_ReadOnly: 0
@@ -34,6 +28,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - HandPoses
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48048bffbebceed4da6246f01357a5f6
+    m_Address: Assets/ScriptableObjects/Sounds
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sound
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 823434afc4b5418489abfe41d9c40dd8, type: 2}

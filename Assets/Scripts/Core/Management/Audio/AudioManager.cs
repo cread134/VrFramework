@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SocialPlatforms;
+using UnityEngine.UIElements;
 
 namespace Core.Management.Audio
 {
@@ -41,6 +43,7 @@ namespace Core.Management.Audio
         [SerializeField] private int soundInstancesToCreate = 30;
 
         private Queue<SoundInstance> _createdSoundInstances;
+        private Queue<SoundInstance> _localSoundInstances;
         private Dictionary<Guid, GameSound> _soundsDictionary;
         private SoundInstance localSource;
 
@@ -84,6 +87,12 @@ namespace Core.Management.Audio
             {
                 _createdSoundInstances.Enqueue(CreateSoundInstanceEmpty(i.ToString()));
             }
+
+            _localSoundInstances = new Queue<SoundInstance>();
+            for (int i = 0; i < soundInstancesToCreate; i++)
+            {
+                _localSoundInstances.Enqueue(CreateSoundInstanceEmpty("loca_" + i.ToString(), true));
+            }
         }
 
 #endregion
@@ -109,25 +118,25 @@ namespace Core.Management.Audio
             if (_soundsDictionary.ContainsKey(soundKey))
             {
                 GameSound useSound = _soundsDictionary[soundKey];
-                AudioClip soundClip = useSound.playableClips[UnityEngine.Random.Range(0, useSound.playableClips.Length)];
-                if (isLocal)
-                {
-                    localSource.audioSource.outputAudioMixerGroup = useSound.soundMixerGroup;
-                    localSource.audioSource.PlayOneShot(soundClip, volumeMultipler);
-                    return localSource;
-                }
-                else
-                {
-                    SoundInstance targetInstance = _createdSoundInstances.Dequeue();
-                    targetInstance.PlayInstanceSound(position, volumeMultipler, useSound.soundRange, soundClip, useSound.soundMixerGroup);
-                    _createdSoundInstances.Enqueue(targetInstance);
-                    return targetInstance;
-                }
+                return PlaySound(useSound, position, volumeMultipler, isLocal);
             }
             else
             {
                 throw new Exception($"Sound with key {soundKey} does not exist!");
             }
+        }
+
+        public SoundInstance PlaySound(GameSound targetSound, float volumeMultipler, bool isLocal = false)
+            => PlaySound(targetSound, Vector3.zero, volumeMultipler, isLocal);
+
+        public SoundInstance PlaySound(GameSound targetSound, Vector3 position, float volumeMultipler, bool isLocal = false)
+        {
+            var useQueue = isLocal ? _localSoundInstances : _createdSoundInstances;
+            SoundInstance targetInstance = useQueue.Dequeue();
+            AudioClip soundClip = targetSound.playableClips[UnityEngine.Random.Range(0, targetSound.playableClips.Length)];
+            targetInstance.PlayInstanceSound(position, volumeMultipler, targetSound.soundRange, soundClip, targetSound.soundMixerGroup);
+            useQueue.Enqueue(targetInstance);
+            return targetInstance;
         }
     }
 }
