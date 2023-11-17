@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
-using UnityEditor.XR.LegacyInputHelpers;
 using UnityEngine;
 using XrCore.XrPhysics.Body;
 

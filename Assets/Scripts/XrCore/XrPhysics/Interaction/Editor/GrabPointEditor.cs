@@ -13,24 +13,6 @@ namespace XrCore.XrPhysics.Interaction.Editor
     {
         GameObject[] previewInstances;
 
-        private void OnEnable()
-        {
-            CreatePreviewInstances();
-        }
-
-        private void CreatePreviewInstances()
-        {
-            if (previewInstances != null)
-            {
-                foreach (GameObject go in previewInstances)
-                {
-                    Destroy(go);
-                }
-            }
-            var targetGrab = target as GrabPoint;
-            previewInstances = new GameObject[targetGrab.leftHandReferenceTransforms.Length];
-        }
-
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new VisualElement();
@@ -61,7 +43,7 @@ namespace XrCore.XrPhysics.Interaction.Editor
             {
                 foreach (GameObject go in previewInstances)
                 {
-                    Destroy(go);
+                    DestroyImmediate(go);
                 }
             }
         }

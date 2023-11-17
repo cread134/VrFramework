@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.XR.OpenXR.Input;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
 

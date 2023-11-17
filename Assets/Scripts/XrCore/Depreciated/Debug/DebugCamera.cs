@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Core.Management;
+using System;
 
+[Obsolete]
 public class DebugCamera : MonoBehaviour
 {
     [Header("Camera settings")]
@@ -30,7 +33,7 @@ public class DebugCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        debugController = GameManager.Instance.debugController;
+        debugController = new DebugController();
         _mouseAbsolute = startAbsolute;
     }
     public void MouseDelta(Vector2 delta)

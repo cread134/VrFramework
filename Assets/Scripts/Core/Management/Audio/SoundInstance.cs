@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 public class SoundInstance : MonoBehaviour
 {
     private AudioSource _audioSource;
+    public AudioSource audioSource {  get { return _audioSource; } }
 
     private void Start()
     {

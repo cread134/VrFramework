@@ -49,8 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 1815389441578742573}
-  MainButtonAction: {fileID: 0}
-  SecondaryButtonAction: {fileID: 0}
+  MainButtonAction: {fileID: 530259256090375907, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
+  SecondaryButtonAction: {fileID: -3037912916477689207, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
   xrHand: {fileID: 4047155559608099415}
   gripValue: 0
   triggerValue: 0
@@ -628,8 +630,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 1815389441578742573}
-  MainButtonAction: {fileID: 0}
-  SecondaryButtonAction: {fileID: 0}
+  MainButtonAction: {fileID: 1781591438297947568, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
+  SecondaryButtonAction: {fileID: -4404826425360526019, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
   xrHand: {fileID: 1087125456776145587}
   gripValue: 0
   triggerValue: 0
@@ -1249,7 +1253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6803edce0201f574f923fd9d10e5b30a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 0}
+  m_InteractionManager: {fileID: 9169825223036690229}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -1663,7 +1667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6803edce0201f574f923fd9d10e5b30a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 0}
+  m_InteractionManager: {fileID: 9169825223036690229}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 55
