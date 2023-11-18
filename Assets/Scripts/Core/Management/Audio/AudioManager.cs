@@ -100,11 +100,13 @@ namespace Core.Management.Audio
         private SoundInstance CreateSoundInstanceEmpty(string tag, bool isLocal = false)
         {
             var objInstance = new GameObject("soundInstance_" + tag);
+            objInstance.transform.SetParent(transform, false);
             var audioSource = objInstance.AddComponent<AudioSource>();
             objInstance.AddComponent<SoundInstance>();
 
             audioSource.spatialBlend = isLocal ? 0 : 1;
-           
+
+            objInstance.SetActive(false);
             return new SoundInstance();
         }
 

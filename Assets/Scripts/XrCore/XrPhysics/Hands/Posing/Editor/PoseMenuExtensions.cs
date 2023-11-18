@@ -15,7 +15,10 @@ namespace XrCore.XrPhysics.Hands.Posing.Editor
         }
 
         [MenuItem("GameObject/Pose/OpenPoseMenu", validate = true)]
-        private static bool PoseMenuValidation() 
-            => Selection.activeGameObject.TryGetComponent(out PosableHandObject go);
+        private static bool PoseMenuValidation()
+        { 
+            if(Selection.activeGameObject == null) return false;
+            return Selection.activeGameObject.TryGetComponent(out PosableHandObject go);
+        }
     }
 }
