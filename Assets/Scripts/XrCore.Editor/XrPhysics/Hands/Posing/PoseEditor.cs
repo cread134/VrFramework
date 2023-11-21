@@ -94,8 +94,9 @@ namespace XrCore.XrPhysics.Hands.Posing.Editor
         {
 
             string fileName = "HandPose_" + m_createPoseName.value;
-            PoseObject scriptableInstance = ScriptableObject.CreateInstance<PoseObject>();
-            AssetDatabase.CreateAsset(scriptableInstance, $"{POSEFILEPATH}/{fileName}.asset");
+            PoseObject scriptableInstance = CreateInstance<PoseObject>();
+            var uniquePath = AssetDatabase.GenerateUniqueAssetPath($"{POSEFILEPATH}/{fileName}.asset");
+            AssetDatabase.CreateAsset(scriptableInstance, uniquePath);
             var so = new SerializedObject(scriptableInstance);
             so.FindProperty("_poseName").stringValue = m_createPoseName.value;
             so.FindProperty("boneNames").arraySize = pose.poseValues.Count;
