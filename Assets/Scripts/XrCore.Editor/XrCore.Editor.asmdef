@@ -1,0 +1,21 @@
+{
+    "name": "XrCore.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:070714a367e632941bd2738251778b12",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:4e584146858eab2479ade80a05616e05",
+        "GUID:d8b63aba1907145bea998dd612889d6b"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

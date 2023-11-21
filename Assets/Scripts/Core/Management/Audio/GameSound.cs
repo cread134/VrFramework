@@ -6,7 +6,6 @@ using UnityEngine.Audio;
 
 namespace Core.Management.Audio
 {
-    [CreateAssetMenu]
     public class GameSound : ScriptableObject
     {
         public Guid soundKey;

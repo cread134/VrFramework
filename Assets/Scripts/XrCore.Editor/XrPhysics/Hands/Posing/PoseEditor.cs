@@ -11,7 +11,7 @@ namespace XrCore.XrPhysics.Hands.Posing.Editor
 {
     public class PoseEditor : EditorWindow
     {
-        private string POSEFILEPATH = "Assets/ScriptableObjects/HandPoses";
+        private string POSEFILEPATH = "Assets/Scripts/XrCore/ScriptableObjects/HandPoses";
         TextField m_createPoseName;
 
         PoseObject _pose;

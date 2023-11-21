@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XrCore.XrPhysics.XrCollision;
+using XrCore.XrPhysics.Collision;
 
 namespace XrCore.XrPhysics.World
 {
@@ -9,7 +9,7 @@ namespace XrCore.XrPhysics.World
     [RequireComponent(typeof(WorldSurface))]
     public class PhysicsObject : MonoBehaviour
     {
-        public void OnCollisionEnter(Collision collision)
+        public void OnCollisionEnter(UnityEngine.Collision collision)
         {
 
         }

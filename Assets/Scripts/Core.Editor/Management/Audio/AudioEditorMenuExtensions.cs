@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XrCore.Constraints.Editor
+namespace Core.Management.Audio.Editor
 {
-    public class XrConstraintEditorFactory
+    public class AudioEditorMenuExtensions
     {
 
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace XrCore.XrPhysics.XrCollision
+namespace XrCore.XrPhysics.Collision
 {
     public class WorldSurface : MonoBehaviour
     {
