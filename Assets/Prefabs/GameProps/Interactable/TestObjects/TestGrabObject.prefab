@@ -49,8 +49,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maximumGrabRadius: 0.3
-  leftHandColor: {r: 0.8773585, g: 0.39453536, b: 0.39453536, a: 0.6862745}
-  rightHandColor: {r: 0.6692606, g: 0.8784314, b: 0.39607844, a: 0.6862745}
+  referenceTransforms:
+  - {fileID: 8268197946590865367}
+  - {fileID: 6100591099705060607}
+  - {fileID: 4832056149029684046}
+  - {fileID: 8199907363390405313}
   leftHandReferenceTransforms:
   - {fileID: 8256010765241821334}
   - {fileID: 3257247793190986728}
@@ -68,7 +71,7 @@ GameObject:
   - component: {fileID: 7175046097125799288}
   - component: {fileID: 419969532192200612}
   m_Layer: 0
-  m_Name: LeftHandReference (2)
+  m_Name: g point_GReference3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}
 --- !u!1 &1349810350976004650
 GameObject:
@@ -113,7 +117,7 @@ GameObject:
   - component: {fileID: 4868134029349697056}
   - component: {fileID: 8268197946590865367}
   m_Layer: 0
-  m_Name: RightHandReference
+  m_Name: g point (1)_GReference1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,6 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}
 --- !u!1 &2012379548865580424
 GameObject:
@@ -158,7 +163,7 @@ GameObject:
   - component: {fileID: 3257247793190986728}
   - component: {fileID: 8199907363390405313}
   m_Layer: 0
-  m_Name: LeftHandReference (3)
+  m_Name: g point (1)_GReference4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}
 --- !u!1 &4136860108846648694
 GameObject:
@@ -203,7 +209,7 @@ GameObject:
   - component: {fileID: 4230832086773829112}
   - component: {fileID: 6100591099705060607}
   m_Layer: 0
-  m_Name: RightHandReference (1)
+  m_Name: g point (1)_GReference2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}
 --- !u!1 &4668349718786629428
 GameObject:
@@ -248,7 +255,7 @@ GameObject:
   - component: {fileID: 8256010765241821334}
   - component: {fileID: 4832056149029684046}
   m_Layer: 0
-  m_Name: leftHandReference (2)
+  m_Name: g point (1)_GReference3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}
 --- !u!1 &5129077424839271070
 GameObject:
@@ -331,8 +339,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maximumGrabRadius: 0.3
-  leftHandColor: {r: 0.8784314, g: 0.39607844, b: 0.39607844, a: 0.6862745}
-  rightHandColor: {r: 0.67058825, g: 0.8784314, b: 0.39607844, a: 0.6862745}
+  referenceTransforms:
+  - {fileID: 1879937739341875211}
+  - {fileID: 641798544144135634}
+  - {fileID: 419969532192200612}
+  - {fileID: 4137243015730165036}
+  - {fileID: 0}
   leftHandReferenceTransforms:
   - {fileID: 7175046097125799288}
   - {fileID: 199591259657311058}
@@ -369,7 +381,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5216558006071883780}
-  m_LocalRotation: {x: 0.50000006, y: 0.49999997, z: -0.49999997, w: 0.5000001}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 3.208, y: 4.869, z: 3.582}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -377,7 +389,7 @@ Transform:
   - {fileID: 2253496907371527605}
   - {fileID: 2169229573138773629}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
 --- !u!33 &2071180329046325029
 MeshFilter:
@@ -530,7 +542,7 @@ GameObject:
   - component: {fileID: 199591259657311058}
   - component: {fileID: 4137243015730165036}
   m_Layer: 0
-  m_Name: LeftHandReference (3)
+  m_Name: g point_GReference4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -563,6 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}
 --- !u!1 &7684253438768044880
 GameObject:
@@ -575,7 +588,7 @@ GameObject:
   - component: {fileID: 7055481121277315367}
   - component: {fileID: 641798544144135634}
   m_Layer: 0
-  m_Name: RightHandReference (1)
+  m_Name: g point_GReference2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -608,6 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}
 --- !u!1 &8719903576035714369
 GameObject:
@@ -620,7 +634,7 @@ GameObject:
   - component: {fileID: 3818255575217929389}
   - component: {fileID: 1879937739341875211}
   m_Layer: 0
-  m_Name: RightHandReference
+  m_Name: g point_GReference1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -653,4 +667,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a83c25680c58ca44aa603c24bbd4002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSide: 0
   targetPose: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2, type: 2}

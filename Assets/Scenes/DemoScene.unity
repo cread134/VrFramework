@@ -480,11 +480,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 641798544144135634, guid: b1e5be9ce33093a43872e6b7732aaba7,
+        type: 3}
+      propertyPath: targetPose
+      value: 
+      objectReference: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2,
+        type: 2}
+    - target: {fileID: 1601659072554961431, guid: b1e5be9ce33093a43872e6b7732aaba7,
+        type: 3}
+      propertyPath: referenceTransforms.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1879937739341875211, guid: b1e5be9ce33093a43872e6b7732aaba7,
+        type: 3}
+      propertyPath: targetPose
+      value: 
+      objectReference: {fileID: 11400000, guid: 968d87a18e65cbc4196e184247e70c9f,
+        type: 2}
+    - target: {fileID: 4137243015730165036, guid: b1e5be9ce33093a43872e6b7732aaba7,
+        type: 3}
+      propertyPath: targetPose
+      value: 
+      objectReference: {fileID: 11400000, guid: e46d655d027adfa4a92070abfb9dedb2,
+        type: 2}
     - target: {fileID: 5216558006071883780, guid: b1e5be9ce33093a43872e6b7732aaba7,
         type: 3}
       propertyPath: m_Name
       value: TestGrabObject
       objectReference: {fileID: 0}
+    - target: {fileID: 6100591099705060607, guid: b1e5be9ce33093a43872e6b7732aaba7,
+        type: 3}
+      propertyPath: targetPose
+      value: 
+      objectReference: {fileID: 11400000, guid: b132cda8ce0f0d34ead5002541c8d692,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6841,8 +6870,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maximumGrabRadius: 0.5
-  leftHandColor: {r: 0, g: 0, b: 0, a: 0}
-  rightHandColor: {r: 0, g: 0, b: 0, a: 0}
   referenceTransforms: []
   leftHandReferenceTransforms: []
   rightHandReferenceTransforms: []

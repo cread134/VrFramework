@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using XrCore.Scripting;
 using XrCore.XrPhysics.Hands.Posing;
 
 namespace XrCore.XrPhysics.Interaction.Editor
@@ -11,10 +13,13 @@ namespace XrCore.XrPhysics.Interaction.Editor
     [CustomEditor(typeof(HandTransformReference))]
     public class HandTransformReferenceEditor : UnityEditor.Editor
     {
-        public GameObject useTemplate;
         const string templatePath = "Assets/Prefabs/XrCore/PoseReference.prefab";
-        private GameObject previewInstance;
+        static Color RightHandColor = new Color(1f, 0f, 0f, 0.3f);
+        static Color LeftHandColor = new Color(0f, 0f, 1f, 0.3f);
 
+        public GameObject useTemplate;
+        private GameObject previewInstance;
+        
         public void OnEnable()
         {
             DestroyPreviewInstance();
@@ -37,17 +42,33 @@ namespace XrCore.XrPhysics.Interaction.Editor
             var baseObject = target as HandTransformReference;
             var targetSide = baseObject.GetUseSide();
             var poseRefereceObj = previewInstance.GetComponent<PoseReferenceObject>();
-            poseRefereceObj.SetBoneVisibility(false, targetSide);
+            poseRefereceObj.SetBoneVisibility(false);
+            poseRefereceObj.SetHandVisibility(true, targetSide);
+            poseRefereceObj.SetHandTransform(baseObject.transform.position, baseObject.transform.rotation, targetSide);
         }
 
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new VisualElement();
 
-            root.Add(new PropertyField(serializedObject.FindProperty("targetPose")));
+            var poseField = new PropertyField(serializedObject.FindProperty("targetPose"));
+            poseField.RegisterValueChangeCallback(x => OnPoseChanged(x.changedProperty));
+            root.Add(poseField);
             root.Add(new PropertyField(serializedObject.FindProperty("useSide")));
 
             return root;
+        }
+
+        void OnPoseChanged(SerializedProperty newValue)
+        {
+            var value = newValue.GetValue<PoseObject>();
+            var baseObject = target as HandTransformReference;
+
+            if (value != null && previewInstance != null)
+            {
+                var poseReference = previewInstance.GetComponent<PoseReferenceObject>();
+                poseReference.SetHandPose(value.HandPose, baseObject.GetUseSide());
+            }
         }
 
         public void OnDisable() => DestroyPreviewInstance();
@@ -55,7 +76,7 @@ namespace XrCore.XrPhysics.Interaction.Editor
 
         void DestroyPreviewInstance()
         {
-            if (previewInstance != null)
+            if (previewInstance != null && previewInstance != null)
             {
                 DestroyImmediate(previewInstance);
             }

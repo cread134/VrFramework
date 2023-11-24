@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using XrCore.XrPhysics.Hands.Posing;
 using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Interaction.Editor
@@ -11,15 +12,12 @@ namespace XrCore.XrPhysics.Interaction.Editor
     [CustomEditor(typeof(GrabPoint))]
     public class GrabPointEditor : UnityEditor.Editor
     {
-        GameObject[] previewInstances;
 
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new VisualElement();
 
             root.Add(new PropertyField(serializedObject.FindProperty("maximumGrabRadius")));
-            root.Add(new PropertyField(serializedObject.FindProperty("leftHandColor")));
-            root.Add(new PropertyField(serializedObject.FindProperty("rightHandColor")));
             root.Add(new PropertyField(serializedObject.FindProperty("referenceTransforms")));
 
             var addButton = new Button
@@ -28,24 +26,47 @@ namespace XrCore.XrPhysics.Interaction.Editor
             };
             addButton.clicked += AddReferenceTransform;
             root.Add(addButton);
-          
+
+            var updateReferencesButton = new Button
+            {
+                text = "Update References"
+            };
+            updateReferencesButton.clicked += UpdateReferencesFromScript;
+            root.Add(updateReferencesButton);
             return root;
         }
 
+        #region button actions
         void AddReferenceTransform()
         {
+            var rootObject = (GrabPoint)target;
+            var instance = new GameObject($"{rootObject.name}_GReference{rootObject.transform.childCount + 1}");
 
+            instance.transform.SetParent(rootObject.transform, false);
+            instance.transform.localScale = Vector3.one;
+            instance.transform.localPosition = Vector3.zero;
+
+            var referenceInstance = instance.AddComponent<HandTransformReference>();
+            rootObject.AddReferenceTransform(referenceInstance);
+
+            EditorUtility.SetDirty(rootObject);
+            EditorUtility.SetDirty(instance);
         }
 
-        private void OnDestroy()
+        void UpdateReferencesFromScript()
         {
-            if (previewInstances != null)
+            var rootObject = (GrabPoint)target;
+
+            var children = rootObject.transform.GetComponentsInChildren<HandTransformReference>();
+            for (int i = 0; i < children.Length; i++)
             {
-                foreach (GameObject go in previewInstances)
-                {
-                    DestroyImmediate(go);
-                }
+                var child = children[i];
+                child.transform.gameObject.name = $"{rootObject.name}_GReference{i + 1}";
+                EditorUtility.SetDirty(child.gameObject);
             }
+            rootObject.SetReferenceTransforms(children);
+            EditorUtility.SetDirty(rootObject);
         }
+        #endregion
     }
 }

@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-using System.Linq;
 using UnityEditor.SceneManagement;
 
-namespace Core.Tools.Editor
+namespace EditorTools.SceneManagement
 {
     public class RootSceneLoader
     {
