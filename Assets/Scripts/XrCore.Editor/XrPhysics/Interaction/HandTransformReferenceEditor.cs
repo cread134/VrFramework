@@ -1,3 +1,4 @@
+using EditorTools.Scripting;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,6 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using XrCore.Scripting;
 using XrCore.XrPhysics.Hands.Posing;
 
 namespace XrCore.XrPhysics.Interaction.Editor

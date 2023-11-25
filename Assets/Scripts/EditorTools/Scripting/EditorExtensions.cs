@@ -1,14 +1,14 @@
+using EditorTools.Exceptions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using XrCore.EditorExceptions;
 
-namespace XrCore.Scripting
+namespace EditorTools.Scripting
 {
     public static class EditorExtensions
     {
-        #region Serialization extensiosn
+        #region Serialization extensions
         public static T GetValue<T>(this UnityEditor.SerializedProperty property)
         {
             object obj = property.serializedObject.targetObject;

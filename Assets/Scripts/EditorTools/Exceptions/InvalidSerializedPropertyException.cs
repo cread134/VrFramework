@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XrCore.EditorExceptions
+namespace EditorTools.Exceptions
 {
     public class InvalidSerializedPropertyException : Exception
     {

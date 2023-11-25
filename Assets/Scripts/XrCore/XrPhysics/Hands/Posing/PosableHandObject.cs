@@ -8,18 +8,15 @@ namespace XrCore.XrPhysics.Hands.Posing
 {
     public class PosableHandObject : MonoBehaviour
     {
+        [SerializeField] private Renderer _renderer;
+        public Renderer GetRenderer() { return _renderer; }
+
         private XrHandBones handBones;
         private XrHandBones HandBones
         {
             get
             {
-                if (handBones == null)
-                {
-                    var bones = new XrHandBones(boneTransforms);
-                    handBones = bones;
-                    return bones;
-                }
-                return handBones;
+                return handBones ??= new XrHandBones(boneTransforms);
             }
         }
 
