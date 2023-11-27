@@ -59,6 +59,9 @@ namespace XrCore.XrPhysics.Hands.Posing
             target.UpdateHandPose(_pose);
         }
 
+        public PosableHandObject GetHand(HandSide _side)
+            => _side == HandSide.Left ? leftHandPossable : rightHandPossable;
+
         [ContextMenu("Apply Pose")]
         public void ApplyActivePose()
         {

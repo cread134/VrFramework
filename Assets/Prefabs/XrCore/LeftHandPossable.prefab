@@ -387,7 +387,7 @@ Transform:
   - {fileID: 7029272533912103542}
   - {fileID: 1945784014200232539}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2089802828709810575
 MonoBehaviour:
@@ -401,6 +401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec20546182ea8084d9a2f98383704269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 1993012640824811249}
   handType: 0
   boneTransforms:
   - {fileID: 2494990094211348222}

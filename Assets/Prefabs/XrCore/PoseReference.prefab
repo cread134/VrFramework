@@ -1113,6 +1113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec20546182ea8084d9a2f98383704269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 8394158629401462236}
   handType: 1
   boneTransforms:
   - {fileID: 2527277874966576699}
@@ -1789,6 +1790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec20546182ea8084d9a2f98383704269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 5083833590648958907}
   handType: 0
   boneTransforms:
   - {fileID: 9203670563673360308}

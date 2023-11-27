@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
+using XrCore.XrPhysics.Structs;
 
 namespace XrCore.XrPhysics.Interaction
 {
@@ -16,10 +17,40 @@ namespace XrCore.XrPhysics.Interaction
 
         [SerializeField] private float maximumGrabRadius = 0.5f;
 
+        #region transformReferences
+
         [SerializeField] private HandTransformReference[] referenceTransforms;
 
-        public Transform[] leftHandReferenceTransforms;
-        public Transform[] rightHandReferenceTransforms;
+        private HandTransformReference[] leftHandReferenceTransforms;
+        public HandTransformReference[] LeftHandReferenceTransforms 
+        { 
+            get 
+            { 
+                return leftHandReferenceTransforms ??= GetReferenceTransformValuesBySide(HandSide.Left); 
+            } 
+        }
+
+        private HandTransformReference[] rightHandReferenceTransforms;
+        public HandTransformReference[] RightHandReferenceTransforms
+        {
+            get
+            {
+                return rightHandReferenceTransforms ??= GetReferenceTransformValuesBySide(HandSide.Right);
+            }
+        }
+
+        HandTransformReference[] GetReferenceTransformValuesBySide(HandSide _side)
+        {
+            List<HandTransformReference> values = new List<HandTransformReference>();
+            foreach (var item in referenceTransforms)
+            {
+                if (item.GetUseSide() == _side)
+                {
+                    values.Add(item);
+                } 
+            }
+            return values.ToArray();
+        }
 
         public void SetReferenceTransforms(HandTransformReference[] newValues) => referenceTransforms = newValues;
         public void AddReferenceTransform(HandTransformReference newValue)
@@ -29,9 +60,10 @@ namespace XrCore.XrPhysics.Interaction
             referenceTransforms = baseList.ToArray();
         }
 
-        private bool isGrabbed;
-        public bool Grabbed() { return isGrabbed; }
+        #endregion
 
+        public bool Grabbed => isGrabbed;
+        private bool isGrabbed;
         public void OnStartGrabbed()
         {
             isGrabbed = true;
@@ -44,16 +76,17 @@ namespace XrCore.XrPhysics.Interaction
 
         public Transform ToHandTransform(HandSide handType, Vector3 referencePosition, Vector3 forwardDirection, Vector3 upDirection)
         {
-            Transform[] useHands = leftHandReferenceTransforms;
-            if (handType == HandSide.Right) useHands = rightHandReferenceTransforms;
-
+            var transformReference = new SimpleTransform(upDirection, forwardDirection, referencePosition);
+            var useHands = handType == HandSide.Right ? RightHandReferenceTransforms : LeftHandReferenceTransforms;
 
             (int index, float score) matchingValues = (0, 0f);
             for (int i = 0; i < useHands.Length; i++)
             {
-                float distanceScore = 1 / Vector3.Distance(referencePosition, useHands[i].position);
-                float forwardDot = Vector3.Dot(forwardDirection, useHands[i].forward);
-                float UpDot = Vector3.Dot(forwardDirection, useHands[i].up);
+                var mactchingVal = useHands[i].GetTransform(transformReference);
+
+                float distanceScore = 1 / Vector3.Distance(referencePosition, mactchingVal.Position);
+                float forwardDot = Vector3.Dot(forwardDirection, mactchingVal.Forward);
+                float UpDot = Vector3.Dot(forwardDirection, mactchingVal.Up);
                 float attributedScore = distanceScore * (forwardDot + UpDot);
                 if (attributedScore > matchingValues.score)
                 {
@@ -62,7 +95,7 @@ namespace XrCore.XrPhysics.Interaction
                 }
             }
 
-            return useHands[matchingValues.index];
+            return useHands[matchingValues.index].transform;
         }
     }
 }

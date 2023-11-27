@@ -1,4 +1,5 @@
 using EditorTools.Scripting;
+using ScriptingResources.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
 
 namespace XrCore.XrPhysics.Interaction.Editor
@@ -14,8 +16,6 @@ namespace XrCore.XrPhysics.Interaction.Editor
     public class HandTransformReferenceEditor : UnityEditor.Editor
     {
         const string templatePath = "Assets/Prefabs/XrCore/PoseReference.prefab";
-        static Color RightHandColor = new Color(1f, 0f, 0f, 0.3f);
-        static Color LeftHandColor = new Color(0f, 0f, 1f, 0.3f);
 
         public GameObject useTemplate;
         private GameObject previewInstance;

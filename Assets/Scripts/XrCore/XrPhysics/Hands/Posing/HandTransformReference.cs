@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using XrCore.XrPhysics.Structs;
 
 namespace XrCore.XrPhysics.Hands.Posing
 {
@@ -12,6 +13,12 @@ namespace XrCore.XrPhysics.Hands.Posing
 
         public HandPose GetTargetPose() => targetPose.HandPose;
         public HandSide GetUseSide() => useSide;
+
+        public SimpleTransform GetTransform(SimpleTransform reference)
+        {
+            return new SimpleTransform(transform.up, transform.forward, transform.position);
+        }
+
 
         private void OnDrawGizmos()
         {

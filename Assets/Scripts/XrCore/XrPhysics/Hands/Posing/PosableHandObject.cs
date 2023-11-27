@@ -9,16 +9,10 @@ namespace XrCore.XrPhysics.Hands.Posing
     public class PosableHandObject : MonoBehaviour
     {
         [SerializeField] private Renderer _renderer;
-        public Renderer GetRenderer() { return _renderer; }
+        public Renderer GetRenderer() { return _renderer ?? default; }
 
         private XrHandBones handBones;
-        private XrHandBones HandBones
-        {
-            get
-            {
-                return handBones ??= new XrHandBones(boneTransforms);
-            }
-        }
+        private XrHandBones HandBones => handBones ??= new XrHandBones(boneTransforms);
 
         public HandSide handType;
         [SerializeField] private List<Transform> boneTransforms;
@@ -107,34 +101,6 @@ namespace XrCore.XrPhysics.Hands.Posing
 
             return new HandPose(boneRotations, boneNames);
         }
-
-        #region Gizmos
-
-        private void OnDrawGizmosSelected()
-        {
-            if (handBones != null && Application.isEditor)
-            {
-                foreach (var bone in handBones.bones)
-                {
-                    Handles.color = Color.magenta;
-                    Handles.Label(bone.Value.position, bone.Key);
-                }
-            }
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (handBones != null)
-            {
-                foreach (Transform boneT in boneTransforms)
-                {
-                    Gizmos.color = Color.red;
-                    if (boneT.GetChild(0) != null) Debug.DrawLine(boneT.position, boneT.GetChild(0).position);
-                }
-            }
-        }
-
-        #endregion
     }
 
     public class XrHandBones
