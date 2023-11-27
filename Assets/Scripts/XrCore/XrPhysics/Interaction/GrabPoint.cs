@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
-using XrCore.XrPhysics.Structs;
+using XrCore.XrPhysics.PhysicsObjects;
 
 namespace XrCore.XrPhysics.Interaction
 {
