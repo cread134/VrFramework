@@ -11,33 +11,8 @@ using UnityEngine.UIElements;
 
 namespace Core.Management.Audio
 {
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : MonoBehaviour, IAudioService
     {
-        #region singleton
-
-        private static AudioManager _instance;
-        public static AudioManager Instance 
-        { get 
-            {
-                if (_instance == null)
-                    _instance = new AudioManager();
-                return _instance;
-            } 
-        }
-
-        void InitSingleton()
-        {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(this.gameObject);
-                return;
-            }
-
-            _instance = this;
-        }
-
-        #endregion
-
         private const string key = "Sound";
 
         [SerializeField] private int soundInstancesToCreate = 30;
@@ -50,11 +25,6 @@ namespace Core.Management.Audio
         // Operation handle used to load and release assets
         AsyncOperationHandle<IList<GameSound>> loadHandle;
         private bool _loaded;
-
-        private void Awake()
-        {
-            InitSingleton();
-        }
 
         private void Start()
         {

@@ -35,7 +35,8 @@ namespace Core.DI
         {
             if (IsMonoBehaviour)
             {
-                throw new NotImplementedException();
+                var createdInstance = new GameObject(ServiceType.Name + "_instance");
+                createdInstance.AddComponent(DependencyBaseType);
             } 
             else
             {
