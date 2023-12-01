@@ -20,10 +20,11 @@ namespace XrCore.XrPhysics.World
         private Dictionary<HandSide, StoredHandInformation> storedHandInformation;
         private HandSide primaryGrabSide = HandSide.Undetermined;
 
-        bool IsTwoHanded => storedHandInformation[HandSide.Right].IsGrabbingObject() && storedHandInformation[HandSide.Left].IsGrabbingObject();
+        bool IsTwoHanded 
+            => storedHandInformation[HandSide.Right].IsGrabbingObject() && storedHandInformation[HandSide.Left].IsGrabbingObject();
 
         #region Setup
-        private void Start()
+        private void Awake()
         {
             storedHandInformation = new Dictionary<HandSide, StoredHandInformation>
             {
@@ -52,44 +53,53 @@ namespace XrCore.XrPhysics.World
         {
             if (storedHandInformation[handType].IsGrabbingObject())
             {
-                Transform storedTransform = storedHandInformation[handType].GetStoredTransfromValues();
-                newPosition = storedTransform.position;
-                newRotation = storedTransform.rotation;
-
-                if (storedTransform.gameObject.TryGetComponent<HandTransformReference>(out HandTransformReference transformReference))
-                {
-                    storedHandInformation[handType]._handPose = transformReference.GetTargetPose();
-                }
-                Debug.DrawLine(newPosition, newPosition + Vector3.up, Color.red);
+                GetHandPositionGrabbing(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
             }
             else
             {
-                (float minValue, int index) matchingValues = (0f, 0);
-                Transform[] storedPossibleOrientations = new Transform[grabPoints.Length];
-                for (int i = 0; i < grabPoints.Length; i++)
-                {
-                    storedPossibleOrientations[i] = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection);
-                    float distance = Vector3.Distance(referecePosition, storedPossibleOrientations[i].position);
-
-                    float matchScore = (1f / distance) * Quaternion.Angle(Quaternion.LookRotation(forwardDirection, upDirection), storedPossibleOrientations[i].rotation);
-
-                    if (matchScore > matchingValues.minValue)
-                    {
-                        matchingValues.minValue = matchScore;
-                        matchingValues.index = i;
-                    }
-                }
-                Transform targetTransform = storedPossibleOrientations[matchingValues.index];
-                newPosition = targetTransform.position;
-                newRotation = targetTransform.rotation;
-                storedHandInformation[handType].SetStoredTransform(storedPossibleOrientations[matchingValues.index]);
-                if (targetTransform.gameObject.TryGetComponent<HandTransformReference>(out HandTransformReference transformReference))
-                {
-                    storedHandInformation[handType]._handPose = transformReference.GetTargetPose();
-                }
-
+                GetHandPositionNotGrabbing(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
             }
         }
+
+        void GetHandPositionGrabbing(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
+        {
+            Transform storedTransform = storedHandInformation[handType].GetStoredTransfromValues();
+            newPosition = storedTransform.position;
+            newRotation = storedTransform.rotation;
+
+            if (storedTransform.gameObject.TryGetComponent(out HandTransformReference transformReference))
+            {
+                storedHandInformation[handType]._handPose = transformReference.GetTargetPose();
+            }
+        }
+
+        void GetHandPositionNotGrabbing(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
+        {
+            (float minValue, int index) matchingValues = (0f, 0);
+            Transform[] storedPossibleOrientations = new Transform[grabPoints.Length];
+            for (int i = 0; i < grabPoints.Length; i++)
+            {
+                storedPossibleOrientations[i] = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection);
+                float distance = Vector3.Distance(referecePosition, storedPossibleOrientations[i].position);
+
+                float matchScore = (1f / distance) * Quaternion.Angle(Quaternion.LookRotation(forwardDirection, upDirection), storedPossibleOrientations[i].rotation);
+
+                if (matchScore > matchingValues.minValue)
+                {
+                    matchingValues.minValue = matchScore;
+                    matchingValues.index = i;
+                }
+            }
+            Transform targetTransform = storedPossibleOrientations[matchingValues.index];
+            newPosition = targetTransform.position;
+            newRotation = targetTransform.rotation;
+            storedHandInformation[handType].SetStoredTransform(storedPossibleOrientations[matchingValues.index]);
+            if (targetTransform.gameObject.TryGetComponent(out HandTransformReference transformReference))
+            {
+                storedHandInformation[handType]._handPose = transformReference.GetTargetPose();
+            }
+        }
+
         #region grabEvents 
         public void StartGrab(HandSide handType)
         {
@@ -315,46 +325,6 @@ namespace XrCore.XrPhysics.World
         public HandPose GetTargetPose(HandSide handType)
         {
             return storedHandInformation[handType]._handPose;
-        }
-
-        public class StoredHandInformation
-        {
-            public StoredHandInformation(HandSide useHandSide, Transform initTransform)
-            {
-                handSide = useHandSide;
-                storedTransform = initTransform;
-                isGrabbing = false;
-            }
-
-            public Vector3 targetUpDirection;
-            public Vector3 targetPosition;
-            public Quaternion targetRotation;
-
-            public bool IsGrabbingObject()
-            {
-                return isGrabbing;
-            }
-
-            public void SetGrabbing(bool value)
-            {
-                isGrabbing = value;
-            }
-
-            public void SetStoredTransform(Transform value)
-            {
-                storedTransform = value;
-            }
-
-            public Transform GetStoredTransfromValues()
-            {
-                return storedTransform;
-            }
-
-            private HandSide handSide;
-            private Transform storedTransform;
-            private bool isGrabbing;
-
-            public HandPose _handPose;
         }
     }
 }

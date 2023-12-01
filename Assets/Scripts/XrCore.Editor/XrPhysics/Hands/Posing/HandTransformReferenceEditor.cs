@@ -3,6 +3,8 @@ using ScriptingResources.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -10,7 +12,7 @@ using UnityEngine.UIElements;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
 
-namespace XrCore.XrPhysics.Interaction.Editor
+namespace XrCore.XrPhysics.Hands.Posing.Editor
 {
     [CustomEditor(typeof(HandTransformReference))]
     public class HandTransformReferenceEditor : UnityEditor.Editor
@@ -23,6 +25,8 @@ namespace XrCore.XrPhysics.Interaction.Editor
         public void OnEnable()
         {
             DestroyPreviewInstance();
+            ValidateObject();
+
             var template = useTemplate ?? AssetDatabase.LoadAssetAtPath(templatePath, typeof(PoseReferenceObject)) as GameObject;
             if (template == null)
             {
@@ -45,16 +49,35 @@ namespace XrCore.XrPhysics.Interaction.Editor
             poseRefereceObj.SetBoneVisibility(false);
             poseRefereceObj.SetHandVisibility(true, targetSide);
             poseRefereceObj.SetHandTransform(baseObject.transform.position, baseObject.transform.rotation, targetSide);
+
         }
 
         public override VisualElement CreateInspectorGUI()
         {
+            return GetRoot();
+        }
+
+        protected VisualElement GetRoot()
+        {
             VisualElement root = new VisualElement();
+
+            var rootObject = target as HandTransformReference;
 
             var poseField = new PropertyField(serializedObject.FindProperty("targetPose"));
             poseField.RegisterValueChangeCallback(x => OnPoseChanged(x.changedProperty));
             root.Add(poseField);
-            root.Add(new PropertyField(serializedObject.FindProperty("useSide")));
+
+            var useSideField = new PropertyField(serializedObject.FindProperty("useSide"));
+            useSideField.RegisterValueChangeCallback(x =>
+            {
+                UpdatePreviewState();
+                var pose = rootObject.GetTargetPose();
+                if (pose != null)
+                {
+                    UpdateHandPose(rootObject.GetTargetPose());
+                }
+            });
+            root.Add(useSideField);
 
             return root;
         }
@@ -66,9 +89,17 @@ namespace XrCore.XrPhysics.Interaction.Editor
 
             if (value != null && previewInstance != null)
             {
-                var poseReference = previewInstance.GetComponent<PoseReferenceObject>();
-                poseReference.SetHandPose(value.HandPose, baseObject.GetUseSide());
+                UpdateHandPose(value.HandPose);
             }
+        }
+
+        void UpdateHandPose(HandPose pose)
+        {
+            var baseObject = target as HandTransformReference;
+            var poseReference = previewInstance.GetComponent<PoseReferenceObject>();
+            poseReference.SetHandPose(pose, baseObject.GetUseSide());
+
+            EditorUtility.SetDirty(baseObject);
         }
 
         public void OnDisable() => DestroyPreviewInstance();
@@ -79,6 +110,23 @@ namespace XrCore.XrPhysics.Interaction.Editor
             if (previewInstance != null && previewInstance != null)
             {
                 DestroyImmediate(previewInstance);
+            }
+        }
+
+        void ValidateObject()
+        {
+            var targ = target as HandTransformReference;
+            var childCount = targ.transform.childCount;
+            var children = targ.transform.GetComponentsInChildren<Transform>()
+                .Where(x => x.transform != targ.transform)
+                .ToArray();
+            for (int i = 0; i < childCount; i++)
+            {
+                DestroyImmediate(children[i].gameObject);
+            }
+            if(childCount > 0)
+            {
+                EditorUtility.SetDirty(targ);
             }
         }
     }

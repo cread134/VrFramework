@@ -6,18 +6,15 @@ using XrCore.XrPhysics.PhysicsObjects;
 
 namespace XrCore.XrPhysics.Hands.Posing
 {
-    public class HandTransformReference : MonoBehaviour
+    public abstract class HandTransformReference : MonoBehaviour
     {
         [SerializeField] private HandSide useSide;
         [SerializeField] private PoseObject targetPose;
 
-        public HandPose GetTargetPose() => targetPose.HandPose;
+        public HandPose GetTargetPose() => targetPose?.HandPose;
         public HandSide GetUseSide() => useSide;
 
-        public SimpleTransform GetTransform(SimpleTransform reference)
-        {
-            return new SimpleTransform(transform.up, transform.forward, transform.position);
-        }
+        public abstract SimpleTransform GetTransform(SimpleTransform reference);
 
 
         private void OnDrawGizmos()

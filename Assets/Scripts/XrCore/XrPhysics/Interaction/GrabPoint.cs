@@ -55,7 +55,8 @@ namespace XrCore.XrPhysics.Interaction
         public void SetReferenceTransforms(HandTransformReference[] newValues) => referenceTransforms = newValues;
         public void AddReferenceTransform(HandTransformReference newValue)
         {
-            var baseList = referenceTransforms.ToList();
+            var baseList = referenceTransforms?.ToList()
+                ?? new List<HandTransformReference>();
             baseList.Add(newValue);
             referenceTransforms = baseList.ToArray();
         }

@@ -46,8 +46,10 @@ namespace XrCore.XrPhysics.Interaction.Editor
             instance.transform.localScale = Vector3.one;
             instance.transform.localPosition = Vector3.zero;
 
-            var referenceInstance = instance.AddComponent<HandTransformReference>();
+            var referenceInstance = instance.AddComponent<DirectGrabRegion>();
             rootObject.AddReferenceTransform(referenceInstance);
+
+            UpdateReferencesFromScript();
 
             EditorUtility.SetDirty(rootObject);
             EditorUtility.SetDirty(instance);

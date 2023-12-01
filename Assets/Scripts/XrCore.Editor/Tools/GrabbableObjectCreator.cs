@@ -12,8 +12,24 @@ namespace XrCore.Tools.Editor
         [MenuItem("XrCore/CreateGrabbableObject")]
         public static void CreateGrabbableObject()
         {
+            CreateGrabbableObjectCore();
+        }
+
+        [MenuItem("GameObject/CreateGrabbableObject")]
+        public static void CreateGrabbableObjectHierachy()
+        {
+            CreateGrabbableObjectCore();
+        }
+
+        static void CreateGrabbableObjectCore()
+        {
             GameObject instance = ObjectFactory.CreateGameObject("GrabbableObject", typeof(GrabbableObject));
+
+            var grabObject = instance.GetComponent<GrabbableObject>();
+
             Selection.activeGameObject = instance;
+
+            EditorUtility.SetDirty(instance);
         }
     }
 }
