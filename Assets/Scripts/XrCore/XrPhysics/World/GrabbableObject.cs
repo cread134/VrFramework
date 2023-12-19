@@ -80,6 +80,7 @@ namespace XrCore.XrPhysics.World
             for (int i = 0; i < grabPoints.Length; i++)
             {
                 storedPossibleOrientations[i] = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection);
+                Debug.DrawLine(referecePosition, storedPossibleOrientations[i].position, Color.red);
                 float distance = Vector3.Distance(referecePosition, storedPossibleOrientations[i].position);
 
                 float matchScore = (1f / distance) * Quaternion.Angle(Quaternion.LookRotation(forwardDirection, upDirection), storedPossibleOrientations[i].rotation);

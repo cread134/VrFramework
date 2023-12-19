@@ -5,6 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
+using Core.UnityExtensions;
 using XrCore.Interaction.Control;
 
 namespace XrCore.Interaction.Editor
@@ -20,6 +21,7 @@ namespace XrCore.Interaction.Editor
             root.Add(new PropertyField { label = "XrHand", bindingPath = "xrHand" });
             root.Add(new PropertyField(serializedObject.FindProperty("Controller")));
 
+            root.AddHeader("Input Values");
             root.Add(new PropertyField(serializedObject.FindProperty("MainButtonAction")));
             root.Add(new PropertyField(serializedObject.FindProperty("SecondaryButtonAction")));
 

@@ -7,13 +7,9 @@ namespace XrCore.XrPhysics.Hands.Posing
 {
     public class CircleGrabRegion : HandTransformReference
     {
-        public CircleGrabRegion()
+        public override Transform GetTransform(Vector3 position, Vector3 forwardDirection, Vector3 upDirection)
         {
-        }
-
-        public override SimpleTransform GetTransform(SimpleTransform reference)
-        {
-            throw new System.NotImplementedException();
+            return transform;
         }
     }
 }

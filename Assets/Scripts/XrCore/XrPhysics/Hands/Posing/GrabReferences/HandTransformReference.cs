@@ -14,7 +14,7 @@ namespace XrCore.XrPhysics.Hands.Posing
         public HandPose GetTargetPose() => targetPose?.HandPose;
         public HandSide GetUseSide() => useSide;
 
-        public abstract SimpleTransform GetTransform(SimpleTransform reference);
+        public abstract Transform GetTransform(Vector3 position, Vector3 forwardDirection, Vector3 upDirection);
 
 
         private void OnDrawGizmos()

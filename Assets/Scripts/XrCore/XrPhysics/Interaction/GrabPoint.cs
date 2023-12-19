@@ -77,17 +77,18 @@ namespace XrCore.XrPhysics.Interaction
 
         public Transform ToHandTransform(HandSide handType, Vector3 referencePosition, Vector3 forwardDirection, Vector3 upDirection)
         {
-            var transformReference = new SimpleTransform(upDirection, forwardDirection, referencePosition);
-            var useHands = handType == HandSide.Right ? RightHandReferenceTransforms : LeftHandReferenceTransforms;
+            var useHands = handType == HandSide.Right ? 
+                RightHandReferenceTransforms 
+                : LeftHandReferenceTransforms;
 
             (int index, float score) matchingValues = (0, 0f);
             for (int i = 0; i < useHands.Length; i++)
             {
-                var mactchingVal = useHands[i].GetTransform(transformReference);
+                var mactchingVal = useHands[i].GetTransform(referencePosition, forwardDirection, upDirection);
 
-                float distanceScore = 1 / Vector3.Distance(referencePosition, mactchingVal.Position);
-                float forwardDot = Vector3.Dot(forwardDirection, mactchingVal.Forward);
-                float UpDot = Vector3.Dot(forwardDirection, mactchingVal.Up);
+                float distanceScore = 1 / Vector3.Distance(referencePosition, mactchingVal.position);
+                float forwardDot = Vector3.Dot(forwardDirection, mactchingVal.forward);
+                float UpDot = Vector3.Dot(forwardDirection, mactchingVal.up);
                 float attributedScore = distanceScore * (forwardDot + UpDot);
                 if (attributedScore > matchingValues.score)
                 {

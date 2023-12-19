@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 namespace Core.Logging
 {
@@ -13,12 +14,24 @@ namespace Core.Logging
 
         public void Log(string message)
         {
-            throw new System.NotImplementedException();
+#if UNITY_EDITOR 
+            Debug.Log(message);
+#endif
+
         }
 
         public void LogError(string message)
         {
-            throw new System.NotImplementedException();
+#if UNITY_EDITOR 
+            Debug.LogError(message);
+#endif
+        }
+
+        public void Assert(bool condition, string message)
+        {
+#if UNITY_EDITOR 
+            Debug.Assert(condition);
+#endif
         }
     }
 }

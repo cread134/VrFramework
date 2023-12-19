@@ -35,8 +35,10 @@ namespace Core.DI
         {
             if (IsMonoBehaviour)
             {
-                var createdInstance = new GameObject(ServiceType.Name + "_instance");
-                createdInstance.AddComponent(DependencyBaseType);
+                var objectInstance = new GameObject(
+                    ServiceType.Name + "_SingletonInstance",
+                    typeof(SingletonMonoInstance),
+                    DependencyBaseType);
             } 
             else
             {
