@@ -80,7 +80,6 @@ namespace XrCore.XrPhysics.World
             for (int i = 0; i < grabPoints.Length; i++)
             {
                 storedPossibleOrientations[i] = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection);
-                Debug.DrawLine(referecePosition, storedPossibleOrientations[i].position, Color.red);
                 float distance = Vector3.Distance(referecePosition, storedPossibleOrientations[i].position);
 
                 float matchScore = (1f / distance) * Quaternion.Angle(Quaternion.LookRotation(forwardDirection, upDirection), storedPossibleOrientations[i].rotation);
@@ -149,8 +148,6 @@ namespace XrCore.XrPhysics.World
             Vector3 calculatedTargetPosition = CalculatePositionalTarget(storedHandInformation[primaryGrabSide].targetPosition, grabPointTransform.position);
             Quaternion calculatedRotationTarget = IsTwoHanded ? CalculateTwoHandedRotation() : CalculateRotationalTarget(storedHandInformation[primaryGrabSide].targetRotation, grabPointTransform.rotation);
 
-            Debug.DrawLine(calculatedTargetPosition, _rigidbody.position, Color.green);
-            Debug.DrawLine(storedHandInformation[primaryGrabSide].targetPosition, _rigidbody.position, Color.red);
             MatchHandWithPhysics(calculatedTargetPosition, calculatedRotationTarget);
 
             lastTargetPosition = calculatedTargetPosition;
@@ -254,9 +251,6 @@ namespace XrCore.XrPhysics.World
             Vector3 betweenVector = secondaryGrabPoint.position - mainGrabPoint.position;
             float mainGrabMagnitude = betweenVector.magnitude;
             Vector3 targetVector = (mainGrabTargetPosiiton - mainGrabPoint.position).normalized * mainGrabMagnitude;
-
-            Debug.DrawLine(mainGrabPoint.position, mainGrabPoint.position + betweenVector, Color.red);
-            Debug.DrawLine(mainGrabPoint.position, mainGrabPoint.position + targetVector, Color.green);
 
             Quaternion dif = Quaternion.LookRotation(targetVector, storedHandInformation[primaryGrabSide].targetUpDirection) * Quaternion.Inverse(Quaternion.LookRotation(betweenVector, mainGrabPoint.up));
             Quaternion restulant = dif * transform.rotation;

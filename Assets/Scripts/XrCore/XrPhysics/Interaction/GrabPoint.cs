@@ -1,3 +1,4 @@
+using Core.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,23 +82,26 @@ namespace XrCore.XrPhysics.Interaction
                 RightHandReferenceTransforms 
                 : LeftHandReferenceTransforms;
 
-            (int index, float score) matchingValues = (0, 0f);
-            for (int i = 0; i < useHands.Length; i++)
-            {
-                var mactchingVal = useHands[i].GetTransform(referencePosition, forwardDirection, upDirection);
-
-                float distanceScore = 1 / Vector3.Distance(referencePosition, mactchingVal.position);
-                float forwardDot = Vector3.Dot(forwardDirection, mactchingVal.forward);
-                float UpDot = Vector3.Dot(forwardDirection, mactchingVal.up);
-                float attributedScore = distanceScore * (forwardDot + UpDot);
-                if (attributedScore > matchingValues.score)
+            var values = useHands.Select(m => m.GetTransform(referencePosition, forwardDirection, upDirection))
+                .OrderBy(x =>
                 {
-                    matchingValues.score = attributedScore;
-                    matchingValues.index = i;
-                }
-            }
+                    float distanceScore = 1 / Vector3.Distance(referencePosition, x.position);
+                    float forwardDot = Vector3.Dot(forwardDirection, x.forward);
+                    float UpDot = Vector3.Dot(forwardDirection, x.up);
+                    return distanceScore * (forwardDot + UpDot);
+                })
+                .Reverse();
 
-            return useHands[matchingValues.index].transform;
+#if UNITY_EDITOR
+            var col = Color.red;
+            var first = values.First();
+            values.ForEach(x => {
+                col = x == first ? Color.green : Color.red;
+                Debug.DrawLine(referencePosition, x.position, col);
+             });
+#endif
+
+            return values.First();
         }
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 using XrCore.XrPhysics.Hands.Posing;
 using XrCore.Interaction.Control;
 using TMPro;
+using Core.DI;
+using Core.Logging;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -13,7 +15,7 @@ namespace XrCore.XrPhysics.Hands
     public class XrHand : MonoBehaviour, IXrHandControls
     {
         private Rigidbody rb;
-
+        private ILoggingService loggingService;
         public HandSide handType;
 
         [Header("Physics hand settings")]
@@ -44,9 +46,6 @@ namespace XrCore.XrPhysics.Hands
         [SerializeField] private float grabThreshold = 0.8f;
         private bool handClosed = false;
 
-        [Header("Visuals")]
-        [SerializeField] private GameObject grabIndicator;
-
         //pid values
         private Vector3 positionError;
         private Vector3 lastPositionError;
@@ -56,12 +55,12 @@ namespace XrCore.XrPhysics.Hands
         private float angleError;
         private Vector3 errorAxis;
 
-
         private bool inPhysicsRange;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
+            loggingService = DependencyService.Resolve<ILoggingService>();
         }
 
         public float ReadGripValue() { return m_gripValue; }
@@ -168,22 +167,16 @@ namespace XrCore.XrPhysics.Hands
                     {
                         grabHover = grabbable;
 
-                        Debug.DrawLine(closest.transform.position, grabCentre.position, Color.green);
-                        grabIndicator.transform.position = targetPos;
-                        grabIndicator.SetActive(true);
-
                         overTarget = true;
                     }
                 }
                 else
                 {
-                    grabIndicator.SetActive(false);
                     overTarget = false;
                 }
             }
             else
             {
-                grabIndicator.SetActive(false);
                 overTarget = false;
             }
         }
@@ -198,11 +191,10 @@ namespace XrCore.XrPhysics.Hands
 
         private void StartGrab()
         {
-            Debug.Log("started grab");
+            loggingService.Log("started Grabbing " + grabHover.ToString());
             grabHover.StartGrab(handType);
             currentGrab = grabHover;
             isGrabbing = true;
-            grabIndicator.SetActive(false);
             poseHand.UpdateHandPose(currentGrab.GetTargetPose(handType));
             SetHandCollision(false);
         }

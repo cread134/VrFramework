@@ -3,26 +3,42 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Toolbars;
 using UnityEngine;
+using UnityEditor.Overlays;
+using UnityEngine.UIElements;
+using Core.Extensions;
+using XrCore.XrPhysics.Hands;
+using XrCore.Context;
+using static UnityEngine.GraphicsBuffer;
+using System.Linq;
 
 namespace XrCore.Tools.Editor
 {
-    [EditorToolbarElement(id, typeof(SceneView))]
-    public class XrHandToolbar : EditorToolbarButton
+    [Overlay(typeof(SceneView), "My Custom Toolbar", true)]
+    public class XrHandToolbar : Overlay
     {
-        public const string id = "XrUtilities/HandButton/Right";
-
-        public XrHandToolbar()
+        public override VisualElement CreatePanelContent()
         {
-            text = "GetHand";
-            clicked += OnClick;
+            var root = new VisualElement() { name = "Xr Toolbar" };
+            root.AddHeader("XR TOOLS");
+
+            root.AddButton("RightHand", AccessRightHand);
+            root.AddButton("LeftHand", AccessLeftHand);
+
+            return root;
+
         }
 
-        void OnClick()
+        void AccessRightHand() => AccessHandCore(HandSide.Right);
+        void AccessLeftHand() => AccessHandCore(HandSide.Left);
+
+        void AccessHandCore(HandSide handSide)
         {
-            GameObject targetHand = GameObject.Find("RightHandTracked");
-            if (targetHand != null)
+            Debug.Log($"accessing hand {handSide}");
+            var context = GameObject.FindFirstObjectByType<XrContext>();
+            var hand = context?.GetHand(handSide);
+            if (hand != null)
             {
-                Selection.activeGameObject = targetHand;
+                Selection.activeTransform = hand.transform;
                 SceneView.lastActiveSceneView.FrameSelected();
             }
         }

@@ -5,7 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
-using Core.UnityExtensions;
+using Core.Extensions;
 using XrCore.Interaction.Control;
 
 namespace XrCore.Interaction.Editor
