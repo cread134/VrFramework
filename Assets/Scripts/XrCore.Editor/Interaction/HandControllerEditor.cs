@@ -12,7 +12,7 @@ namespace XrCore.Interaction.Editor
 {
 
     [CustomEditor(typeof(HandController))]
-    public class XrControllerEditor : UnityEditor.Editor
+    public class HandControllerEditor : UnityEditor.Editor
     {
         public override VisualElement CreateInspectorGUI()
         {
@@ -24,6 +24,8 @@ namespace XrCore.Interaction.Editor
             root.AddHeader("Input Values");
             root.Add(new PropertyField(serializedObject.FindProperty("MainButtonAction")));
             root.Add(new PropertyField(serializedObject.FindProperty("SecondaryButtonAction")));
+            root.Add(new PropertyField(serializedObject.FindProperty("gripAction")));
+            root.Add(new PropertyField(serializedObject.FindProperty("triggerActionProperty")));
 
             var gripSlider = new Slider
             {
@@ -79,16 +81,6 @@ namespace XrCore.Interaction.Editor
 
             HandController handController = (HandController)target;
             handController.UpdateTrigger(changeEvent.newValue);
-        }
-
-        private void HandleButton1Click()
-        {
-            // Handle button 1 click action
-        }
-
-        private void HandleButton2Click()
-        {
-            // Handle button 2 click action
         }
     }
 }

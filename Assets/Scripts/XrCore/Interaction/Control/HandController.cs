@@ -10,15 +10,16 @@ namespace XrCore.Interaction.Control
 {
     public class HandController : MonoBehaviour
     {
-        public ActionBasedController Controller;
-
         public InputActionReference MainButtonAction;
         public InputActionReference SecondaryButtonAction;
 
+        public InputActionProperty gripAction;
+        public InputActionProperty triggerActionProperty;
+
         private void Start()
         {
-            Controller.selectAction.action.performed += UpdateGrip;
-            Controller.activateAction.action.performed += UpdateTrigger;
+            gripAction.action.performed += UpdateGrip;
+            triggerActionProperty.action.performed += UpdateTrigger;
 
             MainButtonAction.action.performed += OnMainButtonDown;
             MainButtonAction.action.canceled += OnMainButtonUp;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -751,17 +751,17 @@ PrefabInstance:
     - target: {fileID: 4422659090696076826, guid: fd28f23af44f73f4a95e33435872ad15,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422659090696076826, guid: fd28f23af44f73f4a95e33435872ad15,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422659090696076826, guid: fd28f23af44f73f4a95e33435872ad15,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 262.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422659090696076826, guid: fd28f23af44f73f4a95e33435872ad15,
         type: 3}
@@ -771,12 +771,12 @@ PrefabInstance:
     - target: {fileID: 4422659090696076826, guid: fd28f23af44f73f4a95e33435872ad15,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 147.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422659090696076826, guid: fd28f23af44f73f4a95e33435872ad15,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -55.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422659091188657070, guid: fd28f23af44f73f4a95e33435872ad15,
         type: 3}
@@ -6967,12 +6967,96 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_Reference
+      value: 
+      objectReference: {fileID: -6131295136447488360, guid: c348712bda248c246b8c49b3db54643f,
+        type: 3}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_Action.m_Id
+      value: 934ad57a-cb01-42b8-8e12-d9799765318a
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_UseReference
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_Action.m_Name
+      value: Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
+        type: 3}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_Action.m_Id
+      value: b6730942-d931-4c83-9938-043965a0904c
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_UseReference
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694218857455013123, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_Action.m_Name
+      value: Trigger Action Property
+      objectReference: {fileID: 0}
     - target: {fileID: 4047155559608099415, guid: 7cc09e81af3215242952820db74c3365,
         type: 3}
       propertyPath: physicsConfig
       value: 
       objectReference: {fileID: 11400000, guid: be595bd60ab214b4c8d71f4a57c39581,
         type: 2}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_Reference
+      value: 
+      objectReference: {fileID: 187161793506945269, guid: c348712bda248c246b8c49b3db54643f,
+        type: 3}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_Action.m_Id
+      value: ebd6ac94-0c8f-411c-96af-21b9c88bbe3b
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_UseReference
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: gripAction.m_Action.m_Name
+      value: Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_Reference
+      value: 
+      objectReference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f,
+        type: 3}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_Action.m_Id
+      value: cdc42e43-3dcd-4152-a1df-cba194a8e1b9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_UseReference
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506849938090761782, guid: 7cc09e81af3215242952820db74c3365,
+        type: 3}
+      propertyPath: triggerActionProperty.m_Action.m_Name
+      value: Trigger Action Property
+      objectReference: {fileID: 0}
     - target: {fileID: 6195932520069213157, guid: 7cc09e81af3215242952820db74c3365,
         type: 3}
       propertyPath: m_RootOrder
