@@ -35,12 +35,14 @@ namespace XrCore.Tools.Editor
         {
             Debug.Log($"accessing hand {handSide}");
             var context = GameObject.FindFirstObjectByType<XrContext>();
-            var hand = context?.GetHand(handSide);
+            var hand = context?.GetController(handSide);
             if (hand != null)
             {
                 Selection.activeTransform = hand.transform;
                 SceneView.lastActiveSceneView.FrameSelected();
             }
+
+            CreatePanelContent();
         }
     }
 }

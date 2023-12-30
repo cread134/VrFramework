@@ -980,6 +980,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 4047155559608099415}
   rightHand: {fileID: 1087125456776145587}
+  rightHandController: {fileID: 4506849938090761782}
+  leftHandController: {fileID: 3694218857455013123}
 --- !u!1 &3816096526835174060
 GameObject:
   m_ObjectHideFlags: 0
