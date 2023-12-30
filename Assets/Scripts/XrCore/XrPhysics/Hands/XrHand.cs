@@ -7,6 +7,7 @@ using XrCore.Interaction.Control;
 using TMPro;
 using Core.DI;
 using Core.Logging;
+using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -46,21 +47,15 @@ namespace XrCore.XrPhysics.Hands
         [SerializeField] private float grabThreshold = 0.8f;
         private bool handClosed = false;
 
-        //pid values
-        private Vector3 positionError;
-        private Vector3 lastPositionError;
-        private Vector3 positionStoredIntegration;
-
-        private Quaternion rotationError;
-        private float angleError;
-        private Vector3 errorAxis;
-
         private bool inPhysicsRange;
+        private PhysicsMover _mover;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
             loggingService = DependencyService.Resolve<ILoggingService>();
+
+            _mover = new PhysicsMover(physicsConfig, rb);
         }
 
         public float ReadGripValue() { return m_gripValue; }
@@ -166,7 +161,6 @@ namespace XrCore.XrPhysics.Hands
                     if (Vector3.Distance(grabCentre.position, targetPos) < grabRadius)
                     {
                         grabHover = grabbable;
-
                         overTarget = true;
                     }
                 }
@@ -181,9 +175,10 @@ namespace XrCore.XrPhysics.Hands
             }
         }
 
+        bool CanGrab => overTarget && grabHover != null;
         private void AttemptGrab()
         {
-            if (overTarget && grabHover != null)
+            if (CanGrab)
             {
                 StartGrab();
             }
@@ -238,64 +233,30 @@ namespace XrCore.XrPhysics.Hands
         {
             if (rb.isKinematic) rb.isKinematic = false;
             inPhysicsRange = Physics.CheckSphere(transform.position, collisionRadius, collisionMask, QueryTriggerInteraction.Ignore);
-            if (!inPhysicsRange || Vector3.Distance(transform.position, trackingTarget.position) > maxAllowedHandDistance)
+            if (Vector3.Distance(transform.position, trackingTarget.position) > maxAllowedHandDistance)
             {
                 MoveHandKinematic();
             }
             else
             {
-                PhysicsMatchHandPosition();
-                PhysicsMatchHandRotation();
+                MoveHandPhysics();
             }
+        }
+
+        private void MoveHandPhysics()
+        {
+            PhysicsMatchHandPosition();
+            PhysicsMatchHandRotation();
         }
 
         private void PhysicsMatchHandPosition()
         {
-            positionError = trackingTarget.position - rb.position;
-
-            Vector3 positionProportion = positionError * physicsConfig.positionIntegrationCompenstation;
-
-            Vector3 derivativeGain = (positionError - lastPositionError) / Time.fixedDeltaTime;
-            Vector3 positionDerivative = derivativeGain * physicsConfig.positionSmoothing;
-
-            lastPositionError = positionError;
-
-            positionStoredIntegration += (positionError * Time.fixedDeltaTime);
-
-            Vector3 force = positionProportion + positionStoredIntegration + positionDerivative;
-            // Debug.Log("pid force " + force);
-            rb.AddForce(force);
+            _mover.PhysicsMatchHandPosition(trackingTarget.position);
         }
-
 
         private void PhysicsMatchHandRotation()
         {
-            rotationError = trackingTarget.rotation * Quaternion.Inverse(rb.rotation);
-
-            rotationError.ToAngleAxis(out angleError, out errorAxis);
-            errorAxis.Normalize();
-            if (angleError > 180f)
-            {
-                angleError -= 360f;
-            }
-
-            if (Quaternion.Angle(trackingTarget.rotation, rb.rotation) < physicsConfig.angleAllowance)
-            {
-                rb.MoveRotation(Quaternion.Slerp(rb.rotation, trackingTarget.rotation, Time.deltaTime * physicsConfig.rotationalSmoothing));
-                rb.angularVelocity = Vector3.zero;
-            }
-            else
-            {
-                rb.angularVelocity *= physicsConfig.anglularSlowdown * (1f - (angleError / 360f));
-
-                Vector3 angularVelocity = (errorAxis * angleError) / Time.deltaTime;
-
-                angularVelocity -= rb.angularVelocity * physicsConfig.torqueDamping;
-                angularVelocity += (angularVelocity - rb.angularVelocity) * physicsConfig.rotationProportionalGain;
-                float ratio = 1f + (angleError / 360f);
-                rb.AddTorque((angularVelocity - rb.angularVelocity) * Time.deltaTime * physicsConfig.rotationMultiplier * (ratio * ratio), ForceMode.VelocityChange);
-            }
-            // rb.angularVelocity = angularVelocity;
+            _mover.PhysicsMatchHandRotation(trackingTarget.rotation);
         }
 
         private void MoveHandKinematic()
@@ -303,9 +264,6 @@ namespace XrCore.XrPhysics.Hands
             if (!rb.isKinematic) rb.isKinematic = true;
             rb.MovePosition(trackingTarget.position);
             rb.MoveRotation(trackingTarget.rotation);
-
-            positionStoredIntegration = Vector3.zero;
-            lastPositionError = Vector3.zero;
         }
 
         #endregion
@@ -318,32 +276,17 @@ namespace XrCore.XrPhysics.Hands
                 Gizmos.DrawWireSphere(grabCentre.position, grabRadius);
             }
 
-            if (trackingTarget != null)
-            {
-                Gizmos.color = Color.red;
-                // Gizmos.DrawWireSphere (trackingTarget.position, grabRadius);
-                Gizmos.DrawLine(transform.position, trackingTarget.position);
-
-                Gizmos.color = Color.black;
-                Gizmos.DrawSphere(trackingTarget.transform.position, 0.01f);
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(trackingTarget.position, trackingTarget.position + (trackingTarget.forward * 0.03f));
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(trackingTarget.position, trackingTarget.position + (trackingTarget.up * 0.03f));
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(trackingTarget.position, trackingTarget.position + (trackingTarget.right * 0.03f));
-            }
-
             if (!inPhysicsRange)
             {
                 Gizmos.color = new Color(1f, 0, 0f, 0.3f);
                 Gizmos.DrawWireSphere(transform.position, collisionRadius);
             }
-        }
 
-        private void OnMouseDown()
-        {
-            //GameManager.Instance.debugController.SelectController(this);
+            if(CanGrab)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(grabCentre.position, grabRadius);
+            }
         }
 
 

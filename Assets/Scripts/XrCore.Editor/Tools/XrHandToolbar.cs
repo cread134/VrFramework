@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace XrCore.Tools.Editor
 {
-    [Overlay(typeof(SceneView), "My Custom Toolbar", true)]
+    [Overlay(typeof(SceneView), "Xr Controls", true)]
     public class XrHandToolbar : Overlay
     {
         public override VisualElement CreatePanelContent()

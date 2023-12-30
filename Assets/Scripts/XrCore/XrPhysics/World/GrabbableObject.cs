@@ -16,6 +16,7 @@ namespace XrCore.XrPhysics.World
 
         public GrabPoint[] grabPoints;
         public XrObjectPhysicsConfig physicsSettings;
+        private PhysicsMover _mover;
 
         private Dictionary<HandSide, StoredHandInformation> storedHandInformation;
         private HandSide primaryGrabSide = HandSide.Undetermined;
@@ -32,6 +33,8 @@ namespace XrCore.XrPhysics.World
                 { HandSide.Right, new StoredHandInformation(HandSide.Right, transform) },
             };
             SetupRigidbody();
+
+            _mover = new PhysicsMover(physicsSettings, _rigidbody);
         }
 
         void SetupRigidbody()
@@ -149,8 +152,6 @@ namespace XrCore.XrPhysics.World
             Quaternion calculatedRotationTarget = IsTwoHanded ? CalculateTwoHandedRotation() : CalculateRotationalTarget(storedHandInformation[primaryGrabSide].targetRotation, grabPointTransform.rotation);
 
             MatchHandWithPhysics(calculatedTargetPosition, calculatedRotationTarget);
-
-            lastTargetPosition = calculatedTargetPosition;
         }
 
         private void MatchHandTransformWithoutPhysics(Vector3 newPosition, Quaternion newRotation)
@@ -167,61 +168,11 @@ namespace XrCore.XrPhysics.World
             PhysicsMatchHandRotation(newRotation);
         }
 
-        Vector3 lastPositionDifference = Vector3.zero;
-        Vector3 positionStoredIntegration;
-        Vector3 lastTargetPosition;
         private void PhysicsMatchHandPosition(Vector3 targetPosition)
-        {
-            //handle position
-            Vector3 positionError = targetPosition - _rigidbody.position;
-            Vector3 proportion = positionError * physicsSettings.positionDifferenceMatchForce;
+            => _mover.PhysicsMatchHandPosition(targetPosition);
 
-            Vector3 derivativeChange = (positionError - lastPositionDifference) / Time.fixedDeltaTime;
-            lastPositionDifference = positionError;
-            Vector3 velocityAdjustment = ((lastTargetPosition - positionError) * Time.fixedDeltaTime) * physicsSettings.positionVelocityMultipler;
-            _rigidbody.velocity *= (1f / physicsSettings.positionSmoothing);
-            positionStoredIntegration += (positionError * Time.fixedDeltaTime) * physicsSettings.positionIntegrationCompenstation;
-            Vector3 force = proportion + derivativeChange + positionStoredIntegration + velocityAdjustment;
-            _rigidbody.AddForce(force, ForceMode.VelocityChange);
-        }
-
-        private Quaternion rotationError;
-        private Quaternion lastRotation;
-        private float angleError;
-        private Vector3 errorAxis;
         private void PhysicsMatchHandRotation(Quaternion targetRotation)
-        {
-            rotationError = targetRotation * Quaternion.Inverse(_rigidbody.rotation);
-
-            rotationError.ToAngleAxis(out angleError, out errorAxis);
-            errorAxis.Normalize();
-            if (angleError > 180f)
-            {
-                angleError -= 360f;
-            }
-
-            if (Quaternion.Angle(targetRotation, _rigidbody.rotation) < physicsSettings.angleAllowance)
-            {
-                _rigidbody.MoveRotation(Quaternion.Slerp(_rigidbody.rotation, targetRotation, Time.deltaTime * physicsSettings.rotationalSmoothing));
-                _rigidbody.angularVelocity = Vector3.zero;
-            }
-            else
-            {
-                Quaternion rotationImpulse = lastRotation * Quaternion.Inverse(targetRotation);
-                rotationImpulse.ToAngleAxis(out float angleImpluse, out Vector3 impulseAxis);
-
-                _rigidbody.angularVelocity *= physicsSettings.anglularSlowdown;
-
-                Vector3 angularVelocity = (errorAxis * angleError) * Time.deltaTime * physicsSettings.rotationMultiplier;
-                Vector3 angularImpulse = (impulseAxis * angleImpluse) * Time.fixedDeltaTime * physicsSettings.rotationImpulseCompensation;
-
-                angularVelocity += (_rigidbody.angularVelocity - angularVelocity) * physicsSettings.rotationProportionalGain * Time.deltaTime;
-                angularVelocity += angularImpulse;
-                _rigidbody.AddTorque(angularVelocity, ForceMode.VelocityChange);
-            }
-
-            lastRotation = targetRotation;
-        }
+            => _mover.PhysicsMatchHandRotation(targetRotation);
 
 
         #region calculating target values
