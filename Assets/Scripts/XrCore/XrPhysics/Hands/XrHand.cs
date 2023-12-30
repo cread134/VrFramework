@@ -8,6 +8,7 @@ using TMPro;
 using Core.DI;
 using Core.Logging;
 using XrCore.XrPhysics.World;
+using System.Linq;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -141,21 +142,14 @@ namespace XrCore.XrPhysics.Hands
         private bool isGrabbing;
         private void ObserveGrabbable()
         {
-            Collider[] found = Physics.OverlapSphere(grabCentre.position, grabRadius, grabMask, QueryTriggerInteraction.Ignore);
+            var found = Physics.OverlapSphere(grabCentre.position, grabRadius, grabMask, QueryTriggerInteraction.Ignore)?
+                .OrderBy(c => Vector3.Distance(c.transform.position, grabCentre.position))?
+                .ToArray()?
+                .First();
 
-            if (found != null && found.Length > 0)
+            if (found != null)
             {
-                Collider closest = found[0];
-                foreach (Collider c in found)
-                {
-                    if (Vector3.Distance(c.transform.position, grabCentre.position) < Vector3.Distance(closest.transform.position, grabCentre.position))
-                    {
-                        closest = c;
-                    }
-                }
-
-                //observe grabbalbe
-                if (closest.gameObject.TryGetComponent<IGrabbable>(out IGrabbable grabbable) && grabbable.CanBeGrabbed(transform.position, transform.rotation, handType))
+                if (found.gameObject.TryGetComponent<IGrabbable>(out IGrabbable grabbable) && grabbable.CanBeGrabbed(transform.position, transform.rotation, handType))
                 {
                     grabbable.GetHandPosition(handType, transform.position, transform.forward, transform.up, out Vector3 targetPos, out Quaternion targetRot);
                     if (Vector3.Distance(grabCentre.position, targetPos) < grabRadius)

@@ -101,12 +101,12 @@ namespace XrCore.XrPhysics.World
             {
                 storedHandInformation[handType]._handPose = transformReference.GetTargetPose();
             }
+            Debug.DrawLine(referecePosition, newPosition, Color.magenta);
         }
 
         #region grabEvents 
         public void StartGrab(HandSide handType)
         {
-            Debug.Log("startedGrab");
             storedHandInformation[handType].SetGrabbing(true);
             if (primaryGrabSide == HandSide.Undetermined)
             {
@@ -117,7 +117,6 @@ namespace XrCore.XrPhysics.World
         }
         public void OnGrabRelease(HandSide handType)
         {
-            Debug.Log("endedGrab");
             storedHandInformation[handType].SetGrabbing(false);
 
             if (primaryGrabSide == handType)
@@ -149,7 +148,8 @@ namespace XrCore.XrPhysics.World
 
             Transform grabPointTransform = storedHandInformation[primaryGrabSide].GetStoredTransfromValues();
             Vector3 calculatedTargetPosition = CalculatePositionalTarget(storedHandInformation[primaryGrabSide].targetPosition, grabPointTransform.position);
-            Quaternion calculatedRotationTarget = IsTwoHanded ? CalculateTwoHandedRotation() : CalculateRotationalTarget(storedHandInformation[primaryGrabSide].targetRotation, grabPointTransform.rotation);
+            Quaternion calculatedRotationTarget = IsTwoHanded ? CalculateTwoHandedRotation() 
+                : CalculateRotationalTarget(storedHandInformation[primaryGrabSide].targetRotation, grabPointTransform.rotation);
 
             MatchHandWithPhysics(calculatedTargetPosition, calculatedRotationTarget);
         }
