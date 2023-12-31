@@ -69,6 +69,7 @@ namespace XrCore.XrPhysics.World
             Transform storedTransform = storedHandInformation[handType].GetStoredTransfromValues();
             newPosition = storedTransform.position;
             newRotation = storedTransform.rotation;
+            Debug.DrawLine(referecePosition, newPosition, Color.cyan);
 
             if (storedTransform.gameObject.TryGetComponent(out HandTransformReference transformReference))
             {
@@ -246,26 +247,6 @@ namespace XrCore.XrPhysics.World
             storedHandInformation[handType].targetPosition = targetPosition;
             storedHandInformation[handType].targetRotation = targetRotation;
             storedHandInformation[handType].targetUpDirection = targetUp;
-        }
-
-        public void OnMainButtonDown(HandSide handType)
-        {
-
-        }
-
-        public void OnMainButtonUp(HandSide handType)
-        {
-
-        }
-
-        public void TriggerDown(HandSide handType)
-        {
-
-        }
-
-        public void TriggerUp(HandSide handType)
-        {
-
         }
 
         public HandPose GetTargetPose(HandSide handType)

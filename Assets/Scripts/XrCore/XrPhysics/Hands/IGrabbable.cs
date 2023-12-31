@@ -21,14 +21,6 @@ namespace XrCore.XrPhysics.Hands
 
         public bool IsPrimaryGrab(HandSide handType);
 
-        public void OnMainButtonDown(HandSide handType);
-
-        public void OnMainButtonUp(HandSide handType);
-
-        public void TriggerDown(HandSide handType);
-
-        public void TriggerUp(HandSide handType);
-
         public HandPose GetTargetPose(HandSide handType);
     }
 }

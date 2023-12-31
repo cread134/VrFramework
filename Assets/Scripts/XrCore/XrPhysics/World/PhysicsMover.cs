@@ -13,7 +13,6 @@ namespace XrCore.XrPhysics.World
             this._rigidbody = rigidbody;
         }
 
-        Vector3 positionStoredIntegration;
         Vector3 positionError;
         Vector3 lastPositionError;
         public void PhysicsMatchHandPosition(Vector3 targetPosition)
@@ -27,11 +26,8 @@ namespace XrCore.XrPhysics.World
 
             lastPositionError = positionError;
 
-            positionStoredIntegration += (positionError * Time.fixedDeltaTime);
-
-            Vector3 force = positionProportion + positionStoredIntegration + positionDerivative;
-            // Debug.Log("pid force " + force);
-            _rigidbody.AddForce(force);
+            Vector3 force = positionProportion + positionDerivative;
+            _rigidbody.AddForce(force, ForceMode.VelocityChange);
         }
 
         private Quaternion rotationError;

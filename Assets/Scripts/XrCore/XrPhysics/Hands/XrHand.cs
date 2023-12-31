@@ -38,7 +38,7 @@ namespace XrCore.XrPhysics.Hands
         [SerializeField] private LayerMask collisionMask;
         [SerializeField] private float collisionRadius = 0.1f;
         [Space]
-        [SerializeField] private Collider handCollider;
+        [SerializeField] private HandCollider handCollider;
 
         private float m_gripValue = 0f;
         private float m_triggerValue = 0f;
@@ -142,14 +142,15 @@ namespace XrCore.XrPhysics.Hands
         private bool isGrabbing;
         private void ObserveGrabbable()
         {
-            var found = Physics.OverlapSphere(grabCentre.position, grabRadius, grabMask, QueryTriggerInteraction.Ignore)?
-                .OrderBy(c => Vector3.Distance(c.transform.position, grabCentre.position))?
-                .ToArray()?
-                .First();
+            var found = Physics.OverlapSphere(grabCentre.position, grabRadius, grabMask, QueryTriggerInteraction.Ignore);
 
-            if (found != null)
+            if (found != null && found.Length > 0)
             {
-                if (found.gameObject.TryGetComponent<IGrabbable>(out IGrabbable grabbable) && grabbable.CanBeGrabbed(transform.position, transform.rotation, handType))
+                var first = found.OrderBy(c => Vector3.Distance(c.transform.position, grabCentre.position))?
+                    .ToArray()?
+                    .First();
+
+                if (first.gameObject.TryGetComponent<IGrabbable>(out IGrabbable grabbable) && grabbable.CanBeGrabbed(transform.position, transform.rotation, handType))
                 {
                     grabbable.GetHandPosition(handType, transform.position, transform.forward, transform.up, out Vector3 targetPos, out Quaternion targetRot);
                     if (Vector3.Distance(grabCentre.position, targetPos) < grabRadius)
@@ -190,15 +191,7 @@ namespace XrCore.XrPhysics.Hands
 
         private void SetHandCollision(bool collisionOn)
         {
-            //handCollider.enabled = collisionOn;
-            if (collisionOn)
-            {
-                handCollider.gameObject.layer = 10;
-            }
-            else
-            {
-                handCollider.gameObject.layer = 11;
-            }
+            handCollider.SetColliderActive(collisionOn);
         }
 
         private void UpdateGrabbedObject()

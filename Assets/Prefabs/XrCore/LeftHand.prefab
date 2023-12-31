@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4755880045041652006}
-  - component: {fileID: 1609840447410756840}
+  - component: {fileID: 1354681248752959616}
   m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
@@ -64,27 +64,19 @@ Transform:
   m_Father: {fileID: 5130014623328235282}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1609840447410756840
-BoxCollider:
+--- !u!114 &1354681248752959616
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2326264076704237751}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.048462793, y: 0.09107113, z: 0.17521596}
-  m_Center: {x: -0.043749727, y: -0.019712806, z: -0.004057765}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b231a727a63627543959232dc820154c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders: []
 --- !u!1 &6053166117021991632
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,9 +174,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 129
   collisionRadius: 0.1
-  handCollider: {fileID: 1609840447410756840}
+  handCollider: {fileID: 1354681248752959616}
   grabThreshold: 0.9
-  grabIndicator: {fileID: 6053166117021991632}
 --- !u!54 &8194528101845556493
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -357,7 +348,7 @@ PrefabInstance:
     - target: {fileID: 892798016201922469, guid: 67d2ee2e3841b0d42a3507e25f65c804,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 892798016201922469, guid: 67d2ee2e3841b0d42a3507e25f65c804,
         type: 3}
@@ -372,7 +363,7 @@ PrefabInstance:
     - target: {fileID: 892798016201922469, guid: 67d2ee2e3841b0d42a3507e25f65c804,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 892798016201922469, guid: 67d2ee2e3841b0d42a3507e25f65c804,
         type: 3}
@@ -387,7 +378,7 @@ PrefabInstance:
     - target: {fileID: 892798016201922469, guid: 67d2ee2e3841b0d42a3507e25f65c804,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4128068337885598907, guid: 67d2ee2e3841b0d42a3507e25f65c804,
         type: 3}

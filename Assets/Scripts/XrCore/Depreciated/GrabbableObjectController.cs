@@ -42,12 +42,10 @@ public class GrabbableObjectController : MonoBehaviour, IGrabbable
 
     public void OnMainButtonDown(HandSide handType)
     {
-        targetObject.OnMainButtonDown(handType);
     }
 
     public void OnMainButtonUp(HandSide handType)
     {
-        targetObject.OnMainButtonUp(handType);
     }
 
     public void StartGrab(HandSide handType)
@@ -57,12 +55,10 @@ public class GrabbableObjectController : MonoBehaviour, IGrabbable
 
     public void TriggerDown(HandSide handType)
     {
-        targetObject.TriggerDown(handType);
     }
 
     public void TriggerUp(HandSide handType)
     {
-        targetObject.TriggerUp(handType);
     }
 
     public void UpdateTargetValues(HandSide handType, Vector3 targetPosition, Quaternion targetRotation, Vector3 targetUp)
