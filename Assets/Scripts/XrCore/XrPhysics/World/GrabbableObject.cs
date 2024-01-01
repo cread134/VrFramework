@@ -253,5 +253,19 @@ namespace XrCore.XrPhysics.World
         {
             return storedHandInformation[handType]._handPose;
         }
+
+        private List<IGrabObjectEvents> grabObjectEvents = new List<IGrabObjectEvents>();
+        public void SubscribeEvents(IGrabObjectEvents events)
+        {
+            grabObjectEvents.Add(events);
+        }
+
+        public void InvokeGrabEvent()
+        {
+            foreach (var item in grabObjectEvents)
+            {
+
+            }
+        }
     }
 }
