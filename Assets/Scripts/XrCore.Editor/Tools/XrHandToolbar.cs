@@ -33,7 +33,6 @@ namespace XrCore.Tools.Editor
 
         void AccessHandCore(HandSide handSide)
         {
-            Debug.Log($"accessing hand {handSide}");
             var context = GameObject.FindFirstObjectByType<XrContext>();
             var hand = context?.GetController(handSide);
             if (hand != null)

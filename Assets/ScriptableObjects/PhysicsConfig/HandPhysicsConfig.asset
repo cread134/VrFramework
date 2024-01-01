@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8724d40ecc6b8e44b04ee1bd3b0f547, type: 3}
   m_Name: HandPhysicsConfig
   m_EditorClassIdentifier: 
-  positionDifferenceMatchForce: 11.28
-  positionErrorMatchForce: 37.06
-  positionSmoothing: 20
+  positionDifferenceMatchForce: 15
+  positionErrorMatchForce: 30
+  positionSmoothing: 40
   positionVelocityMultipler: 58
-  positionIntegrationCompenstation: 33.6
+  positionIntegrationCompenstation: 20
   rotationProportionalGain: 64.6
   torqueDamping: 0.75
   rotationMultiplier: 10

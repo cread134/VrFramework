@@ -48,7 +48,6 @@ namespace XrCore.XrPhysics.Hands
         [SerializeField] private float grabThreshold = 0.8f;
         private bool handClosed = false;
 
-        private bool inPhysicsRange;
         private PhysicsMover _mover;
 
         private void Start()
@@ -219,7 +218,6 @@ namespace XrCore.XrPhysics.Hands
         private void MoveHand()
         {
             if (rb.isKinematic) rb.isKinematic = false;
-            inPhysicsRange = Physics.CheckSphere(transform.position, collisionRadius, collisionMask, QueryTriggerInteraction.Ignore);
             if (Vector3.Distance(transform.position, trackingTarget.position) > maxAllowedHandDistance)
             {
                 MoveHandKinematic();
@@ -261,12 +259,6 @@ namespace XrCore.XrPhysics.Hands
             {
                 Gizmos.color = Color.Lerp(Color.green, Color.red, m_gripValue);
                 Gizmos.DrawWireSphere(grabCentre.position, grabRadius);
-            }
-
-            if (!inPhysicsRange)
-            {
-                Gizmos.color = new Color(1f, 0, 0f, 0.3f);
-                Gizmos.DrawWireSphere(transform.position, collisionRadius);
             }
 
             if(CanGrab)
