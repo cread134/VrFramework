@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XrCore.XrPhysics.Hands.Posing;
+using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -22,5 +23,6 @@ namespace XrCore.XrPhysics.Hands
         public bool IsPrimaryGrab(HandSide handType);
 
         public HandPose GetTargetPose(HandSide handType);
+        public IGrabObjectEvents[] GetSubscribers();
     }
 }

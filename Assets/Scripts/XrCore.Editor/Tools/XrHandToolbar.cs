@@ -1,31 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Toolbars;
-using UnityEngine;
-using UnityEditor.Overlays;
-using UnityEngine.UIElements;
 using Core.Extensions;
-using XrCore.XrPhysics.Hands;
+using System;
+using UnityEditor;
+using UnityEditor.Overlays;
+using UnityEngine;
+using UnityEngine.UIElements;
 using XrCore.Context;
-using static UnityEngine.GraphicsBuffer;
-using System.Linq;
+using XrCore.Interaction.Control;
+using XrCore.XrPhysics.Hands;
 
-namespace XrCore.Tools.Editor
+namespace XrCore.Tools
 {
     [Overlay(typeof(SceneView), "Xr Controls", true)]
     public class XrHandToolbar : Overlay
     {
+        public override void OnCreated()
+        {
+            Selection.selectionChanged += OnSelectedChanged;
+        }
+
+        public override void OnWillBeDestroyed()
+        {
+            Selection.selectionChanged -= OnSelectedChanged;
+        }
+
         public override VisualElement CreatePanelContent()
         {
+
             var root = new VisualElement() { name = "Xr Toolbar" };
             root.AddHeader("XR TOOLS");
 
             root.AddButton("RightHand", AccessRightHand);
             root.AddButton("LeftHand", AccessLeftHand);
 
+            if (Selection.activeGameObject != null && Selection.activeGameObject.TryGetComponent<HandController>(out var controller))
+            {
+                root.AddHeader("Controls");
+                
+            }
             return root;
 
+        }
+
+        void OnSelectedChanged()
+        {
+            if(Selection.activeGameObject != null)
+            {
+                CreatePanelContent();
+            }
         }
 
         void AccessRightHand() => AccessHandCore(HandSide.Right);

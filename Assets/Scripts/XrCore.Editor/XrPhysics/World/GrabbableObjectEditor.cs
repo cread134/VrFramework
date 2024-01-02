@@ -12,7 +12,7 @@ using UnityEditor.SceneManagement;
 namespace XrCore.XrPhysics.World.Editor
 {
     [CustomEditor(typeof(GrabbableObject))]
-    public class GrabbableObjectInspector : UnityEditor.Editor
+    public class GrabbableObjectEditor : UnityEditor.Editor
     {
         public override VisualElement CreateInspectorGUI()
         {

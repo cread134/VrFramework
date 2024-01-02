@@ -9,6 +9,7 @@ using Core.DI;
 using Core.Logging;
 using XrCore.XrPhysics.World;
 using System.Linq;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -59,25 +60,6 @@ namespace XrCore.XrPhysics.Hands
         }
 
         public float ReadGripValue() { return m_gripValue; }
-        public void UpdateGripValue(float value)
-        {
-            m_gripValue = value;
-            if (m_gripValue > grabThreshold)
-            {
-                if (!handClosed)
-                {
-                    OnGrab();
-                }
-            }
-            else
-            {
-                if (handClosed)
-                {
-                    OnRelease();
-                }
-            }
-            OnGripUpdate();
-        }
 
         private void OnGrab()
         {
@@ -98,14 +80,14 @@ namespace XrCore.XrPhysics.Hands
                 currentGrab.OnGrabRelease(handType);
             }
             currentGrab = null;
-            isGrabbing = false;
+            isGrabbingObject = false;
 
             SetHandCollision(true);
         }
 
         private void OnGripUpdate()
         {
-            if (!isGrabbing)
+            if (!isGrabbingObject)
             {
                 var poseIdle = idlePose.HandPose;
                 var poseGrip = gripPose.HandPose;
@@ -118,7 +100,7 @@ namespace XrCore.XrPhysics.Hands
         }
         private void Update()
         {
-            if (!isGrabbing)
+            if (!isGrabbingObject)
             {
                 MoveHand();
             }
@@ -138,7 +120,7 @@ namespace XrCore.XrPhysics.Hands
         private bool overTarget = false;
         private IGrabbable grabHover;
         private IGrabbable currentGrab;
-        private bool isGrabbing;
+        private bool isGrabbingObject;
         private void ObserveGrabbable()
         {
             var found = Physics.OverlapSphere(grabCentre.position, grabRadius, grabMask, QueryTriggerInteraction.Ignore);
@@ -183,7 +165,7 @@ namespace XrCore.XrPhysics.Hands
             loggingService.Log("started Grabbing " + grabHover.ToString());
             grabHover.StartGrab(handType);
             currentGrab = grabHover;
-            isGrabbing = true;
+            isGrabbingObject = true;
             poseHand.UpdateHandPose(currentGrab.GetTargetPose(handType));
             SetHandCollision(false);
         }
@@ -195,7 +177,7 @@ namespace XrCore.XrPhysics.Hands
 
         private void UpdateGrabbedObject()
         {
-            if (isGrabbing && currentGrab != null)
+            if (isGrabbingObject && currentGrab != null)
             {
                 currentGrab.UpdateTargetValues(handType, trackingTarget.position, trackingTarget.rotation, trackingTarget.up);
                 if (currentGrab.IsPrimaryGrab(handType))
@@ -268,22 +250,65 @@ namespace XrCore.XrPhysics.Hands
             }
         }
 
-
-        public void UpdateGrip(float newValue) => UpdateGripValue(newValue);
+        public void UpdateGrip(float newValue)
+        {
+            float oldvalue = m_gripValue;
+            m_gripValue = newValue;
+            if (m_gripValue > grabThreshold)
+            {
+                if (!handClosed)
+                {
+                    OnGrab();
+                }
+            }
+            else
+            {
+                if (handClosed)
+                {
+                    OnRelease();
+                }
+            }
+            OnGripUpdate();
+            if(isGrabbingObject)
+            {
+                var eventSubscribers = currentGrab.GetSubscribers();
+                foreach (var item in eventSubscribers)
+                {
+                    item.OnGripChange(newValue, oldvalue);
+                }
+            }
+        }
 
         public void UpdateTrigger(float newValue)
         {
+            float oldValue = m_triggerValue;
 
+            if (!isGrabbingObject) return;
+            var eventSubscribers = currentGrab.GetSubscribers();
+            foreach (var item in eventSubscribers)
+            {
+                item.OnGripChange(newValue, oldValue);
+            }
         }
 
         public void OnMainButtonDown()
         {
-
+            if (!isGrabbingObject) return;
+            var eventSubscribers = currentGrab.GetSubscribers();
+            foreach (var item in eventSubscribers)
+            {
+                item.OnMainDown();
+            }
         }
 
         public void OnMainButtonUp()
         {
-
+            if (!isGrabbingObject) return;
+            var eventSubscribers = currentGrab.GetSubscribers();
+            foreach (var item in eventSubscribers)
+            {
+                item.OnMainUp();
+            }
         }
 
         public void OnSecondaryButtonDown()

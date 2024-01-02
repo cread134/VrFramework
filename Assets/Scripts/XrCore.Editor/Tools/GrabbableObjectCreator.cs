@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using XrCore.XrPhysics.World;
 
 namespace XrCore.Tools.Editor
@@ -21,7 +20,7 @@ namespace XrCore.Tools.Editor
             CreateGrabbableObjectCore();
         }
 
-        static void CreateGrabbableObjectCore()
+        static GrabbableObject CreateGrabbableObjectCore()
         {
             GameObject instance = ObjectFactory.CreateGameObject("GrabbableObject", typeof(GrabbableObject));
 
@@ -30,6 +29,7 @@ namespace XrCore.Tools.Editor
             Selection.activeGameObject = instance;
 
             EditorUtility.SetDirty(instance);
+            return grabObject;
         }
     }
 }

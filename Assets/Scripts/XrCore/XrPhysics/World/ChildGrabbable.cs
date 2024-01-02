@@ -16,6 +16,9 @@ namespace XrCore.XrPhysics.World
         public void GetHandPosition(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
             => grabbableObject.GetHandPosition(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
 
+        public IGrabObjectEvents[] GetSubscribers()
+            => grabbableObject.GetSubscribers();
+
         public HandPose GetTargetPose(HandSide handType)
             => grabbableObject.GetTargetPose(handType);
 

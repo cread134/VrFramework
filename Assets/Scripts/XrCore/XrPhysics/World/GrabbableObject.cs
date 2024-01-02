@@ -115,6 +115,11 @@ namespace XrCore.XrPhysics.World
             }
             _rigidbody.centerOfMass = _rigidbody.transform.InverseTransformPoint(storedHandInformation[handType].GetStoredTransfromValues().position);
             _rigidbody.useGravity = false;
+
+            foreach (var item in GetSubscribers())
+            {
+                item.OnGripStarted();
+            }
         }
         public void OnGrabRelease(HandSide handType)
         {
@@ -126,6 +131,11 @@ namespace XrCore.XrPhysics.World
             }
 
             CheckToResetGrabValues();
+
+            foreach (var item in GetSubscribers())
+            {
+                item.OnGripFinished();
+            }
         }
 
         #endregion
@@ -254,18 +264,17 @@ namespace XrCore.XrPhysics.World
             return storedHandInformation[handType]._handPose;
         }
 
+        #region transmittingEvents
         private List<IGrabObjectEvents> grabObjectEvents = new List<IGrabObjectEvents>();
         public void SubscribeEvents(IGrabObjectEvents events)
         {
             grabObjectEvents.Add(events);
         }
 
-        public void InvokeGrabEvent()
+        public IGrabObjectEvents[] GetSubscribers()
         {
-            foreach (var item in grabObjectEvents)
-            {
-
-            }
+            return grabObjectEvents.ToArray();
         }
+        #endregion
     }
 }

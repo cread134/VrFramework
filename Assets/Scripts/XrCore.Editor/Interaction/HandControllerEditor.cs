@@ -27,28 +27,8 @@ namespace XrCore.Interaction.Editor
             root.Add(new PropertyField(serializedObject.FindProperty("gripAction")));
             root.Add(new PropertyField(serializedObject.FindProperty("triggerActionProperty")));
 
-            var gripSlider = new Slider
-            {
-                bindingPath = "gripValue",
-                highValue = 1f,
-                lowValue = 0f,
-                showMixedValue = true,
-            };
-            gripSlider.label = $"GripValue {gripSlider.value}";
-            gripSlider.RegisterCallback<ChangeEvent<float>>(OnGripSliderChange);
-
-            var triggerSlider = new Slider
-            {
-                bindingPath = "triggerValue",
-                highValue = 1f,
-                lowValue = 0f,
-                showMixedValue = true,
-            };
-            triggerSlider.label = $"TriggerValue {triggerSlider.value}";
-            triggerSlider.RegisterCallback<ChangeEvent<float>>(OnTriggerSliderChange);
-
-            root.Add(gripSlider);
-            root.Add(triggerSlider);
+            root.AddSlider("Grip", 1f, 0f, serializedObject.FindProperty("gripValue"), OnGripSliderChange);
+            root.AddSlider("Trigger", 1f, 0f, serializedObject.FindProperty("triggerValue"), OnTriggerSliderChange);
 
             var rootButton = new Button
             {
@@ -68,7 +48,7 @@ namespace XrCore.Interaction.Editor
         void OnGripSliderChange(ChangeEvent<float> changeEvent)
         {
             var element = (Slider)changeEvent.target;
-            element.label = $"GripValue {changeEvent.newValue}";
+            element.label = $"Grip {changeEvent.newValue}";
 
             HandController handController = (HandController)target;
             handController.UpdateGrip(changeEvent.newValue);
@@ -77,7 +57,7 @@ namespace XrCore.Interaction.Editor
         void OnTriggerSliderChange(ChangeEvent<float> changeEvent)
         {
             var element = (Slider)changeEvent.target;
-            element.label = $"GripValue {changeEvent.newValue}";
+            element.label = $"Trigger {changeEvent.newValue}";
 
             HandController handController = (HandController)target;
             handController.UpdateTrigger(changeEvent.newValue);
