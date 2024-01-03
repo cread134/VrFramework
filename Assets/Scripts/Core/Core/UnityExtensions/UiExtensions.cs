@@ -18,6 +18,15 @@ namespace Core.Extensions
             return headerLabel;
         }
 
+        public static Label AddSubtitle(this VisualElement element, string text)
+        {
+            var subtitleLabel = new Label(text);
+            subtitleLabel.style.fontSize = 14;
+            subtitleLabel.style.unityFontStyleAndWeight = FontStyle.Italic;
+            element.Add(subtitleLabel);
+            return subtitleLabel;
+        }
+
         public static Button AddButton(this VisualElement element, string text, Action action)
         {
             var button = new Button();

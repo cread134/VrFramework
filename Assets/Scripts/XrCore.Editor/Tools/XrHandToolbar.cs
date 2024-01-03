@@ -13,40 +13,71 @@ namespace XrCore.Tools
     [Overlay(typeof(SceneView), "Xr Controls", true)]
     public class XrHandToolbar : Overlay
     {
-        public override void OnCreated()
-        {
-            Selection.selectionChanged += OnSelectedChanged;
-        }
-
-        public override void OnWillBeDestroyed()
-        {
-            Selection.selectionChanged -= OnSelectedChanged;
-        }
+        bool leftOpen;
+        bool rightOpen;
 
         public override VisualElement CreatePanelContent()
         {
 
             var root = new VisualElement() { name = "Xr Toolbar" };
+            var context = GameObject.FindFirstObjectByType<XrContext>();
+            if(context == null )
+            {
+                root.AddHeader("No XrContext found");
+                return root;
+            }
+
             root.AddHeader("XR TOOLS");
 
-            root.AddButton("RightHand", AccessRightHand);
-            root.AddButton("LeftHand", AccessLeftHand);
-
-            if (Selection.activeGameObject != null && Selection.activeGameObject.TryGetComponent<HandController>(out var controller))
-            {
-                root.AddHeader("Controls");
-                
-            }
+            root.Add(CreateHandElement(HandSide.Right, context));
+            root.Add(CreateHandElement(HandSide.Left, context));
             return root;
 
         }
 
-        void OnSelectedChanged()
+        VisualElement CreateHandElement(HandSide handSide, XrContext context)
         {
-            if(Selection.activeGameObject != null)
+            var root = new VisualElement();
+            var hand = context?.GetController(handSide);
+            var controlsOpen = handSide == HandSide.Right ? rightOpen : leftOpen;
+
+            var horizontalBox = new VisualElement();
+            horizontalBox.style.alignContent = Align.FlexStart;
+            horizontalBox.style.flexDirection = FlexDirection.Row;
+            horizontalBox.AddButton($"{handSide}Hand", AccessRightHand);
+            var controlsButton = horizontalBox.AddButton("Ctrl", () =>
             {
-                CreatePanelContent();
+                if (handSide == HandSide.Right)
+                {
+                    rightOpen = !rightOpen;
+                }
+                else
+                {
+                    leftOpen = !leftOpen;
+                }
+                Repaint();
+            });
+
+            root.Add(horizontalBox);
+            if (controlsOpen)
+            {
+                controlsButton.style.backgroundColor = Color.grey;
+                root.AddSubtitle($"Controls {handSide}");
             }
+
+            return root;
+        }
+
+        void Repaint()
+        {
+            //this fucking sucks, but its the only way to repaint :(
+            collapsed = true;
+            collapsed = false;
+        }
+
+        VisualElement CreateControlsElement(IXrHandControls controls)
+        {
+            return new VisualElement() { name = "ControlsRight" };
         }
 
         void AccessRightHand() => AccessHandCore(HandSide.Right);
