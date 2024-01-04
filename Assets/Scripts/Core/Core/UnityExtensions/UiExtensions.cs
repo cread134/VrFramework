@@ -38,11 +38,14 @@ namespace Core.Extensions
         }
 
         #region slider
-        public static Slider AddSlider(this VisualElement element, string text, float maxValue, float minValue, EventCallback<ChangeEvent<float>> action)
+        public static Slider AddSlider(this VisualElement element, string text, float maxValue, float minValue, EventCallback<ChangeEvent<float>> action, float? value = null)
         {
             var slider = CreateSlider(text, maxValue, minValue);
             slider.RegisterCallback(action);
-
+            if(value != null)
+            {
+                slider.value = (float)value;
+            }
             element.Add(slider);
             return slider;
         }

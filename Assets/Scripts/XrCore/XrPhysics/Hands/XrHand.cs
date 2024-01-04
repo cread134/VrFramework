@@ -59,7 +59,6 @@ namespace XrCore.XrPhysics.Hands
             _mover = new PhysicsMover(physicsConfig, rb);
         }
 
-        public float ReadGripValue() { return m_gripValue; }
 
         private void OnGrab()
         {
@@ -192,8 +191,6 @@ namespace XrCore.XrPhysics.Hands
             }
         }
 
-
-
         #endregion
 
         #region handMovement
@@ -291,6 +288,9 @@ namespace XrCore.XrPhysics.Hands
             }
         }
 
+        public float ReadGrip() => m_gripValue;
+        public float ReadTrigger() => m_triggerValue;
+
         public void OnMainButtonDown()
         {
             if (!isGrabbingObject) return;
@@ -318,7 +318,7 @@ namespace XrCore.XrPhysics.Hands
 
         public void OnSecondaryButtonUp()
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }

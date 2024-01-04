@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using XrCore.Context;
 using XrCore.Interaction.Control;
 using XrCore.XrPhysics.Hands;
+using static UnityEngine.GraphicsBuffer;
 
 namespace XrCore.Tools
 {
@@ -38,13 +39,28 @@ namespace XrCore.Tools
         VisualElement CreateHandElement(HandSide handSide, XrContext context)
         {
             var root = new VisualElement();
-            var hand = context?.GetController(handSide);
-            var controlsOpen = handSide == HandSide.Right ? rightOpen : leftOpen;
+
+            var controller = context.GetController(handSide);
+            var controlsOpen = rightOpen;
+            Action accessAction = AccessRightHand;
+            Action mainButtonAction = OnRightMainButton;
+            Action secondaryButtonAction = OnRightSecondaryButton;
+            EventCallback<ChangeEvent<float>> gripAction = OnRightGripChange;
+            EventCallback<ChangeEvent<float>> triggerAction = OnRightTriggerChange;
+            if (handSide == HandSide.Left)
+            {
+                controlsOpen = leftOpen;
+                accessAction = AccessLeftHand;
+                mainButtonAction = OnLeftMainButton;
+                secondaryButtonAction = OnLeftSecondaryButton;
+                gripAction = OnLeftGripChange;
+                triggerAction = OnLeftTriggerChange;
+            }
 
             var horizontalBox = new VisualElement();
             horizontalBox.style.alignContent = Align.FlexStart;
             horizontalBox.style.flexDirection = FlexDirection.Row;
-            horizontalBox.AddButton($"{handSide}Hand", AccessRightHand);
+            horizontalBox.AddButton($"{handSide}Hand", accessAction);
             var controlsButton = horizontalBox.AddButton("Ctrl", () =>
             {
                 if (handSide == HandSide.Right)
@@ -61,23 +77,82 @@ namespace XrCore.Tools
             root.Add(horizontalBox);
             if (controlsOpen)
             {
+                root.style.width = 300;
                 controlsButton.style.backgroundColor = Color.grey;
                 root.AddSubtitle($"Controls {handSide}");
+                root.AddSlider("Grip", 1f, 0f, gripAction, controller.ReadGrip());
+                root.AddSlider("Trigger", 1f, 0f, triggerAction, controller.ReadTrigger());
+                root.AddButton("MainButton", mainButtonAction);
+                root.AddButton("SecondaryButton", secondaryButtonAction);
             }
 
             return root;
         }
+
+        #region updateGrip
+        void OnRightGripChange(ChangeEvent<float> changeEvent) => OnGripSliderChange(changeEvent, HandSide.Right);
+        void OnLeftGripChange(ChangeEvent<float> changeEvent) => OnGripSliderChange(changeEvent, HandSide.Left);
+        void OnGripSliderChange(ChangeEvent<float> changeEvent, HandSide side)
+        {
+            var context = GameObject.FindFirstObjectByType<XrContext>();
+            if (context == null) return;
+
+            var element = (Slider)changeEvent.target;
+            element.label = $"Grip {changeEvent.newValue}";
+
+            var handController = context.GetController(side);
+            handController.UpdateGrip(changeEvent.newValue);
+        }
+        #endregion
+
+        #region updateTrigger
+
+        void OnLeftTriggerChange(ChangeEvent<float> changeEvent) => OnTriggerSliderChange(changeEvent, HandSide.Right);
+        void OnRightTriggerChange(ChangeEvent<float> changeEvent) => OnTriggerSliderChange(changeEvent, HandSide.Left);
+        void OnTriggerSliderChange(ChangeEvent<float> changeEvent, HandSide side)
+        {
+            var context = GameObject.FindFirstObjectByType<XrContext>();
+            if (context == null) return;
+
+            var element = (Slider)changeEvent.target;
+            element.label = $"Trigger {changeEvent.newValue}";
+
+            var handController = context.GetController(side);
+            handController.UpdateTrigger(changeEvent.newValue);
+        }
+        #endregion
+
+        #region mainButton
+        void OnRightMainButton() => OnMainButtonPressed(HandSide.Right);
+        void OnLeftMainButton() => OnMainButtonPressed(HandSide.Left);
+        void OnMainButtonPressed(HandSide handSide)
+        {
+            var context = GameObject.FindFirstObjectByType<XrContext>();
+            if (context == null) return;
+            var controller = context.GetController(handSide);
+
+            controller.OnMainButtonDown();
+        }
+        #endregion
+
+        #region secondaryButton
+        void OnRightSecondaryButton() => OnSecondaryButtonPressed(HandSide.Right);
+        void OnLeftSecondaryButton() => OnSecondaryButtonPressed(HandSide.Left);
+        void OnSecondaryButtonPressed(HandSide handSide)
+        {
+            var context = GameObject.FindFirstObjectByType<XrContext>();
+            if (context == null) return;
+            var controller = context.GetController(handSide);
+
+            controller.OnSecondaryButtonDown();
+        }
+        #endregion
 
         void Repaint()
         {
             //this fucking sucks, but its the only way to repaint :(
             collapsed = true;
             collapsed = false;
-        }
-
-        VisualElement CreateControlsElement(IXrHandControls controls)
-        {
-            return new VisualElement() { name = "ControlsRight" };
         }
 
         void AccessRightHand() => AccessHandCore(HandSide.Right);

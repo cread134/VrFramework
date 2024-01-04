@@ -32,21 +32,29 @@ namespace XrCore.Interaction.Control
         public GameObject ControllerRoot => xrHand.gameObject ?? gameObject;
         private IXrHandControls controls => xrHand;
 
-        public float gripValue = 0f;
-        public float triggerValue = 0f;
-
         public void UpdateGrip(InputAction.CallbackContext callbackContext) => UpdateGrip(callbackContext.ReadValue<float>());
         public void UpdateGrip(float newValue) => controls.UpdateGrip(newValue);
-
+        public float ReadGrip() => controls.ReadGrip();
         public void UpdateTrigger(InputAction.CallbackContext callbackContext) => UpdateTrigger(callbackContext.ReadValue<float>());
         public void UpdateTrigger(float newValue) => controls.UpdateTrigger(newValue);
+        public float ReadTrigger() => controls.ReadTrigger();
 
         public void OnMainButtonDown(InputAction.CallbackContext callbackContext) => OnMainButtonDown();
-        public void OnMainButtonDown() => controls.OnMainButtonDown();
+        public void OnMainButtonDown()
+        {
+            Debug.Log("Main input recieved");
+            controls.OnMainButtonDown();
+        }
+
         public void OnMainButtonUp(InputAction.CallbackContext callbackContext) => OnMainButtonUp();
         public void OnMainButtonUp() => controls.OnMainButtonUp();
         public void OnSecondaryButtonDown(InputAction.CallbackContext callbackContext) => OnSecondaryButtonDown();
-        public void OnSecondaryButtonDown() => controls.OnSecondaryButtonDown();
+        public void OnSecondaryButtonDown()
+        {
+            Debug.Log("Secondary input recieved");
+            controls.OnSecondaryButtonDown();
+        }
+
         public void OnSecondaryButtonUp(InputAction.CallbackContext callbackContext) => OnSecondaryButtonUp();
         public void OnSecondaryButtonUp() => controls.OnSecondaryButtonUp();
     }
@@ -54,7 +62,9 @@ namespace XrCore.Interaction.Control
     public interface IXrHandControls
     {
         public void UpdateGrip(float newValue);
+        public float ReadGrip();
         public void UpdateTrigger(float newValue);
+        public float ReadTrigger();
         public void OnMainButtonDown();
         public void OnMainButtonUp();
         public void OnSecondaryButtonDown();
