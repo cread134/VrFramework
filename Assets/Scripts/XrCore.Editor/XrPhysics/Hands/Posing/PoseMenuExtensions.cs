@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace XrCore.XrPhysics.Hands.Posing.Editor
+namespace XrCore.XrPhysics.Hands.Posing
 {
     public class PoseMenuExtensions 
     {

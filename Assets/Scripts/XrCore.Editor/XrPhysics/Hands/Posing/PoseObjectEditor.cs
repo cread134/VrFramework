@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
-using Unity.VisualScripting;
 
-namespace XrCore.XrPhysics.Hands.Posing.Editor
+namespace XrCore.XrPhysics.Hands.Posing
 {
     [CustomEditor(typeof(PoseObject))]
-    public class PoseObjectInspector : UnityEditor.Editor
+    public class PoseObjectEditor : Editor
     {
         public override VisualElement CreateInspectorGUI()
         {

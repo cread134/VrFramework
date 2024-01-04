@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 using XrCore.XrPhysics.Hands.Posing;
 
 
-namespace XrCore.XrPhysics.Hands.Posing.Editor
+namespace XrCore.XrPhysics.Hands.Posing
 {
     [CustomEditor(typeof(DirectGrabRegion))]
     public class DirectGrabRegionEditor : HandTransformReferenceEditor

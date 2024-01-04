@@ -7,7 +7,7 @@ using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace XrCore.XrPhysics.Hands.Posing.Editor
+namespace XrCore.XrPhysics.Hands.Posing
 {
     public class PoseEditor : EditorWindow
     {

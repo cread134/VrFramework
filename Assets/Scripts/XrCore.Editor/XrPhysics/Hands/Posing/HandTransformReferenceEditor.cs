@@ -12,7 +12,7 @@ using UnityEngine.UIElements;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
 
-namespace XrCore.XrPhysics.Hands.Posing.Editor
+namespace XrCore.XrPhysics.Hands.Posing
 {
     [CustomEditor(typeof(HandTransformReference))]
     public class HandTransformReferenceEditor : UnityEditor.Editor
