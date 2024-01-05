@@ -8,7 +8,7 @@ using XrCore.XrPhysics.Hands.Posing;
 
 namespace XrCore.XrPhysics.World
 {
-
+    [SelectionBase]
     [RequireComponent(typeof(Rigidbody))]
     public class GrabbableObject : MonoBehaviour, IGrabbable
     {
@@ -113,7 +113,7 @@ namespace XrCore.XrPhysics.World
             {
                 primaryGrabSide = handType;
             }
-            _rigidbody.centerOfMass = _rigidbody.transform.InverseTransformPoint(storedHandInformation[handType].GetStoredTransfromValues().position);
+            _rigidbody.centerOfMass = _rigidbody.transform.InverseTransformPoint(storedHandInformation[primaryGrabSide].GetStoredTransfromValues().position);
             _rigidbody.useGravity = false;
 
             foreach (var item in GetSubscribers())
@@ -180,10 +180,10 @@ namespace XrCore.XrPhysics.World
         }
 
         private void PhysicsMatchHandPosition(Vector3 targetPosition)
-            => _mover.PhysicsMatchHandPosition(targetPosition);
+            => _mover.PhysicsMatchPosition(targetPosition);
 
         private void PhysicsMatchHandRotation(Quaternion targetRotation)
-            => _mover.PhysicsMatchHandRotation(targetRotation);
+            => _mover.PhysicsMatchRotation(targetRotation);
 
 
         #region calculating target values

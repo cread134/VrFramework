@@ -42,7 +42,7 @@ namespace XrCore.XrPhysics.Hands.Posing
             poseRefereceObj.SetBoneVisibility(false);
             poseRefereceObj.SetHandVisibility(true, targetSide);
             poseRefereceObj.SetHandTransform(baseObject.transform.position, baseObject.transform.rotation, targetSide);
-
+            poseRefereceObj.editorOnly = true;
         }
 
         public override VisualElement CreateInspectorGUI()

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Body
 {
@@ -11,10 +12,12 @@ namespace XrCore.XrPhysics.Body
         [SerializeReference] private XrObjectPhysicsConfig physicsSettings;
 
         private Rigidbody _rigidbody;
+        PhysicsMover _physicsMover;
 
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _physicsMover = new PhysicsMover(physicsSettings, _rigidbody);
         }
 
         // Update is called once per frame
@@ -27,25 +30,9 @@ namespace XrCore.XrPhysics.Body
         {
             MatchTarget();
         }
-        private Vector3 positionError;
-        private Vector3 lastPositionError;
-        private Vector3 positionStoredIntegration;
         void MatchTarget()
         {
-            positionError = trackedTransform.position - _rigidbody.position;
-
-            Vector3 positionProportion = positionError * physicsSettings.positionIntegrationCompenstation;
-
-            Vector3 derivativeGain = (positionError - lastPositionError) / Time.fixedDeltaTime;
-            Vector3 positionDerivative = derivativeGain * physicsSettings.positionSmoothing;
-
-            lastPositionError = positionError;
-
-            positionStoredIntegration += (positionError * Time.fixedDeltaTime);
-
-            Vector3 force = positionProportion + positionStoredIntegration + positionDerivative;
-            // Debug.Log("pid force " + force);
-            _rigidbody.AddForce(force);
+            _physicsMover.PhysicsMatchPosition(trackedTransform.position);
         }
     }
 }

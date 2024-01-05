@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.XR;
 using XrCore.XrPhysics.Hands.Posing;
 using XrCore.XrPhysics.World;
 
@@ -48,6 +49,8 @@ namespace XrCore.XrPhysics.Interaction.Editor
 
             var referenceInstance = instance.AddComponent<DirectGrabRegion>();
             rootObject.AddReferenceTransform(referenceInstance);
+            Selection.activeGameObject = instance;
+            SceneView.lastActiveSceneView.FrameSelected();
 
             UpdateReferencesFromScript();
 

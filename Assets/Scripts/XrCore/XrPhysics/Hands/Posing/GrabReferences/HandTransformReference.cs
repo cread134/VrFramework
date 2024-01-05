@@ -6,6 +6,7 @@ using XrCore.XrPhysics.PhysicsObjects;
 
 namespace XrCore.XrPhysics.Hands.Posing
 {
+    [SelectionBase]
     public abstract class HandTransformReference : MonoBehaviour
     {
         [SerializeField] private HandSide useSide;

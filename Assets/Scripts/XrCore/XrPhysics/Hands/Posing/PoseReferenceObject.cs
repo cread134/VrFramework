@@ -10,8 +10,19 @@ namespace XrCore.XrPhysics.Hands.Posing
     {
         public PosableHandObject rightHandPossable;
         public PosableHandObject leftHandPossable;
+        public bool editorOnly = false;
+
         [SerializeField] private BoneRenderer rightBones;
         [SerializeField] private BoneRenderer leftBones;
+
+        private void Start()
+        {
+            if(editorOnly)
+            {
+                Destroy(gameObject);
+            }
+        }
+
         // [SerializeField] private 
         public PoseObject poseToApply;
         public void ApplyPose(PoseObject pose)

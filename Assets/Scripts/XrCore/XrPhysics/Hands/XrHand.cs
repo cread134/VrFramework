@@ -214,12 +214,12 @@ namespace XrCore.XrPhysics.Hands
 
         private void PhysicsMatchHandPosition()
         {
-            _mover.PhysicsMatchHandPosition(trackingTarget.position);
+            _mover.PhysicsMatchPosition(trackingTarget.position);
         }
 
         private void PhysicsMatchHandRotation()
         {
-            _mover.PhysicsMatchHandRotation(trackingTarget.rotation);
+            _mover.PhysicsMatchRotation(trackingTarget.rotation);
         }
 
         private void MoveHandKinematic()

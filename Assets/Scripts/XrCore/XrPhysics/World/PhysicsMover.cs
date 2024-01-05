@@ -15,7 +15,7 @@ namespace XrCore.XrPhysics.World
 
         Vector3 positionError;
         Vector3 lastPositionError;
-        public void PhysicsMatchHandPosition(Vector3 targetPosition)
+        public void PhysicsMatchPosition(Vector3 targetPosition)
         {
             positionError = targetPosition - _rigidbody.position;
 
@@ -27,14 +27,14 @@ namespace XrCore.XrPhysics.World
             lastPositionError = positionError;
 
             Vector3 force = positionProportion + positionDerivative;
-            _rigidbody.AddForce(force, ForceMode.Force);
+            _rigidbody.AddForce(force * _rigidbody.mass, ForceMode.Force);
         }
 
         private Quaternion rotationError;
         private Quaternion lastRotation;
         private float angleError;
         private Vector3 errorAxis;
-        public void PhysicsMatchHandRotation(Quaternion targetRotation)
+        public void PhysicsMatchRotation(Quaternion targetRotation)
         {
             rotationError = targetRotation * Quaternion.Inverse(_rigidbody.rotation);
 
