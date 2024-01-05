@@ -9,7 +9,6 @@ using Core.DI;
 using Core.Logging;
 using XrCore.XrPhysics.World;
 using System.Linq;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -247,24 +246,11 @@ namespace XrCore.XrPhysics.Hands
             }
         }
 
+        #region InputEvents
         public void UpdateGrip(float newValue)
         {
             float oldvalue = m_gripValue;
             m_gripValue = newValue;
-            if (m_gripValue > grabThreshold)
-            {
-                if (!handClosed)
-                {
-                    OnGrab();
-                }
-            }
-            else
-            {
-                if (handClosed)
-                {
-                    OnRelease();
-                }
-            }
             OnGripUpdate();
             if(isGrabbingObject)
             {
@@ -320,5 +306,44 @@ namespace XrCore.XrPhysics.Hands
         {
 
         }
+
+        public void OnGripDown()
+        {
+            Debug.Log("GripDown");
+            if (!handClosed)
+            {
+                OnGrab();
+            }
+        }
+
+        public void OnGripUp()
+        {
+            Debug.Log("GripUp");
+            if (handClosed)
+            {
+                OnRelease();
+            }
+        }
+
+        public void OnTriggerDown()
+        {
+            if (!isGrabbingObject) return;
+            var eventSubscribers = currentGrab.GetSubscribers();
+            foreach (var item in eventSubscribers)
+            {
+                item.OnTriggerDown();
+            }
+        }
+
+        public void OnTriggerUp()
+        {
+            if (!isGrabbingObject) return;
+            var eventSubscribers = currentGrab.GetSubscribers();
+            foreach (var item in eventSubscribers)
+            {
+                item.OnTriggerUp();
+            }
+        }
+        #endregion
     }
 }

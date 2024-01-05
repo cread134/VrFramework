@@ -1,16 +1,9 @@
 using EditorTools.Scripting;
-using ScriptingResources.Extensions;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using XrCore.XrPhysics.Hands;
-using XrCore.XrPhysics.Hands.Posing;
 
 namespace XrCore.XrPhysics.Hands.Posing
 {

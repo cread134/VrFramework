@@ -15,42 +15,42 @@ namespace Service.Objects
             grabbableObject.SubscribeEvents(this);
         }
 
-        void IGrabObjectEvents.OnGripChange(float oldValue, float newValue)
+        public void OnGripChange(float oldValue, float newValue)
         {
 
         }
 
-        void IGrabObjectEvents.OnGripFinished()
+        public void OnGripFinished()
         {
 
         }
 
-        void IGrabObjectEvents.OnGripStarted()
+        public void OnGripStarted()
         {
 
         }
 
-        void IGrabObjectEvents.OnMainDown()
+        public void OnMainDown()
         {
 
         }
 
-        void IGrabObjectEvents.OnMainUp()
+        public void OnMainUp()
         {
 
         }
 
-        void IGrabObjectEvents.OnTriggerChange(float oldValue, float newValue)
+        public void OnTriggerChange(float oldValue, float newValue)
         {
 
         }
 
-        void IGrabObjectEvents.OnTriggerDown()
+        public void OnTriggerDown()
         {
 
         }
 
-        void IGrabObjectEvents.OnTriggerUp()
+        public void OnTriggerUp()
         {
 
         }

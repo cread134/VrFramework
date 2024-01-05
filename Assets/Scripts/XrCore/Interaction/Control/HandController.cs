@@ -10,48 +10,94 @@ namespace XrCore.Interaction.Control
 {
     public class HandController : MonoBehaviour
     {
-        public InputActionReference MainButtonAction;
-        public InputActionReference SecondaryButtonAction;
-
-        public InputActionProperty gripAction;
-        public InputActionProperty triggerActionProperty;
+        public ControllerConfiguration controllerConfiguration;
 
         private void Start()
         {
-            gripAction.action.performed += UpdateGrip;
-            triggerActionProperty.action.performed += UpdateTrigger;
+            controllerConfiguration.gripAction.action.performed += UpdateGrip;
+            controllerConfiguration.triggerActionProperty.action.performed += UpdateTrigger;
 
-            MainButtonAction.action.performed += OnMainButtonDown;
-            MainButtonAction.action.canceled += OnMainButtonUp;
+            controllerConfiguration.mainButtonAction.action.performed += OnMainButtonDown;
+            controllerConfiguration.mainButtonAction.action.canceled += OnMainButtonUp;
 
-            SecondaryButtonAction.action.performed += OnSecondaryButtonDown;
-            SecondaryButtonAction.action.canceled += OnSecondaryButtonUp;
+            controllerConfiguration.secondaryButtonAction.action.performed += OnSecondaryButtonDown;
+            controllerConfiguration.secondaryButtonAction.action.canceled += OnSecondaryButtonUp;
         }
 
         public XrHand xrHand;
         public GameObject ControllerRoot => xrHand.gameObject ?? gameObject;
         private IXrHandControls controls => xrHand;
 
+        #region grip
         public void UpdateGrip(InputAction.CallbackContext callbackContext) => UpdateGrip(callbackContext.ReadValue<float>());
-        public void UpdateGrip(float newValue) => controls.UpdateGrip(newValue);
+        bool gripCrossedThresshold = false;
+        public void UpdateGrip(float newValue)
+        {
+            if (newValue < controllerConfiguration.gripThreshold)
+            {
+                if (gripCrossedThresshold != false)
+                {
+                    controls.OnGripUp();
+                }
+                gripCrossedThresshold = false;
+            }
+            else
+            {
+                if (gripCrossedThresshold != true)
+                {
+                    controls.OnGripDown();
+                }
+                gripCrossedThresshold = true;
+            }
+            controls.UpdateGrip(newValue);
+        }
+
         public float ReadGrip() => controls.ReadGrip();
+        #endregion
+
+        #region trigger
         public void UpdateTrigger(InputAction.CallbackContext callbackContext) => UpdateTrigger(callbackContext.ReadValue<float>());
-        public void UpdateTrigger(float newValue) => controls.UpdateTrigger(newValue);
+
+        bool triggerCrossedThresshold = false;
+        public void UpdateTrigger(float newValue)
+        {
+            if (newValue < controllerConfiguration.triggerThreshold)
+            {
+                if (triggerCrossedThresshold != false)
+                {
+                    controls.OnTriggerUp();
+                }
+                triggerCrossedThresshold = false;
+            }
+            else
+            {
+                if (triggerCrossedThresshold != true)
+                {
+                    controls.OnTriggerDown();
+                }
+                triggerCrossedThresshold = true;
+            }
+            controls.UpdateTrigger(newValue);
+        }
         public float ReadTrigger() => controls.ReadTrigger();
+        #endregion
+
 
         public void OnMainButtonDown(InputAction.CallbackContext callbackContext) => OnMainButtonDown();
         public void OnMainButtonDown()
         {
-            Debug.Log("Main input recieved");
             controls.OnMainButtonDown();
         }
 
         public void OnMainButtonUp(InputAction.CallbackContext callbackContext) => OnMainButtonUp();
-        public void OnMainButtonUp() => controls.OnMainButtonUp();
+        public void OnMainButtonUp()
+        {
+            controls.OnMainButtonUp();
+        }
+
         public void OnSecondaryButtonDown(InputAction.CallbackContext callbackContext) => OnSecondaryButtonDown();
         public void OnSecondaryButtonDown()
         {
-            Debug.Log("Secondary input recieved");
             controls.OnSecondaryButtonDown();
         }
 
@@ -62,8 +108,13 @@ namespace XrCore.Interaction.Control
     public interface IXrHandControls
     {
         public void UpdateGrip(float newValue);
+        public void OnGripDown();
+        public void OnGripUp();
         public float ReadGrip();
         public void UpdateTrigger(float newValue);
+        public void OnTriggerDown();
+        public void OnTriggerUp();
+
         public float ReadTrigger();
         public void OnMainButtonDown();
         public void OnMainButtonUp();

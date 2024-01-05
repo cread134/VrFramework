@@ -19,16 +19,10 @@ namespace XrCore.Interaction.Editor
             VisualElement root = new VisualElement();
 
             root.Add(new PropertyField { label = "XrHand", bindingPath = "xrHand" });
-            root.Add(new PropertyField(serializedObject.FindProperty("Controller")));
 
-            root.AddHeader("Input Values");
-            root.Add(new PropertyField(serializedObject.FindProperty("MainButtonAction")));
-            root.Add(new PropertyField(serializedObject.FindProperty("SecondaryButtonAction")));
-            root.Add(new PropertyField(serializedObject.FindProperty("gripAction")));
-            root.Add(new PropertyField(serializedObject.FindProperty("triggerActionProperty")));
+            root.AddHeader("Configuration");
 
-            root.AddSlider("Grip", 1f, 0f, serializedObject.FindProperty("gripValue"), OnGripSliderChange);
-            root.AddSlider("Trigger", 1f, 0f, serializedObject.FindProperty("triggerValue"), OnTriggerSliderChange);
+            root.Add(new PropertyField(serializedObject.FindProperty("controllerConfiguration")));
 
             var rootButton = new Button
             {

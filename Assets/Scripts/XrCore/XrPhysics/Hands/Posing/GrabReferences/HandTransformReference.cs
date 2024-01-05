@@ -19,10 +19,10 @@ namespace XrCore.XrPhysics.Hands.Posing
         public void OnDrawGizmos()
         {
             Handles.color = Color.red;
-            Gizmos.DrawWireCube(transform.position, Vector3.one * 0.01f);
             var style = new GUIStyle();
             style.fontSize = 18;
             style.alignment = TextAnchor.MiddleCenter;
+            Gizmos.DrawIcon(transform.position, "empty.png", true);
             Handles.Label(transform.position, this.ToString(), style);
         }
 

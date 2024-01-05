@@ -47,39 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c462dfe1346c49e458e42096742a90f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainButtonAction: {fileID: 530259256090375907, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  SecondaryButtonAction: {fileID: -3037912916477689207, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  gripAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Grip
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 934ad57a-cb01-42b8-8e12-d9799765318a
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -6131295136447488360, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
-  triggerActionProperty:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Trigger Action Property
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: b6730942-d931-4c83-9938-043965a0904c
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
+  controllerConfiguration: {fileID: 11400000, guid: 11feccc222ec5844b9cab8ec9842eff3,
+    type: 2}
   xrHand: {fileID: 4047155559608099415}
-  gripValue: 0
-  triggerValue: 0
 --- !u!114 &6692195957906836738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,39 +622,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c462dfe1346c49e458e42096742a90f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainButtonAction: {fileID: 1781591438297947568, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  SecondaryButtonAction: {fileID: -4404826425360526019, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  gripAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Grip
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: ebd6ac94-0c8f-411c-96af-21b9c88bbe3b
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 187161793506945269, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
-  triggerActionProperty:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Trigger Action Property
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: cdc42e43-3dcd-4152-a1df-cba194a8e1b9
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
+  controllerConfiguration: {fileID: 11400000, guid: 3be2d38c52abeeb4a8d65ad871e8b0e8,
+    type: 2}
   xrHand: {fileID: 1087125456776145587}
-  gripValue: 0
-  triggerValue: 0
 --- !u!114 &6986075448928196169
 MonoBehaviour:
   m_ObjectHideFlags: 0
