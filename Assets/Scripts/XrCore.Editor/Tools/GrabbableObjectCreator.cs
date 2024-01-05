@@ -27,7 +27,7 @@ namespace XrCore.Tools.Editor
             var grabObject = instance.GetComponent<GrabbableObject>();
 
             Selection.activeGameObject = instance;
-
+            SceneView.lastActiveSceneView.FrameSelected();
             EditorUtility.SetDirty(instance);
             return grabObject;
         }

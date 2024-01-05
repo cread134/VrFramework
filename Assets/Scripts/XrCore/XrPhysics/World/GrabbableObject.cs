@@ -268,6 +268,7 @@ namespace XrCore.XrPhysics.World
         private List<IGrabObjectEvents> grabObjectEvents = new List<IGrabObjectEvents>();
         public void SubscribeEvents(IGrabObjectEvents events)
         {
+            Debug.Log("subscribed to event");
             grabObjectEvents.Add(events);
         }
 

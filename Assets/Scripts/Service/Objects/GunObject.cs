@@ -32,7 +32,7 @@ namespace Service.Objects
 
         public void OnMainDown()
         {
-
+            Debug.Log("Ejection action");
         }
 
         public void OnMainUp()
@@ -47,7 +47,7 @@ namespace Service.Objects
 
         public void OnTriggerDown()
         {
-
+            Debug.Log("Trigger pulled!!");
         }
 
         public void OnTriggerUp()

@@ -38,23 +38,5 @@ namespace XrCore.Interaction.Editor
             Selection.activeGameObject = ((HandController)target).ControllerRoot;
             SceneView.lastActiveSceneView.FrameSelected();
         }
-
-        void OnGripSliderChange(ChangeEvent<float> changeEvent)
-        {
-            var element = (Slider)changeEvent.target;
-            element.label = $"Grip {changeEvent.newValue}";
-
-            HandController handController = (HandController)target;
-            handController.UpdateGrip(changeEvent.newValue);
-        }
-
-        void OnTriggerSliderChange(ChangeEvent<float> changeEvent)
-        {
-            var element = (Slider)changeEvent.target;
-            element.label = $"Trigger {changeEvent.newValue}";
-
-            HandController handController = (HandController)target;
-            handController.UpdateTrigger(changeEvent.newValue);
-        }
     }
 }

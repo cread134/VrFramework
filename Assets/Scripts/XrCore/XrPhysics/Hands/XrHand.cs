@@ -327,6 +327,7 @@ namespace XrCore.XrPhysics.Hands
 
         public void OnTriggerDown()
         {
+            Debug.Log("Trigger down");
             if (!isGrabbingObject) return;
             var eventSubscribers = currentGrab.GetSubscribers();
             foreach (var item in eventSubscribers)
@@ -337,6 +338,7 @@ namespace XrCore.XrPhysics.Hands
 
         public void OnTriggerUp()
         {
+            Debug.Log("Trigger up");
             if (!isGrabbingObject) return;
             var eventSubscribers = currentGrab.GetSubscribers();
             foreach (var item in eventSubscribers)

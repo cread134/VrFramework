@@ -5,9 +5,8 @@ using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
 using XrCore.Context;
-using XrCore.Interaction.Control;
 using XrCore.XrPhysics.Hands;
-using static UnityEngine.GraphicsBuffer;
+using ScriptingResources;
 
 namespace XrCore.Tools
 {
@@ -71,7 +70,7 @@ namespace XrCore.Tools
                 {
                     leftOpen = !leftOpen;
                 }
-                Repaint();
+                this.Redraw();
             });
 
             root.Add(horizontalBox);
@@ -147,13 +146,6 @@ namespace XrCore.Tools
             controller.OnSecondaryButtonDown();
         }
         #endregion
-
-        void Repaint()
-        {
-            //this fucking sucks, but its the only way to repaint :(
-            collapsed = true;
-            collapsed = false;
-        }
 
         void AccessRightHand() => AccessHandCore(HandSide.Right);
         void AccessLeftHand() => AccessHandCore(HandSide.Left);
