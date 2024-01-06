@@ -35,6 +35,11 @@ namespace XrCore.XrPhysics.World
             SetupRigidbody();
 
             _mover = new PhysicsMover(physicsSettings, _rigidbody);
+
+            foreach (var item in grabPoints)
+            {
+                item.OnSpawned(this);
+            }
         }
 
         void SetupRigidbody()

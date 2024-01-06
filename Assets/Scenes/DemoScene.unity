@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useSide: 1
   targetPose: {fileID: 11400000, guid: 968d87a18e65cbc4196e184247e70c9f, type: 2}
+  grabParent: {fileID: 0}
 --- !u!4 &194149146
 Transform:
   m_ObjectHideFlags: 0

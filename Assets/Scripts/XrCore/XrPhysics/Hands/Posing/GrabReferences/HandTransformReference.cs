@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using XrCore.XrPhysics.PhysicsObjects;
+using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Hands.Posing
 {
@@ -11,6 +12,31 @@ namespace XrCore.XrPhysics.Hands.Posing
     {
         [SerializeField] private HandSide useSide;
         [SerializeField] private PoseObject targetPose;
+
+        public GrabbableObject GrabParent 
+        {
+            get 
+            {
+               return grabParent ??= GetGrabParent();
+            }
+            set { grabParent = value; }
+        }
+        public GrabbableObject grabParent;
+
+        GrabbableObject GetGrabParent()
+        {
+            Transform cur = transform;
+            while(cur.parent != null)
+            {
+                cur = cur.parent;
+                if(cur == null ) break;
+                if(cur.gameObject.TryGetComponent(out GrabbableObject grabbableObject))
+                {
+                    return grabbableObject;
+                }
+            }
+            return null;
+        }
 
         public HandPose GetTargetPose() => targetPose?.HandPose;
         public HandSide GetUseSide() => useSide;

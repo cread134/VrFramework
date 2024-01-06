@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
-using XrCore.XrPhysics.Hands.Posing;
-using XrCore.Interaction.Control;
-using TMPro;
 using Core.DI;
-using Core.Logging;
-using XrCore.XrPhysics.World;
 using System.Linq;
+using UnityEngine;
+using XrCore.Interaction.Control;
+using XrCore.XrPhysics.Hands.Posing;
+using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Hands
 {
@@ -158,7 +153,19 @@ namespace XrCore.XrPhysics.Hands
             }
         }
 
-        private void StartGrab()
+        public void GrabFromPoint(HandTransformReference handPoint)
+        {
+            IGrabbable grabbable = handPoint.GrabParent;
+            grabbable.GetHandPosition(handType, handPoint.transform.position, handPoint.transform.forward, handPoint.transform.up, out Vector3 targetPos, out Quaternion targetRot);
+            grabHover = grabbable;
+            overTarget = true;
+            trackingTarget.transform.position = targetPos;
+            trackingTarget.transform.rotation = targetRot;
+            UpdateGrip(1f);
+            handClosed = true;
+            StartGrab();
+        }
+        public void StartGrab()
         {
             loggingService.Log("started Grabbing " + grabHover.ToString());
             grabHover.StartGrab(handType);

@@ -6,6 +6,7 @@ using UnityEngine;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
 using XrCore.XrPhysics.PhysicsObjects;
+using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Interaction
 {
@@ -74,6 +75,14 @@ namespace XrCore.XrPhysics.Interaction
         public void OnRelease()
         {
             isGrabbed = false;
+        }
+
+        public void OnSpawned(GrabbableObject grabParent)
+        {
+            foreach (var item in referenceTransforms)
+            {
+                item.GrabParent = grabParent;
+            }
         }
 
         public Transform ToHandTransform(HandSide handType, Vector3 referencePosition, Vector3 forwardDirection, Vector3 upDirection)
