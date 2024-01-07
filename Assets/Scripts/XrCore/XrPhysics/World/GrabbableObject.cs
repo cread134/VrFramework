@@ -5,6 +5,7 @@ using UnityEngine;
 using XrCore.XrPhysics.Interaction;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
+using System.Linq;
 
 namespace XrCore.XrPhysics.World
 {
@@ -57,59 +58,82 @@ namespace XrCore.XrPhysics.World
             return true;
         }
 
-        public void GetHandPosition(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
+        public bool GetHandPosition(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
         {
             if (storedHandInformation[handType].IsGrabbingObject())
             {
-                GetHandPositionGrabbing(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
+                return GetHandPositionGrabbing(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
             }
             else
             {
-                GetHandPositionNotGrabbing(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
+                return GetHandPositionNotGrabbing(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
             }
         }
 
-        void GetHandPositionGrabbing(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
+        bool GetHandPositionGrabbing(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
         {
-            Transform storedTransform = storedHandInformation[handType].GetStoredTransfromValues();
+            var transformValues = storedHandInformation[handType];
+            Transform storedTransform = transformValues.GetStoredTransfromValues();
             newPosition = storedTransform.position;
             newRotation = storedTransform.rotation;
             Debug.DrawLine(referecePosition, newPosition, Color.cyan);
 
-            if (storedTransform.gameObject.TryGetComponent(out HandTransformReference transformReference))
-            {
-                storedHandInformation[handType]._handPose = transformReference.GetTargetPose();
-            }
+            storedHandInformation[handType]._handPose = transformValues.transformReference.GetTargetPose();
+            return true;
         }
 
-        void GetHandPositionNotGrabbing(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
+        bool GetHandPositionNotGrabbing(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
         {
-            (float minValue, int index) matchingValues = (0f, 0);
-            Transform[] storedPossibleOrientations = new Transform[grabPoints.Length];
+            var storedPossibleOrientations = new List<PossibleOrientation>();
             for (int i = 0; i < grabPoints.Length; i++)
             {
-                storedPossibleOrientations[i] = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection);
-                float distance = Vector3.Distance(referecePosition, storedPossibleOrientations[i].position);
+                var orientationInstance = new PossibleOrientation();
 
-                float matchScore = (1f / distance) * Quaternion.Angle(Quaternion.LookRotation(forwardDirection, upDirection), storedPossibleOrientations[i].rotation);
-
-                if (matchScore > matchingValues.minValue)
-                {
-                    matchingValues.minValue = matchScore;
-                    matchingValues.index = i;
-                }
+                orientationInstance.allowed = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection, out TransformOutPut outPut);
+                orientationInstance.handTransformReference = outPut.referenceTransform;
+                orientationInstance.orientationTransform = outPut.transform;
+                orientationInstance.associatedPoint = grabPoints[i];
+                storedPossibleOrientations.Add(orientationInstance);
             }
-            Transform targetTransform = storedPossibleOrientations[matchingValues.index];
+
+            var allowed = storedPossibleOrientations.Where(x => x.allowed == true);
+            if (allowed == null || allowed.Count() == 0)
+            {
+                newPosition = Vector3.zero;
+                newRotation = Quaternion.identity;
+                return false;
+            }
+            foreach (var p in allowed)
+            {
+                Debug.Log(allowed.Count());
+            }
+            var match = allowed
+                .OrderBy(x => (1f / Vector3.Distance(referecePosition, x.orientationTransform.position) * Quaternion.Angle(Quaternion.LookRotation(forwardDirection, upDirection), x.orientationTransform.rotation)))
+                .First();
+
+            Transform targetTransform = match.orientationTransform;
             newPosition = targetTransform.position;
             newRotation = targetTransform.rotation;
-            storedHandInformation[handType].SetStoredTransform(storedPossibleOrientations[matchingValues.index]);
-            if (targetTransform.gameObject.TryGetComponent(out HandTransformReference transformReference))
-            {
-                storedHandInformation[handType]._handPose = transformReference.GetTargetPose();
-            }
+            storedHandInformation[handType].SetStoredTransform(match.orientationTransform);
+            storedHandInformation[handType].heldPoint = match.associatedPoint;
+            storedHandInformation[handType].transformReference = match.handTransformReference;
+            storedHandInformation[handType]._handPose = storedHandInformation[handType].transformReference.GetTargetPose();
             Debug.DrawLine(referecePosition, newPosition, Color.magenta);
+            return true;
         }
 
+        struct PossibleOrientation
+        {
+            public bool allowed;
+            public Transform orientationTransform;
+            public HandTransformReference handTransformReference;
+            public GrabPoint associatedPoint;
+        }
+
+        public StoredHandInformation GetHandInformation(HandSide handType)
+        {
+            return storedHandInformation[handType];
+        }
         #region grabEvents 
         public void StartGrab(HandSide handType)
         {
@@ -123,7 +147,7 @@ namespace XrCore.XrPhysics.World
 
             foreach (var item in GetSubscribers())
             {
-                item.OnGripStarted();
+                item.OnGripStarted(storedHandInformation[handType].heldPoint);
             }
         }
         public void OnGrabRelease(HandSide handType)
@@ -139,7 +163,7 @@ namespace XrCore.XrPhysics.World
 
             foreach (var item in GetSubscribers())
             {
-                item.OnGripFinished();
+                item.OnGripFinished(storedHandInformation[handType].heldPoint);
             }
         }
 

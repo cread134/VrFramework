@@ -126,8 +126,8 @@ namespace XrCore.XrPhysics.Hands
 
                 if (first.gameObject.TryGetComponent<IGrabbable>(out IGrabbable grabbable) && grabbable.CanBeGrabbed(transform.position, transform.rotation, handType))
                 {
-                    grabbable.GetHandPosition(handType, transform.position, transform.forward, transform.up, out Vector3 targetPos, out Quaternion targetRot);
-                    if (Vector3.Distance(grabCentre.position, targetPos) < grabRadius)
+                    bool allowed = grabbable.GetHandPosition(handType, transform.position, transform.forward, transform.up, out Vector3 targetPos, out Quaternion targetRot);
+                    if (Vector3.Distance(grabCentre.position, targetPos) < grabRadius && allowed)
                     {
                         grabHover = grabbable;
                         overTarget = true;
@@ -156,7 +156,12 @@ namespace XrCore.XrPhysics.Hands
         public void GrabFromPoint(HandTransformReference handPoint)
         {
             IGrabbable grabbable = handPoint.GrabParent;
-            grabbable.GetHandPosition(handType, handPoint.transform.position, handPoint.transform.forward, handPoint.transform.up, out Vector3 targetPos, out Quaternion targetRot);
+            bool allowed = grabbable.GetHandPosition(handType, handPoint.transform.position, handPoint.transform.forward, handPoint.transform.up, out Vector3 targetPos, out Quaternion targetRot);
+            if(!allowed)
+            {
+                Debug.Log("no possible grab point found");
+                return;
+            }
             grabHover = grabbable;
             overTarget = true;
             trackingTarget.transform.position = targetPos;
@@ -264,7 +269,7 @@ namespace XrCore.XrPhysics.Hands
                 var eventSubscribers = currentGrab.GetSubscribers();
                 foreach (var item in eventSubscribers)
                 {
-                    item.OnGripChange(newValue, oldvalue);
+                    item.OnGripChange(newValue, oldvalue, currentGrab.GetHandInformation(handType).heldPoint);
                 }
             }
         }
@@ -277,7 +282,7 @@ namespace XrCore.XrPhysics.Hands
             var eventSubscribers = currentGrab.GetSubscribers();
             foreach (var item in eventSubscribers)
             {
-                item.OnGripChange(newValue, oldValue);
+                item.OnGripChange(newValue, oldValue, currentGrab.GetHandInformation(handType).heldPoint);
             }
         }
 
@@ -290,7 +295,7 @@ namespace XrCore.XrPhysics.Hands
             var eventSubscribers = currentGrab.GetSubscribers();
             foreach (var item in eventSubscribers)
             {
-                item.OnMainDown();
+                item.OnMainDown(currentGrab.GetHandInformation(handType).heldPoint);
             }
         }
 
@@ -300,7 +305,7 @@ namespace XrCore.XrPhysics.Hands
             var eventSubscribers = currentGrab.GetSubscribers();
             foreach (var item in eventSubscribers)
             {
-                item.OnMainUp();
+                item.OnMainUp(currentGrab.GetHandInformation(handType).heldPoint);
             }
         }
 
@@ -316,7 +321,6 @@ namespace XrCore.XrPhysics.Hands
 
         public void OnGripDown()
         {
-            Debug.Log("GripDown");
             if (!handClosed)
             {
                 OnGrab();
@@ -325,7 +329,6 @@ namespace XrCore.XrPhysics.Hands
 
         public void OnGripUp()
         {
-            Debug.Log("GripUp");
             if (handClosed)
             {
                 OnRelease();
@@ -339,7 +342,7 @@ namespace XrCore.XrPhysics.Hands
             var eventSubscribers = currentGrab.GetSubscribers();
             foreach (var item in eventSubscribers)
             {
-                item.OnTriggerDown();
+                item.OnTriggerDown(currentGrab.GetHandInformation(handType).heldPoint);
             }
         }
 
@@ -350,7 +353,7 @@ namespace XrCore.XrPhysics.Hands
             var eventSubscribers = currentGrab.GetSubscribers();
             foreach (var item in eventSubscribers)
             {
-                item.OnTriggerUp();
+                item.OnTriggerUp(currentGrab.GetHandInformation(handType).heldPoint);
             }
         }
         #endregion

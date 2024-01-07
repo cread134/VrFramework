@@ -1,6 +1,7 @@
 using UnityEngine;
 using XrCore.XrPhysics.Hands.Posing;
 using XrCore.XrPhysics.Hands;
+using XrCore.XrPhysics.Interaction;
 
 namespace XrCore.XrPhysics.World
 {
@@ -42,5 +43,7 @@ namespace XrCore.XrPhysics.World
         private bool isGrabbing;
 
         public HandPose _handPose;
+        public HandTransformReference transformReference;
+        public GrabPoint heldPoint;
     }
 }

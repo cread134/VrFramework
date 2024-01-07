@@ -13,7 +13,10 @@ namespace XrCore.XrPhysics.World
         public bool CanBeGrabbed(Vector3 grabPosition, Quaternion grabRotation, HandSide handType)
             => grabbableObject.CanBeGrabbed(grabPosition, grabRotation, handType);
 
-        public void GetHandPosition(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
+        public StoredHandInformation GetHandInformation(HandSide handType)
+            => grabbableObject.GetHandInformation(handType);
+
+        public bool GetHandPosition(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation)
             => grabbableObject.GetHandPosition(handType, referecePosition, forwardDirection, upDirection, out newPosition, out newRotation);
 
         public IGrabObjectEvents[] GetSubscribers()

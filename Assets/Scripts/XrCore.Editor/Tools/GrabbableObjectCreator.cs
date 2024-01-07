@@ -23,8 +23,12 @@ namespace XrCore.Tools.Editor
         static GrabbableObject CreateGrabbableObjectCore()
         {
             GameObject instance = ObjectFactory.CreateGameObject("GrabbableObject", typeof(GrabbableObject));
+            instance.layer = 7;
+
 
             var grabObject = instance.GetComponent<GrabbableObject>();
+            var boxCollider = instance.AddComponent<BoxCollider>();
+            boxCollider.size = Vector3.one * 0.1f;
 
             Selection.activeGameObject = instance;
             SceneView.lastActiveSceneView.FrameSelected();

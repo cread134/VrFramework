@@ -19,6 +19,12 @@ namespace XrCore.XrPhysics.Interaction
 
         [SerializeField] private float maximumGrabRadius = 0.5f;
 
+        private void Awake()
+        {
+            leftHandReferenceTransforms = GetReferenceTransformValuesBySide(HandSide.Left);
+            rightHandReferenceTransforms = GetReferenceTransformValuesBySide(HandSide.Right);
+        }
+
         #region transformReferences
 
         [SerializeField] private HandTransformReference[] referenceTransforms;
@@ -43,15 +49,7 @@ namespace XrCore.XrPhysics.Interaction
 
         HandTransformReference[] GetReferenceTransformValuesBySide(HandSide _side)
         {
-            List<HandTransformReference> values = new List<HandTransformReference>();
-            foreach (var item in referenceTransforms)
-            {
-                if (item.GetUseSide() == _side)
-                {
-                    values.Add(item);
-                } 
-            }
-            return values.ToArray();
+            return referenceTransforms.Where(x => x.GetUseSide() == _side).ToArray();
         }
 
         public void SetReferenceTransforms(HandTransformReference[] newValues) => referenceTransforms = newValues;
@@ -85,32 +83,43 @@ namespace XrCore.XrPhysics.Interaction
             }
         }
 
-        public Transform ToHandTransform(HandSide handType, Vector3 referencePosition, Vector3 forwardDirection, Vector3 upDirection)
+        public bool ToHandTransform(HandSide handType, Vector3 referencePosition, Vector3 forwardDirection, Vector3 upDirection, out TransformOutPut possibility)
         {
             var useHands = handType == HandSide.Right ? 
                 RightHandReferenceTransforms 
                 : LeftHandReferenceTransforms;
 
-            var values = useHands.Select(m => m.GetTransform(referencePosition, forwardDirection, upDirection))
+            if(useHands == null || useHands.Count() == 0)
+            {
+                possibility = new TransformOutPut(null, null);
+                return false;
+            }
+
+            var values = useHands.Select(m => new TransformOutPut(m.GetTransform(referencePosition, forwardDirection, upDirection), m))
                 .OrderBy(x =>
                 {
-                    float distanceScore = 1 / Vector3.Distance(referencePosition, x.position);
-                    float forwardDot = Vector3.Dot(forwardDirection, x.forward);
-                    float UpDot = Vector3.Dot(forwardDirection, x.up);
+                    float distanceScore = 1 / Vector3.Distance(referencePosition, x.transform.position);
+                    float forwardDot = Vector3.Dot(forwardDirection, x.transform.forward);
+                    float UpDot = Vector3.Dot(forwardDirection, x.transform.up);
                     return distanceScore * (forwardDot + UpDot);
                 })
                 .Reverse();
 
-#if UNITY_EDITOR
-            var col = Color.red;
-            var first = values.First();
-            values.ForEach(x => {
-                col = x == first ? Color.green : Color.red;
-                Debug.DrawLine(referencePosition, x.position, col);
-             });
-#endif
-
-            return values.First();
+            possibility = values.First();
+            return true;
         }
+
+    }
+    public struct TransformOutPut
+    {
+        public Transform transform;
+        public HandTransformReference referenceTransform;
+
+        public TransformOutPut(Transform transform, HandTransformReference referenceTransform)
+        {
+            this.transform = transform;
+            this.referenceTransform = referenceTransform;
+        }
+
     }
 }

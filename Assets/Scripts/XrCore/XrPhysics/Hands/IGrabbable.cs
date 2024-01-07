@@ -16,11 +16,13 @@ namespace XrCore.XrPhysics.Hands
 
         public void OnGrabTick();
 
-        public void GetHandPosition(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation);
+        public bool GetHandPosition(HandSide handType, Vector3 referecePosition, Vector3 forwardDirection, Vector3 upDirection, out Vector3 newPosition, out Quaternion newRotation);
 
         public void OnGrabRelease(HandSide handType);
 
         public bool IsPrimaryGrab(HandSide handType);
+
+        public StoredHandInformation GetHandInformation(HandSide handType);
 
         public HandPose GetTargetPose(HandSide handType);
         public IGrabObjectEvents[] GetSubscribers();

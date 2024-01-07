@@ -27,7 +27,7 @@ namespace XrCore.XrPhysics.World
             lastPositionError = positionError;
 
             Vector3 force = positionProportion + positionDerivative;
-            _rigidbody.AddForce(force * _rigidbody.mass, ForceMode.Force);
+            _rigidbody.AddForce(force, ForceMode.Acceleration);
         }
 
         private Quaternion rotationError;
