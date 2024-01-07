@@ -15,10 +15,11 @@ namespace XrCore.XrPhysics
         [Space]
         public float rotationProportionalGain = 8f; // Proportional gain for rotation control
         public float torqueDamping = 1f;
-        public float rotationMultiplier = 8f;
+        public float rotationErrorCompenstation = 8f;
         public float angleAllowance = 5f;
         public float rotationalSmoothing = 12f;
         public float rotationImpulseCompensation = 1f;
+        public float rotationIntergral = 1.5f;
         [Range(0f, 1f)] public float anglularSlowdown = 0.7f;
     }
 }

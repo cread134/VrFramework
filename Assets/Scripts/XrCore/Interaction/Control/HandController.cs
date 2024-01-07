@@ -26,7 +26,7 @@ namespace XrCore.Interaction.Control
 
         public XrHand xrHand;
         public GameObject ControllerRoot => xrHand.gameObject ?? gameObject;
-        private IXrHandControls controls => xrHand;
+        private IXrHandControls Controls => xrHand;
 
         #region grip
         public void UpdateGrip(InputAction.CallbackContext callbackContext) => UpdateGrip(callbackContext.ReadValue<float>());
@@ -37,7 +37,7 @@ namespace XrCore.Interaction.Control
             {
                 if (gripCrossedThresshold != false)
                 {
-                    controls.OnGripUp();
+                    Controls.OnGripUp();
                 }
                 gripCrossedThresshold = false;
             }
@@ -45,14 +45,14 @@ namespace XrCore.Interaction.Control
             {
                 if (gripCrossedThresshold != true)
                 {
-                    controls.OnGripDown();
+                    Controls.OnGripDown();
                 }
                 gripCrossedThresshold = true;
             }
-            controls.UpdateGrip(newValue);
+            Controls.UpdateGrip(newValue);
         }
 
-        public float ReadGrip() => controls.ReadGrip();
+        public float ReadGrip() => Controls.ReadGrip();
         #endregion
 
         #region trigger
@@ -65,7 +65,7 @@ namespace XrCore.Interaction.Control
             {
                 if (triggerCrossedThresshold != false)
                 {
-                    controls.OnTriggerUp();
+                    Controls.OnTriggerUp();
                 }
                 triggerCrossedThresshold = false;
             }
@@ -73,36 +73,36 @@ namespace XrCore.Interaction.Control
             {
                 if (triggerCrossedThresshold != true)
                 {
-                    controls.OnTriggerDown();
+                    Controls.OnTriggerDown();
                 }
                 triggerCrossedThresshold = true;
             }
-            controls.UpdateTrigger(newValue);
+            Controls.UpdateTrigger(newValue);
         }
-        public float ReadTrigger() => controls.ReadTrigger();
+        public float ReadTrigger() => Controls.ReadTrigger();
         #endregion
 
 
         public void OnMainButtonDown(InputAction.CallbackContext callbackContext) => OnMainButtonDown();
         public void OnMainButtonDown()
         {
-            controls.OnMainButtonDown();
+            Controls.OnMainButtonDown();
         }
 
         public void OnMainButtonUp(InputAction.CallbackContext callbackContext) => OnMainButtonUp();
         public void OnMainButtonUp()
         {
-            controls.OnMainButtonUp();
+            Controls.OnMainButtonUp();
         }
 
         public void OnSecondaryButtonDown(InputAction.CallbackContext callbackContext) => OnSecondaryButtonDown();
         public void OnSecondaryButtonDown()
         {
-            controls.OnSecondaryButtonDown();
+            Controls.OnSecondaryButtonDown();
         }
 
         public void OnSecondaryButtonUp(InputAction.CallbackContext callbackContext) => OnSecondaryButtonUp();
-        public void OnSecondaryButtonUp() => controls.OnSecondaryButtonUp();
+        public void OnSecondaryButtonUp() => Controls.OnSecondaryButtonUp();
     }
 
     public interface IXrHandControls

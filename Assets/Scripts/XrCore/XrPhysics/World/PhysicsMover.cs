@@ -32,6 +32,7 @@ namespace XrCore.XrPhysics.World
 
         private Quaternion rotationError;
         private Quaternion lastRotation;
+        private Quaternion lastRotationError;
         private float angleError;
         private Vector3 errorAxis;
         public void PhysicsMatchRotation(Quaternion targetRotation)
@@ -45,27 +46,35 @@ namespace XrCore.XrPhysics.World
                 angleError -= 360f;
             }
 
-            if (Quaternion.Angle(targetRotation, _rigidbody.rotation) < physicsConfiguration.angleAllowance)
+            Quaternion rotationImpulse = lastRotationError * Quaternion.Inverse(lastRotationError);
+            rotationImpulse.ToAngleAxis(out float angleImpluse, out Vector3 impulseAxis);
+
+            if (angleImpluse > 180f)
             {
-                _rigidbody.MoveRotation(Quaternion.Slerp(_rigidbody.rotation, targetRotation, Time.deltaTime * physicsConfiguration.rotationalSmoothing));
-                _rigidbody.angularVelocity = Vector3.zero;
+                angleImpluse -= 360f;
             }
-            else
+
+            Quaternion targetRotationImpulse = targetRotation * Quaternion.Inverse(lastRotation);
+            targetRotationImpulse.ToAngleAxis(out float targetImpulseAngle, out Vector3 targetImpulseVector);
+
+            if (targetImpulseAngle > 180f)
             {
-                Quaternion rotationImpulse = lastRotation * Quaternion.Inverse(targetRotation);
-                rotationImpulse.ToAngleAxis(out float angleImpluse, out Vector3 impulseAxis);
-
-                _rigidbody.angularVelocity *= physicsConfiguration.anglularSlowdown;
-
-                Vector3 angularVelocity = (errorAxis * angleError) * Time.deltaTime * physicsConfiguration.rotationMultiplier;
-                Vector3 angularImpulse = (impulseAxis * angleImpluse) * Time.fixedDeltaTime * physicsConfiguration.rotationImpulseCompensation;
-
-                angularVelocity += (_rigidbody.angularVelocity - angularVelocity) * physicsConfiguration.rotationProportionalGain * Time.deltaTime;
-                angularVelocity += angularImpulse;
-                _rigidbody.AddTorque(angularVelocity, ForceMode.VelocityChange);
+                targetImpulseAngle -= 360f;
             }
+
+            _rigidbody.angularVelocity *= physicsConfiguration.anglularSlowdown;
+
+            Vector3 angularVelocity = (errorAxis * angleError) * Time.deltaTime * physicsConfiguration.rotationErrorCompenstation;
+            Vector3 angularImpulse = ((impulseAxis * angleImpluse) / Time.fixedDeltaTime) * physicsConfiguration.rotationImpulseCompensation;
+            Vector3 targetAngularImpulse = ((targetImpulseAngle * targetImpulseVector) * Time.fixedDeltaTime) * physicsConfiguration.rotationIntergral;
+
+            angularVelocity += (_rigidbody.angularVelocity - angularVelocity) * physicsConfiguration.rotationProportionalGain * Time.deltaTime;
+            angularVelocity += angularImpulse;
+            angularVelocity += targetAngularImpulse;
+            _rigidbody.AddTorque(angularVelocity, ForceMode.VelocityChange);
 
             lastRotation = targetRotation;
+            lastRotationError = rotationError;
         }
     }
 }

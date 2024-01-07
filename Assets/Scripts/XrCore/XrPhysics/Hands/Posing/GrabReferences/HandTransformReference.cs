@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using XrCore.XrPhysics.PhysicsObjects;
 using XrCore.XrPhysics.World;
 
 namespace XrCore.XrPhysics.Hands.Posing

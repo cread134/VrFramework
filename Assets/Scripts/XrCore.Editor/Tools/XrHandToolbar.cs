@@ -106,8 +106,8 @@ namespace XrCore.Tools
 
         #region updateTrigger
 
-        void OnLeftTriggerChange(ChangeEvent<float> changeEvent) => OnTriggerSliderChange(changeEvent, HandSide.Right);
-        void OnRightTriggerChange(ChangeEvent<float> changeEvent) => OnTriggerSliderChange(changeEvent, HandSide.Left);
+        void OnLeftTriggerChange(ChangeEvent<float> changeEvent) => OnTriggerSliderChange(changeEvent, HandSide.Left);
+        void OnRightTriggerChange(ChangeEvent<float> changeEvent) => OnTriggerSliderChange(changeEvent, HandSide.Right);
         void OnTriggerSliderChange(ChangeEvent<float> changeEvent, HandSide side)
         {
             var context = GameObject.FindFirstObjectByType<XrContext>();
