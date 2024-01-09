@@ -7,7 +7,7 @@ namespace XrCore.XrPhysics.Hands.Posing
     [SelectionBase]
     public abstract class HandTransformReference : MonoBehaviour
     {
-        [SerializeField] private HandSide useSide;
+        public HandSide useSide;
         [SerializeField] private PoseObject targetPose;
 
         public GrabbableObject GrabParent 

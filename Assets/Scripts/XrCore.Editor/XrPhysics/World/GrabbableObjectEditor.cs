@@ -18,6 +18,7 @@ namespace XrCore.XrPhysics.World.Editor
         {
             VisualElement root = new VisualElement();
             var grabbableObject = target as GrabbableObject;
+            root.Add(new Toggle() { label = "IsFixed", bindingPath = "isFixedObject" });
             root.Add(new PropertyField { label = "PhysicsConfig", bindingPath = "physicsSettings"});
 
             var grabPointButton = new Button { text = "Add Grab Point" };

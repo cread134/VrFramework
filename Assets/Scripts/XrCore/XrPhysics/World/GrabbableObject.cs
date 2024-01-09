@@ -15,6 +15,7 @@ namespace XrCore.XrPhysics.World
     {
         private Rigidbody _rigidbody;
 
+        public bool isFixedObject;
         public GrabPoint[] grabPoints;
         public XrObjectPhysicsConfig physicsSettings;
         private PhysicsMover _mover;
@@ -196,6 +197,10 @@ namespace XrCore.XrPhysics.World
 
         private void MatchHandTransformWithoutPhysics(Vector3 newPosition, Quaternion newRotation)
         {
+            if (isFixedObject)
+            {
+                return;
+            }
             if (!_rigidbody.isKinematic) _rigidbody.isKinematic = true;
             _rigidbody.MovePosition(newPosition);
             _rigidbody.MoveRotation(newRotation);
@@ -203,6 +208,10 @@ namespace XrCore.XrPhysics.World
 
         private void MatchHandWithPhysics(Vector3 newPosition, Quaternion newRotation)
         {
+            if(isFixedObject)
+            {
+                return;
+            }
             if (_rigidbody.isKinematic) _rigidbody.isKinematic = false;
             PhysicsMatchHandPosition(newPosition);
             PhysicsMatchHandRotation(newRotation);
