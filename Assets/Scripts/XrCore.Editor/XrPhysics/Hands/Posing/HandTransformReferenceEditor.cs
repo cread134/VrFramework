@@ -1,8 +1,11 @@
 using EditorTools.Scripting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 namespace XrCore.XrPhysics.Hands.Posing
@@ -14,7 +17,7 @@ namespace XrCore.XrPhysics.Hands.Posing
 
         public GameObject useTemplate;
         private GameObject previewInstance;
-        
+
         public void OnEnable()
         {
             DestroyPreviewInstance();
@@ -56,6 +59,9 @@ namespace XrCore.XrPhysics.Hands.Posing
 
             var rootObject = target as HandTransformReference;
 
+            var dropdown = CreateDropDownSelection();
+            root.Add(dropdown);
+
             var poseField = new PropertyField(serializedObject.FindProperty("targetPose"));
             poseField.RegisterValueChangeCallback(x => OnPoseChanged(x.changedProperty));
             root.Add(poseField);
@@ -74,6 +80,25 @@ namespace XrCore.XrPhysics.Hands.Posing
 
             return root;
         }
+        #region creating enumerated types
+
+        VisualElement CreateDropDownSelection()
+        {
+            var dropDown = new EnumField(HandTransformReference.GrabTypes.direct)
+            {
+                label = "Grab type",
+                bindingPath = "grabType",
+            };
+            dropDown.RegisterCallback<ChangeEvent<string>>(OnEnumChange);
+            return dropDown;
+        }
+
+        void OnEnumChange(ChangeEvent<string> changeEvent)
+        {
+            var enumeration = Enum.Parse(typeof(HandTransformReference.GrabTypes), changeEvent.newValue);
+            
+        }
+        #endregion
 
         void OnPoseChanged(SerializedProperty newValue)
         {
@@ -109,18 +134,9 @@ namespace XrCore.XrPhysics.Hands.Posing
         void ValidateObject()
         {
             var targ = target as HandTransformReference;
-            var childCount = targ.transform.childCount;
-            var children = targ.transform.GetComponentsInChildren<Transform>()
-                .Where(x => x.transform != targ.transform)
-                .ToArray();
-            for (int i = 0; i < childCount; i++)
-            {
-                DestroyImmediate(children[i].gameObject);
-            }
-            if(childCount > 0)
-            {
-                EditorUtility.SetDirty(targ);
-            }
+            targ.BaseValidate();
+            targ.Validate();
+            EditorUtility.SetDirty(targ);
         }
     }
 }

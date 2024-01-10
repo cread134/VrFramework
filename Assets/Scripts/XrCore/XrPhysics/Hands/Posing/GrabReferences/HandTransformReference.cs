@@ -7,6 +7,9 @@ namespace XrCore.XrPhysics.Hands.Posing
     [SelectionBase]
     public abstract class HandTransformReference : MonoBehaviour
     {
+        public enum GrabTypes { direct, sphere, linear }
+        public GrabTypes grabType;
+
         public HandSide useSide;
         [SerializeField] private PoseObject targetPose;
 
@@ -63,5 +66,28 @@ namespace XrCore.XrPhysics.Hands.Posing
             }
             return "U";
         }
+
+        /// <summary>
+        /// for editor copying over values when validating
+        /// </summary>
+        /// <param name="handTransformReference"></param>
+        public void Copy(HandTransformReference handTransformReference)
+        {
+            useSide = handTransformReference.useSide;
+            targetPose = handTransformReference.targetPose;
+        }
+
+        /// <summary>
+        /// Base validation that should always be performed
+        /// </summary>
+        public void BaseValidate()
+        {
+
+        }
+
+        /// <summary>
+        /// Called from validation in editor. Use to verify has children etc
+        /// </summary>
+        public abstract void Validate();
     }
 }

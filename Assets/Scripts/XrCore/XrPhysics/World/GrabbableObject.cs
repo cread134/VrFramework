@@ -179,7 +179,7 @@ namespace XrCore.XrPhysics.World
                 }
             }
             _rigidbody.ResetCenterOfMass();
-            if (_rigidbody.isKinematic) { _rigidbody.isKinematic = false; }
+            if (_rigidbody.isKinematic && !isFixedObject) { _rigidbody.isKinematic = false; }
             _rigidbody.useGravity = true;
         }
 

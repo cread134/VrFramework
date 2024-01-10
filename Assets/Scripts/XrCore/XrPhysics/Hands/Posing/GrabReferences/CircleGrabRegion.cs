@@ -11,5 +11,10 @@ namespace XrCore.XrPhysics.Hands.Posing
         {
             return transform;
         }
+
+        public override void Validate()
+        {
+
+        }
     }
 }

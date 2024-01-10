@@ -5,7 +5,7 @@ using XrCore.XrPhysics.PhysicsObjects;
 
 namespace XrCore.XrPhysics.Hands.Posing
 {
-    public class DirectGrabRegion : HandTransformReference
+    public class LinearGrabRegion : HandTransformReference
     {
         public override Transform GetTransform(Vector3 position, Vector3 forwardDirection, Vector3 upDirection)
         {
@@ -14,7 +14,7 @@ namespace XrCore.XrPhysics.Hands.Posing
 
         public override void Validate()
         {
-            
+
         }
     }
 }
