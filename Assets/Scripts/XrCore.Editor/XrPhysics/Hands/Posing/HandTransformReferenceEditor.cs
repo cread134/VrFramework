@@ -1,11 +1,8 @@
 using EditorTools.Scripting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 namespace XrCore.XrPhysics.Hands.Posing
@@ -23,7 +20,7 @@ namespace XrCore.XrPhysics.Hands.Posing
             DestroyPreviewInstance();
             ValidateObject();
 
-            var template = useTemplate ?? AssetDatabase.LoadAssetAtPath(templatePath, typeof(PoseReferenceObject)) as GameObject;
+            var template = useTemplate ?? PrefabUtility.LoadPrefabContents(templatePath);
             if (template == null)
             {
                 Debug.Log("no hand template found");
@@ -95,8 +92,27 @@ namespace XrCore.XrPhysics.Hands.Posing
 
         void OnEnumChange(ChangeEvent<string> changeEvent)
         {
-            var enumeration = Enum.Parse(typeof(HandTransformReference.GrabTypes), changeEvent.newValue);
-            
+            if (Enum.TryParse(changeEvent.newValue, out HandTransformReference.GrabTypes enumeration))
+            {
+                var rootObject = target as HandTransformReference;
+                if (enumeration == rootObject.grabType) return;
+                var targetType = HandTransformReference.TypeMapping[enumeration];
+                if (rootObject.gameObject.GetComponent(targetType))
+                {
+                    return;
+                }
+                if (targetType == null) return;
+
+                var newType = (HandTransformReference)rootObject.gameObject.AddComponent(targetType);
+                newType.Copy(rootObject);
+                newType.grabType = enumeration;
+
+                newType.BaseValidate();
+                newType.Validate();
+
+                DestroyImmediate(rootObject);
+                EditorUtility.SetDirty(newType.gameObject);
+            }
         }
         #endregion
 

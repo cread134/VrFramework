@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using XrCore.XrPhysics.World;
@@ -9,6 +12,13 @@ namespace XrCore.XrPhysics.Hands.Posing
     {
         public enum GrabTypes { direct, sphere, linear }
         public GrabTypes grabType;
+
+        public static Dictionary<Enum, Type> TypeMapping = new Dictionary<Enum, Type>
+        {
+            { GrabTypes.direct, typeof(DirectGrabRegion) },
+            { GrabTypes.sphere, typeof(SphereGrabRegion) },
+            { GrabTypes.linear, typeof(LinearGrabRegion) },
+        };
 
         public HandSide useSide;
         [SerializeField] private PoseObject targetPose;
@@ -82,7 +92,15 @@ namespace XrCore.XrPhysics.Hands.Posing
         /// </summary>
         public void BaseValidate()
         {
-
+            var children = transform.GetComponentsInChildren<Transform>().Where(x => x != transform);
+            foreach (var item in children)
+            {
+                if (item != null)
+                {
+                    if (item.GetComponent<PoseReferenceObject>() != null) continue;
+                    DestroyImmediate(item.gameObject);
+                }
+            }
         }
 
         /// <summary>

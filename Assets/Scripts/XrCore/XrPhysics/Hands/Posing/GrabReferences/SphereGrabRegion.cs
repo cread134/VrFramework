@@ -5,7 +5,7 @@ using XrCore.XrPhysics.PhysicsObjects;
 
 namespace XrCore.XrPhysics.Hands.Posing
 {
-    public class CircleGrabRegion : HandTransformReference
+    public class SphereGrabRegion : HandTransformReference
     {
         public override Transform GetTransform(Vector3 position, Vector3 forwardDirection, Vector3 upDirection)
         {
