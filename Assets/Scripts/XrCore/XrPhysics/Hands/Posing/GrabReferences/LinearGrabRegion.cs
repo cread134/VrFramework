@@ -7,14 +7,20 @@ namespace XrCore.XrPhysics.Hands.Posing
 {
     public class LinearGrabRegion : HandTransformReference
     {
+        public Transform start;
+        public Transform end;
+        public Transform middle;
+
         public override Transform GetTransform(Vector3 position, Vector3 forwardDirection, Vector3 upDirection)
         {
             return transform;
         }
 
-        public override void Validate()
+        new void OnDrawGizmos()
         {
-
+            if (start != null && end != null) { 
+                Gizmos.DrawLine(start.position, end.position);
+            }
         }
     }
 }

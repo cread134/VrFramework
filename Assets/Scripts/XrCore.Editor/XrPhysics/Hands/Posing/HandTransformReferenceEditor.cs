@@ -1,5 +1,6 @@
 using EditorTools.Scripting;
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -29,7 +30,6 @@ namespace XrCore.XrPhysics.Hands.Posing
 
             previewInstance = Instantiate(template, (target as HandTransformReference).transform);
             previewInstance.hideFlags = HideFlags.HideInHierarchy;
-
             UpdatePreviewState();
         }
 
@@ -107,8 +107,7 @@ namespace XrCore.XrPhysics.Hands.Posing
                 newType.Copy(rootObject);
                 newType.grabType = enumeration;
 
-                newType.BaseValidate();
-                newType.Validate();
+                ValidateObject(newType);
 
                 DestroyImmediate(rootObject);
                 EditorUtility.SetDirty(newType.gameObject);
@@ -121,7 +120,7 @@ namespace XrCore.XrPhysics.Hands.Posing
             var value = newValue.GetValue<PoseObject>();
             var baseObject = target as HandTransformReference;
 
-            if (value != null && previewInstance != null)
+            if (baseObject != null && value != null && previewInstance != null)
             {
                 UpdateHandPose(value.HandPose);
             }
@@ -150,8 +149,20 @@ namespace XrCore.XrPhysics.Hands.Posing
         void ValidateObject()
         {
             var targ = target as HandTransformReference;
-            targ.BaseValidate();
-            targ.Validate();
+            ValidateObject(targ);
+        }
+
+        public virtual void ValidateObject(HandTransformReference targ)
+        {
+            var children = targ.GetComponentsInChildren<Transform>().Where(x => x != targ.transform);
+            foreach (var item in children)
+            {
+                if (item != null)
+                {
+                    if (item.GetComponent<PoseReferenceObject>() != null) continue;
+                    DestroyImmediate(item.gameObject);
+                }
+            }
             EditorUtility.SetDirty(targ);
         }
     }

@@ -67,8 +67,6 @@ namespace XrCore.XrPhysics.Interaction.Editor
             {
                 var child = children[i];
                 child.transform.gameObject.name = $"{rootObject.name}_GReference{i + 1}_{child.useSide}";
-                child.BaseValidate();
-                child.Validate();
                 EditorUtility.SetDirty(child.gameObject);
             }
             rootObject.SetReferenceTransforms(children);

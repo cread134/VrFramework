@@ -86,26 +86,5 @@ namespace XrCore.XrPhysics.Hands.Posing
             useSide = handTransformReference.useSide;
             targetPose = handTransformReference.targetPose;
         }
-
-        /// <summary>
-        /// Base validation that should always be performed
-        /// </summary>
-        public void BaseValidate()
-        {
-            var children = transform.GetComponentsInChildren<Transform>().Where(x => x != transform);
-            foreach (var item in children)
-            {
-                if (item != null)
-                {
-                    if (item.GetComponent<PoseReferenceObject>() != null) continue;
-                    DestroyImmediate(item.gameObject);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Called from validation in editor. Use to verify has children etc
-        /// </summary>
-        public abstract void Validate();
     }
 }
