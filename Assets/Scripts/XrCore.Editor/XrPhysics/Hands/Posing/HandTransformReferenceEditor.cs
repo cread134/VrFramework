@@ -30,7 +30,13 @@ namespace XrCore.XrPhysics.Hands.Posing
 
             previewInstance = Instantiate(template, (target as HandTransformReference).transform);
             previewInstance.hideFlags = HideFlags.HideInHierarchy;
+            previewInstance.transform.position = GetPreviewPosition();
             UpdatePreviewState();
+        }
+
+        public virtual Vector3 GetPreviewPosition()
+        {
+            return (target as HandTransformReference).transform.position;
         }
 
         void UpdatePreviewState()

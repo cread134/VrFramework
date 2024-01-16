@@ -53,7 +53,7 @@ namespace XrCore.XrPhysics.Hands.Posing
 
         public abstract Transform GetTransform(Vector3 position, Vector3 forwardDirection, Vector3 upDirection);
 
-        public void OnDrawGizmos()
+        public virtual void OnDrawGizmos()
         {
             Handles.color = Color.red;
             var style = new GUIStyle();

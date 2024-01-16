@@ -52,5 +52,11 @@ namespace XrCore.XrPhysics.Hands.Posing
             EditorUtility.SetDirty(middle);
             EditorUtility.SetDirty(linear);
         }
+
+        public override Vector3 GetPreviewPosition()
+        {
+            var linear = target as LinearGrabRegion;
+            return linear.middle.transform.position;
+        }
     }
 }
