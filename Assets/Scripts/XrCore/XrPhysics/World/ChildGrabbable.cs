@@ -10,6 +10,10 @@ namespace XrCore.XrPhysics.World
     {
         [SerializeField] private GrabbableObject grabbableObject;
 
+        public float BreakDistance => grabbableObject.BreakDistance;
+
+        public bool BreakGripOnDistance => grabbableObject.BreakGripOnDistance;
+
         public bool CanBeGrabbed(Vector3 grabPosition, Quaternion grabRotation, HandSide handType)
             => grabbableObject.CanBeGrabbed(grabPosition, grabRotation, handType);
 

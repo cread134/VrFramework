@@ -77,6 +77,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFixedObject: 1
+  breakGripOnDistance: 1
+  breakGripDistance: 0.5
   grabPoints:
   - {fileID: 328645750748134510}
   physicsSettings: {fileID: 11400000, guid: be595bd60ab214b4c8d71f4a57c39581, type: 2}

@@ -98,7 +98,7 @@ namespace XrCore.XrPhysics.Hands
                 MoveHand();
             }
 
-            if (!handClosed)
+            if (!isGrabbingObject)
             {
                 ObserveGrabbable();
             }
@@ -195,6 +195,17 @@ namespace XrCore.XrPhysics.Hands
                     currentGrab.OnGrabTick();
                 }
                 currentGrab.GetHandPosition(handType, trackingTarget.position, trackingTarget.forward, trackingTarget.up, out Vector3 newPosition, out Quaternion newRotation);
+
+                if(currentGrab.BreakGripOnDistance)
+                {
+                    var currentDistance = Vector3.Distance(newPosition, trackingTarget.position);
+                    if(currentDistance > currentGrab.BreakDistance)
+                    {
+                        ReleaseGrab();
+                        return;
+                    }
+                }
+
                 if (!rb.isKinematic) rb.isKinematic = true;
 
                 rb.MovePosition(newPosition);

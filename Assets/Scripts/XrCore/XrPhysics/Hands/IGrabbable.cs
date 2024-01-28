@@ -26,5 +26,9 @@ namespace XrCore.XrPhysics.Hands
 
         public HandPose GetTargetPose(HandSide handType);
         public IGrabObjectEvents[] GetSubscribers();
+
+        //properties
+        public float BreakDistance { get; }
+        public bool BreakGripOnDistance { get; }
     }
 }

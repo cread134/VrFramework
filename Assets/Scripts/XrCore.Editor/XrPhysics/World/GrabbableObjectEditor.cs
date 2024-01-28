@@ -18,7 +18,23 @@ namespace XrCore.XrPhysics.World.Editor
         {
             VisualElement root = new VisualElement();
             var grabbableObject = target as GrabbableObject;
+
             root.Add(new Toggle() { label = "IsFixed", bindingPath = "isFixedObject" });
+            var breakToggle = new Toggle() { label = "breakGripOnDistance", bindingPath = "breakGripOnDistance" };
+            breakToggle.RegisterValueChangedCallback((evt) =>
+            {
+                grabbableObject.breakGripOnDistance = evt.newValue;
+                root.Query<FloatField>("breakDistance").ForEach((field) =>
+                {
+                    field.SetEnabled(evt.newValue);
+                });
+                
+            }); 
+            root.Add(breakToggle);
+            var breakFloatField = new FloatField { name="breakDistance", label = "Break Distance", bindingPath = "breakGripDistance" };
+            breakFloatField.SetEnabled(grabbableObject.breakGripOnDistance);
+            root.Add(breakFloatField);
+
             root.Add(new PropertyField { label = "PhysicsConfig", bindingPath = "physicsSettings"});
 
             var grabPointButton = new Button { text = "Add Grab Point" };

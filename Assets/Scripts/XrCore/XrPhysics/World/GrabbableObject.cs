@@ -16,6 +16,12 @@ namespace XrCore.XrPhysics.World
         private Rigidbody _rigidbody;
 
         public bool isFixedObject;
+
+        public float BreakDistance => breakGripDistance;
+        public bool BreakGripOnDistance => breakGripOnDistance;
+        public bool breakGripOnDistance;
+        public float breakGripDistance = 0.5f;
+
         public GrabPoint[] grabPoints;
         public XrObjectPhysicsConfig physicsSettings;
         private PhysicsMover _mover;
