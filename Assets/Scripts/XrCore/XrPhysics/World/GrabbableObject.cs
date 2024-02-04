@@ -96,7 +96,7 @@ namespace XrCore.XrPhysics.World
             {
                 var orientationInstance = new PossibleOrientation();
 
-                orientationInstance.allowed = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection, out TransformOutPut outPut);
+                orientationInstance.allowed = grabPoints[i].ToHandTransform(handType, referecePosition, forwardDirection, upDirection, out TransformOutput outPut);
                 orientationInstance.handTransformReference = outPut.referenceTransform;
                 orientationInstance.orientationTransform = outPut.transform;
                 orientationInstance.associatedPoint = grabPoints[i];

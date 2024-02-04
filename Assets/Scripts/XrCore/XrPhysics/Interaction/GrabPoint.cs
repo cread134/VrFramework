@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using XrCore.XrPhysics.Hands;
 using XrCore.XrPhysics.Hands.Posing;
+using XrCore.XrPhysics.Interaction.Constraints;
 using XrCore.XrPhysics.PhysicsObjects;
 using XrCore.XrPhysics.World;
 
@@ -83,7 +84,7 @@ namespace XrCore.XrPhysics.Interaction
             }
         }
 
-        public bool ToHandTransform(HandSide handType, Vector3 referencePosition, Vector3 forwardDirection, Vector3 upDirection, out TransformOutPut possibility)
+        public bool ToHandTransform(HandSide handType, Vector3 referencePosition, Vector3 forwardDirection, Vector3 upDirection, out TransformOutput possibility)
         {
             var useHands = handType == HandSide.Right ? 
                 RightHandReferenceTransforms 
@@ -91,11 +92,11 @@ namespace XrCore.XrPhysics.Interaction
 
             if(useHands == null || useHands.Count() == 0)
             {
-                possibility = new TransformOutPut(null, null);
+                possibility = new TransformOutput(null, null);
                 return false;
             }
 
-            var values = useHands.Select(m => new TransformOutPut(m.GetTransform(referencePosition, forwardDirection, upDirection), m))
+            var values = useHands.Select(m => new TransformOutput(m.GetTransform(referencePosition, forwardDirection, upDirection), m))
                 .OrderBy(x =>
                 {
                     float distanceScore = 1 / Vector3.Distance(referencePosition, x.transform.position);
@@ -106,20 +107,41 @@ namespace XrCore.XrPhysics.Interaction
                 .Reverse();
 
             possibility = values.First();
+
+            possibility = ApplyConstraints(possibility);
             return true;
         }
 
-    }
-    public struct TransformOutPut
-    {
-        public Transform transform;
-        public HandTransformReference referenceTransform;
+        #region constraints
+        public IXrHandConstraint[] HandConstraints => handConstraints ?? ValidateAndInitialiseConstraints();
+        private IXrHandConstraint[] handConstraints;
 
-        public TransformOutPut(Transform transform, HandTransformReference referenceTransform)
+        public IXrHandConstraint[] ValidateAndInitialiseConstraints()
         {
-            this.transform = transform;
-            this.referenceTransform = referenceTransform;
+            this.handConstraints = GetComponentsInChildren<IXrHandConstraint>();
+            return this.handConstraints;
         }
 
+        public (IXrHandConstraint, GameObject)[] GetHandConstraintObjects()
+        {
+            var constraintsObjects = GetComponentsInChildren<Transform>()
+                .Where(x => x.GetComponent<IXrHandConstraint>() != null);
+            var constraints = constraintsObjects
+                .Select(x => (x.GetComponent<IXrHandConstraint>(), x.gameObject))
+                .ToArray();
+            return constraints;
+        }
+
+        TransformOutput ApplyConstraints(TransformOutput inputTransform)
+        {
+            var output = inputTransform;
+            foreach (var item in handConstraints)
+            {
+                output = item.ApplyConstraint(output);
+            }
+            return output;
+        }
+
+        #endregion
     }
 }

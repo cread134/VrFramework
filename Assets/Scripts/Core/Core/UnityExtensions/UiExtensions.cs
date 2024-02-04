@@ -87,5 +87,6 @@ namespace Core.Extensions
             return slider;
         }
         #endregion
+
     }
 }
